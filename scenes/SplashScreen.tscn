@@ -1,15 +1,8 @@
 [gd_scene format=3 uid="uid://r0688sn1rlp3"]
 
-[ext_resource type="Texture2D" uid="uid://b4vutckovi5ba" path="res://assets/icon_play.png" id="1_l2g8s"]
+[ext_resource type="Texture2D" uid="uid://cofr7x6t42mjb" path="res://assets/icon_play.png" id="1_l2g8s"]
 [ext_resource type="Texture2D" uid="uid://clhek0o84ufwf" path="res://assets/splash_bg.png" id="1_rc2kg"]
-[ext_resource type="Script" uid="uid://b22yjip7qwura" path="res://scripts/ui/play_button.gd" id="2_rc2kg"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0hbvl"]
-bg_color = Color(1, 0.84313726, 0, 1)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
+[ext_resource type="Script" uid="uid://djchtic85ir6x" path="res://scripts/ui/play_button.gd" id="2_rc2kg"]
 
 [node name="Control" type="Control" unique_id=228761225]
 layout_mode = 3
@@ -30,7 +23,7 @@ texture = ExtResource("1_rc2kg")
 expand_mode = 5
 stretch_mode = 4
 
-[node name="Button" type="Button" parent="." unique_id=1238805942]
+[node name="TextureButton" type="TextureButton" parent="." unique_id=904860607]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 1
 anchors_preset = 8
@@ -38,15 +31,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 4.0
-offset_bottom = 4.0
+offset_left = -152.0
+offset_top = -85.5
+offset_right = 152.0
+offset_bottom = 85.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_0hbvl")
-icon = ExtResource("1_l2g8s")
-icon_alignment = 1
+texture_normal = ExtResource("1_l2g8s")
+texture_pressed = ExtResource("1_l2g8s")
+texture_hover = ExtResource("1_l2g8s")
 script = ExtResource("2_rc2kg")
 
-[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
+[connection signal="pressed" from="TextureButton" to="TextureButton" method="_on_pressed"]
