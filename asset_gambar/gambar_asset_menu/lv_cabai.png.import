@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xxovqlmu2kgn"
-path="res://.godot/imported/pipa x.png-1f3767ee6b2b651827dd7af4857ace7b.ctex"
+uid="uid://dc172tn13q5tt"
+path="res://.godot/imported/lv_cabai.png-064abdf68eab15fd3f0a80b37b862232.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gambar_pipa/pipa x.png"
-dest_files=["res://.godot/imported/pipa x.png-1f3767ee6b2b651827dd7af4857ace7b.ctex"]
+source_file="res://asset_gambar/gambar_asset_menu/lv_cabai.png"
+dest_files=["res://.godot/imported/lv_cabai.png-064abdf68eab15fd3f0a80b37b862232.ctex"]
 
 [params]
 

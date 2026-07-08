@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpux83jo21eob"
-path="res://.godot/imported/soil.png-730b5daafbe9a8c56a6d9b872d03b86c.ctex"
+uid="uid://b8ijrjkey6nqf"
+path="res://.godot/imported/tomat_matang.png-ff3c0b86dbcdcc042a80f19084af9d95.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gambar_pipa/soil.png"
-dest_files=["res://.godot/imported/soil.png-730b5daafbe9a8c56a6d9b872d03b86c.ctex"]
+source_file="res://asset_gambar/gambar_tanaman/tomat_matang.png"
+dest_files=["res://.godot/imported/tomat_matang.png-ff3c0b86dbcdcc042a80f19084af9d95.ctex"]
 
 [params]
 

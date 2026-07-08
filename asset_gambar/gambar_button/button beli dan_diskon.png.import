@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://de3h78yo4p7af"
-path="res://.godot/imported/pipa lurus.png-2d9c60bd18aab8368d6e9658dd4617ff.ctex"
+uid="uid://c52px50oybgdu"
+path="res://.godot/imported/button beli dan_diskon.png-3bf521cd37441647a27d0b50186b1ed5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gambar_pipa/pipa lurus.png"
-dest_files=["res://.godot/imported/pipa lurus.png-2d9c60bd18aab8368d6e9658dd4617ff.ctex"]
+source_file="res://asset_gambar/gambar_button/button beli dan_diskon.png"
+dest_files=["res://.godot/imported/button beli dan_diskon.png-3bf521cd37441647a27d0b50186b1ed5.ctex"]
 
 [params]
 
