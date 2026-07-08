@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bpa5r3ixaejk8"]
+
+[node name="Control" type="Control" unique_id=551330808]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="." unique_id=1522398113]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Ini Halaman Menu Utama"
