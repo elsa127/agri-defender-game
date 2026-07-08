@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xxovqlmu2kgn"
-path="res://.godot/imported/pipa x.png-1f3767ee6b2b651827dd7af4857ace7b.ctex"
+uid="uid://de3h78yo4p7af"
+path="res://.godot/imported/pipa lurus.png-46a51296e1199284185b0a3ac9aa9891.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gambar_pipa/pipa x.png"
-dest_files=["res://.godot/imported/pipa x.png-1f3767ee6b2b651827dd7af4857ace7b.ctex"]
+source_file="res://asset_gambar/gambar_pipa/pipa lurus.png"
+dest_files=["res://.godot/imported/pipa lurus.png-46a51296e1199284185b0a3ac9aa9891.ctex"]
 
 [params]
 

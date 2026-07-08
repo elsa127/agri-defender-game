@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpbf3bdrfjaid"
-path="res://.godot/imported/pipa l.png-44feb7443e2585cbfe0f7a22ecc950e3.ctex"
+uid="uid://dpux83jo21eob"
+path="res://.godot/imported/soil.png-fc0691054f75adfe5e2ee3ada5bc0770.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gambar_pipa/pipa l.png"
-dest_files=["res://.godot/imported/pipa l.png-44feb7443e2585cbfe0f7a22ecc950e3.ctex"]
+source_file="res://asset_gambar/gambar_pipa/soil.png"
+dest_files=["res://.godot/imported/soil.png-fc0691054f75adfe5e2ee3ada5bc0770.ctex"]
 
 [params]
 
