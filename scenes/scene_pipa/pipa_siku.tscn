@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bdy604xyu3s14"]
+
+[ext_resource type="Texture2D" uid="uid://cpbf3bdrfjaid" path="res://asset_gambar/gambar_pipa/pipa l.png" id="1_ivapw"]
+[ext_resource type="Script" uid="uid://5pao7d7swkc7" path="res://PipaSiku.gd" id="2_1v3vt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
+size = Vector2(80, 79)
+
+[node name="Node2D" type="Node2D" unique_id=507461858]
+
+[node name="pipa_siku" type="Sprite2D" parent="." unique_id=1884805854]
+position = Vector2(239, 137)
+texture = ExtResource("1_ivapw")
+script = ExtResource("2_1v3vt")
+
+[node name="Area2D" type="Area2D" parent="pipa_siku" unique_id=622530448]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pipa_siku/Area2D" unique_id=2142279135]
+position = Vector2(4, -10.5)
+shape = SubResource("RectangleShape2D_7n77a")
