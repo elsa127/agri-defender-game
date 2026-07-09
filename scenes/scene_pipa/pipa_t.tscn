@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dd4i2r8p5l7ia"]
+
+[ext_resource type="Script" uid="uid://f14e4ivcecj7" path="res://scenes/scene_pipa/pipa_t.gd" id="1_m5v78"]
+[ext_resource type="Texture2D" uid="uid://dofnadnei6x0e" path="res://asset_gambar/gambar_pipa/pipa t.png" id="2_5o5px"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xepy2"]
+size = Vector2(75, 76)
+
+[node name="Node2D" type="Node2D" unique_id=212703674]
+position = Vector2(351, 390)
+script = ExtResource("1_m5v78")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=690836390]
+texture_filter = 1
+position = Vector2(0, 1)
+texture = ExtResource("2_5o5px")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=110521779]
+position = Vector2(0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=625405283]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_xepy2")
