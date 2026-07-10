@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://wldcvelcg16y"]
+
+[ext_resource type="PackedScene" uid="uid://d3qesnsplwbsw" path="res://scenes/scene_pipa/pipa lurus.tscn" id="1_4xt6j"]
+[ext_resource type="Texture2D" uid="uid://cgk3iw088mgej" path="res://asset_gambar/gambar_pipa/pipa siku.png" id="2_6qcgb"]
+
+[node name="Node2D" unique_id=507461858 instance=ExtResource("1_4xt6j")]
+
+[node name="Sprite2D" parent="." index="0" unique_id=1096379759]
+texture = ExtResource("2_6qcgb")

@@ -1,9 +1,8 @@
 [gd_scene format=3 uid="uid://00p7ato66b6f"]
 
 [ext_resource type="PackedScene" uid="uid://bdy604xyu3s14" path="res://scenes/scene_pipa/pipa_siku.tscn" id="1_mxcta"]
-[ext_resource type="Texture2D" uid="uid://de3h78yo4p7af" path="res://asset_gambar/gambar_pipa/pipa lurus.png" id="2_dcc4y"]
 
 [node name="Node2D" unique_id=507461858 instance=ExtResource("1_mxcta")]
 
-[node name="pipa_siku" parent="." index="0" unique_id=1884805854]
-texture = ExtResource("2_dcc4y")
+[node name="CollisionShape2D" parent="Sprite2D/Area2D" parent_id_path=PackedInt32Array(1272062308) index="0" unique_id=539962599]
+position = Vector2(5.094734, -9)

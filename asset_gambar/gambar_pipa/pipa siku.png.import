@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpbf3bdrfjaid"
-path="res://.godot/imported/pipa l.png-4a0f283c70151a3f6f22c3ad6a348e3a.ctex"
+uid="uid://cgk3iw088mgej"
+path="res://.godot/imported/pipa siku.png-a058cbe6541445a946279f038d326848.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset_gambar/gambar_pipa/pipa l.png"
-dest_files=["res://.godot/imported/pipa l.png-4a0f283c70151a3f6f22c3ad6a348e3a.ctex"]
+source_file="res://asset_gambar/gambar_pipa/pipa siku.png"
+dest_files=["res://.godot/imported/pipa siku.png-a058cbe6541445a946279f038d326848.ctex"]
 
 [params]
 

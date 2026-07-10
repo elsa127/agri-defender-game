@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="agri-defender-game"
-run/main_scene="uid://bdy604xyu3s14"
+run/main_scene="uid://d3qesnsplwbsw"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
