@@ -2,10 +2,15 @@
 
 [ext_resource type="Texture2D" uid="uid://5ukjb4tecov6" path="res://asset_gambar/background/bg_main.png" id="1_1xumu"]
 [ext_resource type="Script" uid="uid://c2w5dpr2g330q" path="res://scenes/GamePlay/GamePlay.gd" id="1_axmop"]
+[ext_resource type="Texture2D" uid="uid://cj2op5qkqo4mj" path="res://asset_gambar/gambar_board/board_lv_2.png" id="3_fvsw3"]
 [ext_resource type="Texture2D" uid="uid://dddsbmqxunt2p" path="res://asset_gambar/gambar_board/board_lv_1.png" id="3_ikud1"]
+[ext_resource type="Texture2D" uid="uid://3m80hykrpucd" path="res://asset_gambar/gambar_board/board_lv_3.png" id="4_espvy"]
 
 [node name="GamePlay" type="Node2D" unique_id=1845933922]
 script = ExtResource("1_axmop")
+gambar_level_1 = ExtResource("3_ikud1")
+gambar_level_2 = ExtResource("3_fvsw3")
+gambar_level_3 = ExtResource("4_espvy")
 
 [node name="BgMain" type="Sprite2D" parent="." unique_id=1666724489]
 position = Vector2(330, 517)
