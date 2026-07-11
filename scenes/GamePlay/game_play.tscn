@@ -5,6 +5,11 @@
 [ext_resource type="Texture2D" uid="uid://cj2op5qkqo4mj" path="res://asset_gambar/gambar_board/board_lv_2.png" id="3_fvsw3"]
 [ext_resource type="Texture2D" uid="uid://dddsbmqxunt2p" path="res://asset_gambar/gambar_board/board_lv_1.png" id="3_ikud1"]
 [ext_resource type="Texture2D" uid="uid://3m80hykrpucd" path="res://asset_gambar/gambar_board/board_lv_3.png" id="4_espvy"]
+[ext_resource type="Texture2D" uid="uid://bvj5n6yw1pfn1" path="res://asset_gambar/gambar_button/button_musik_hidup.png" id="6_cj1m4"]
+[ext_resource type="Texture2D" uid="uid://dpas6tv05sis4" path="res://asset_gambar/gambar_button/button_riset.png" id="7_dlimn"]
+[ext_resource type="Texture2D" uid="uid://brldxrw70e2uf" path="res://asset_gambar/gambar_button/butto_back.png" id="8_dfb4y"]
+[ext_resource type="Texture2D" uid="uid://drwq6ndbk1ubv" path="res://asset_gambar/gambar_board/Poin_game.png" id="9_ohli0"]
+[ext_resource type="Texture2D" uid="uid://cs1ow7g1ma7sm" path="res://asset_gambar/gambar_board/board_selamat (1).png" id="10_6uuxa"]
 
 [node name="GamePlay" type="Node2D" unique_id=1845933922]
 script = ExtResource("1_axmop")
@@ -21,3 +26,56 @@ position = Vector2(329, 110)
 texture = ExtResource("3_ikud1")
 
 [node name="PipaGird" type="Node2D" parent="." unique_id=2145890552]
+
+[node name="InterfaceUI" type="Control" parent="." unique_id=193802596]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BtnMusik" type="TextureButton" parent="InterfaceUI" unique_id=494262827]
+layout_mode = 0
+offset_left = 468.0
+offset_top = 230.0
+offset_right = 544.0
+offset_bottom = 300.0
+texture_normal = ExtResource("6_cj1m4")
+
+[node name="BtnReset" type="TextureButton" parent="InterfaceUI" unique_id=2138526220]
+layout_mode = 0
+offset_left = 478.0
+offset_top = 163.0
+offset_right = 526.0
+offset_bottom = 222.0
+texture_normal = ExtResource("7_dlimn")
+
+[node name="BtnKembali" type="TextureButton" parent="InterfaceUI" unique_id=1338026859]
+layout_mode = 0
+offset_left = 145.0
+offset_top = 82.0
+offset_right = 200.0
+offset_bottom = 152.0
+texture_normal = ExtResource("8_dfb4y")
+
+[node name="PnlKoin" type="TextureRect" parent="InterfaceUI" unique_id=804316896]
+layout_mode = 0
+offset_left = 449.0
+offset_top = 85.0
+offset_right = 543.0
+offset_bottom = 156.0
+texture = ExtResource("9_ohli0")
+
+[node name="TxtKoin" type="Label" parent="InterfaceUI/PnlKoin" unique_id=1756796870]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 39.0
+offset_right = 72.0
+offset_bottom = 62.0
+text = "0/120"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1870858558]
+visible = false
+position = Vector2(332, 561)
+texture = ExtResource("10_6uuxa")
+
+[connection signal="pressed" from="InterfaceUI/BtnMusik" to="." method="_on_btn_musik_pressed"]
