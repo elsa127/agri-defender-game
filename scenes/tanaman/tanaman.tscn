@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://ci5wikhdw50nk"]
+
+[ext_resource type="Script" uid="uid://debvdmog8t8s5" path="res://scenes/tanaman/tanaman.gd" id="1_dlhj0"]
+[ext_resource type="Texture2D" uid="uid://ddysldbt21cqc" path="res://asset_gambar/gambar_tanaman/padi_mentah.png" id="2_rnwpf"]
+[ext_resource type="Texture2D" uid="uid://big4d13h82o2p" path="res://asset_gambar/gambar_tanaman/padi_matang.png" id="3_3fxeh"]
+[ext_resource type="Texture2D" uid="uid://cl86vre0n8q5w" path="res://asset_gambar/gambar_tanaman/tomat_metah.png" id="4_ncelt"]
+[ext_resource type="Texture2D" uid="uid://b01oyoan50st3" path="res://asset_gambar/gambar_tanaman/tomat_matang.png" id="5_d5cjv"]
+[ext_resource type="Texture2D" uid="uid://dohitvqoisw2q" path="res://asset_gambar/gambar_tanaman/jagung_mentah.png" id="6_tkg58"]
+[ext_resource type="Texture2D" uid="uid://c0vc7da6xq7fr" path="res://asset_gambar/gambar_tanaman/jagung_matang.png" id="7_i2tm8"]
+
+[node name="tanaman" type="Node2D" unique_id=1949434057]
+script = ExtResource("1_dlhj0")
+
+[node name="PadiMentah" type="Sprite2D" parent="." unique_id=1672996595]
+texture = ExtResource("2_rnwpf")
+
+[node name="PadiMatang" type="Sprite2D" parent="." unique_id=444519829]
+texture = ExtResource("3_3fxeh")
+
+[node name="TomatMentah" type="Sprite2D" parent="." unique_id=118126872]
+texture = ExtResource("4_ncelt")
+
+[node name="TomatMatang" type="Sprite2D" parent="." unique_id=181899068]
+texture = ExtResource("5_d5cjv")
+
+[node name="JagungMentah" type="Sprite2D" parent="." unique_id=354975010]
+texture = ExtResource("6_tkg58")
+
+[node name="JagungMatang" type="Sprite2D" parent="." unique_id=775332493]
+texture = ExtResource("7_i2tm8")

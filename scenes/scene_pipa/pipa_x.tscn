@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://xxovqlmu2kgn" path="res://asset_gambar/gambar_pipa/pipa x.png" id="2_3tin0"]
 
 [node name="Node2D" unique_id=212703674 instance=ExtResource("1_0stew")]
+position = Vector2(0, 0)
 
 [node name="Sprite2D" parent="." index="0" unique_id=690836390]
 texture = ExtResource("2_3tin0")

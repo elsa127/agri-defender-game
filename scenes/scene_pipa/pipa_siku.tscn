@@ -1,20 +1,9 @@
-[gd_scene format=3 uid="uid://bphgixmhn3lt8"]
+[gd_scene format=3 uid="uid://bdy604xyu3s14"]
 
 [ext_resource type="Texture2D" uid="uid://cgk3iw088mgej" path="res://asset_gambar/gambar_pipa/pipa siku.png" id="1_g3me1"]
+[ext_resource type="PackedScene" uid="uid://dd4i2r8p5l7ia" path="res://scenes/scene_pipa/pipa_t.tscn" id="1_ivapw"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
-size = Vector2(75, 78)
+[node name="Node2D" unique_id=212703674 instance=ExtResource("1_ivapw")]
 
-[node name="Node2D" type="Node2D" unique_id=507461858]
-position = Vector2(282, 190)
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1096379759]
-position = Vector2(6.5, -78)
-scale = Vector2(1.0795455, 1)
+[node name="Sprite2D" parent="." index="0" unique_id=690836390]
 texture = ExtResource("1_g3me1")
-
-[node name="Area2D" type="Area2D" parent="Sprite2D" unique_id=1272062308]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Area2D" unique_id=539962599]
-position = Vector2(4.1684184, -8)
-shape = SubResource("RectangleShape2D_7n77a")

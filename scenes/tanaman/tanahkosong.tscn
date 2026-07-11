@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cdjqmdmdgiu7v"]
+
+[ext_resource type="Texture2D" uid="uid://ntr6gpihydep" path="res://asset_gambar/gambar_tanaman/tanah_kosong.png" id="1_5imbl"]
+
+[node name="tanahkosong" type="Node2D" unique_id=1526516485]
+
+[node name="tanahkosong" type="Sprite2D" parent="." unique_id=1954689903]
+texture = ExtResource("1_5imbl")
