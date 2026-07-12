@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://cs1ow7g1ma7sm" path="res://asset_gambar/gambar_board/board_selamat (1).png" id="10_6uuxa"]
 
 [node name="GamePlay" type="Node2D" unique_id=1845933922]
+position = Vector2(-106, -54)
 script = ExtResource("1_axmop")
 gambar_level_1 = ExtResource("3_ikud1")
 gambar_level_2 = ExtResource("3_fvsw3")
@@ -25,13 +26,14 @@ texture = ExtResource("1_1xumu")
 position = Vector2(329, 110)
 texture = ExtResource("3_ikud1")
 
-[node name="PipaGird" type="Node2D" parent="." unique_id=2145890552]
+[node name="PipeGrid" type="Node2D" parent="." unique_id=2145890552]
 
 [node name="InterfaceUI" type="Control" parent="." unique_id=193802596]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
 
 [node name="BtnMusik" type="TextureButton" parent="InterfaceUI" unique_id=494262827]
 layout_mode = 0
@@ -40,6 +42,7 @@ offset_top = 230.0
 offset_right = 544.0
 offset_bottom = 300.0
 texture_normal = ExtResource("6_cj1m4")
+metadata/_edit_use_anchors_ = true
 
 [node name="BtnReset" type="TextureButton" parent="InterfaceUI" unique_id=2138526220]
 layout_mode = 0
@@ -48,6 +51,7 @@ offset_top = 163.0
 offset_right = 526.0
 offset_bottom = 222.0
 texture_normal = ExtResource("7_dlimn")
+metadata/_edit_use_anchors_ = true
 
 [node name="BtnKembali" type="TextureButton" parent="InterfaceUI" unique_id=1338026859]
 layout_mode = 0
@@ -56,6 +60,7 @@ offset_top = 82.0
 offset_right = 200.0
 offset_bottom = 152.0
 texture_normal = ExtResource("8_dfb4y")
+metadata/_edit_use_anchors_ = true
 
 [node name="PnlKoin" type="TextureRect" parent="InterfaceUI" unique_id=804316896]
 layout_mode = 0
@@ -64,6 +69,7 @@ offset_top = 85.0
 offset_right = 543.0
 offset_bottom = 156.0
 texture = ExtResource("9_ohli0")
+metadata/_edit_use_anchors_ = true
 
 [node name="TxtKoin" type="Label" parent="InterfaceUI/PnlKoin" unique_id=1756796870]
 layout_mode = 0
@@ -72,6 +78,7 @@ offset_top = 39.0
 offset_right = 72.0
 offset_bottom = 62.0
 text = "0/120"
+metadata/_edit_use_anchors_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1870858558]
 visible = false

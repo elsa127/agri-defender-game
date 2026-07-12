@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bb1c6suq3fq1m"]
+
+[ext_resource type="PackedScene" uid="uid://dd4i2r8p5l7ia" path="res://scenes/scene_pipa/pipa_t.tscn" id="1_kjgwy"]
+[ext_resource type="Texture2D" uid="uid://dpux83jo21eob" path="res://asset_gambar/gambar_pipa/soil.png" id="2_q7tvi"]
+
+[node name="Node2D" unique_id=212703674 instance=ExtResource("1_kjgwy")]
+
+[node name="Sprite2D" parent="." index="0" unique_id=690836390]
+position = Vector2(0, -5)
+texture = ExtResource("2_q7tvi")

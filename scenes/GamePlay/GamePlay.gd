@@ -1,6 +1,6 @@
 extends Node2D
 
-# Slot Export Visual untuk Gambar Board Level (Godot 4.x)
+# Slot Export Visual untuk Gambar Board Level di Inspector
 @export var gambar_level_1: Texture2D
 @export var gambar_level_2: Texture2D
 @export var gambar_level_3: Texture2D
@@ -9,6 +9,26 @@ extends Node2D
 @onready var gambar_musik_hidup = preload("res://asset_gambar/gambar_button/button_musik_hidup.png")
 @onready var gambar_musik_mati = preload("res://asset_gambar/gambar_button/button_musik_mati.png")
 
+# =================================================================
+# 1. DEKLARASI ASET SCENE KEPINGAN GRID
+# =================================================================
+const PIPA_LURUS = preload("res://scenes/scene_pipa/pipa_lurus.tscn")
+const PIPA_SIKU = preload("res://scenes/scene_pipa/pipa_siku.tscn")
+const PIPA_T = preload("res://scenes/scene_pipa/pipa_t.tscn")
+const PIPA_X = preload("res://scenes/scene_pipa/pipa_x.tscn")
+const VALVE = preload("res://scenes/scene_pipa/solenoid_valve.tscn") # Hulu air (soil.png)
+const SOIL = preload("res://scenes/tanaman/tanahkosong.tscn")       # Tanah kosong statis
+const TANAMAN = preload("res://scenes/tanaman/tanaman.tscn")         # Induk tanaman pintar
+
+# Referensi untuk mencatat objek tanaman yang sedang aktif di layar
+var objek_tanaman_aktif: Node2D = null
+
+# =================================================================
+# CONFIGURATION GRID (Ramping & Geser Kiri untuk Ruang UI Kanan)
+# =================================================================
+var grid_pixel_size = 135 # Jarak antar kotak dikecilkan agar rapat dan hemat tempat
+var grid_offset = Vector2(190, 440) # Digeser ke kiri (110) untuk space barometer di kanan
+
 const DATA_LEVEL = {
 	1: {
 		"nama_tanaman": "Padi",
@@ -16,7 +36,14 @@ const DATA_LEVEL = {
 		"target_suhu": 30,
 		"target_kelembapan": 60,
 		"suhu_awal": 45,
-		"kelembapan_awal": 20
+		"kelembapan_awal": 20,
+		"pipes": [
+			# Susunan Map Level 1 (2x2)
+			{"x": 0, "y": 0, "jenis": "VALVE", "rotasi": 0},    # Pintu Air Start (Kiri Atas)
+			{"x": 1, "y": 0, "jenis": "SIKU", "rotasi": 90},    # Pipa Belok (Kanan Atas)
+			{"x": 0, "y": 1, "jenis": "SOIL", "rotasi": 0},     # Tanah Kosong (Kiri Bawah)
+			{"x": 1, "y": 1, "jenis": "TANAMAN", "rotasi": 0}   # Padi Mentah (Kanan Bawah)
+		]
 	},
 	2: {
 		"nama_tanaman": "Tomat Ceri",
@@ -24,7 +51,19 @@ const DATA_LEVEL = {
 		"target_suhu": 24,
 		"target_kelembapan": 75,
 		"suhu_awal": 15,
-		"kelembapan_awal": 90
+		"kelembapan_awal": 90,
+		"pipes": [
+			# Susunan Map Level 2 (3x3)
+			{"x": 0, "y": 0, "jenis": "VALVE", "rotasi": 0},
+			{"x": 1, "y": 0, "jenis": "LURUS", "rotasi": 90},
+			{"x": 2, "y": 0, "jenis": "SIKU", "rotasi": 90},
+			{"x": 0, "y": 1, "jenis": "LURUS", "rotasi": 0},
+			{"x": 1, "y": 1, "jenis": "SOIL", "rotasi": 0},
+			{"x": 2, "y": 1, "jenis": "LURUS", "rotasi": 0},
+			{"x": 0, "y": 2, "jenis": "SIKU", "rotasi": 270},
+			{"x": 1, "y": 2, "jenis": "LURUS", "rotasi": 90},
+			{"x": 2, "y": 2, "jenis": "TANAMAN", "rotasi": 0}
+		]
 	},
 	3: {
 		"nama_tanaman": "Jagung",
@@ -32,14 +71,27 @@ const DATA_LEVEL = {
 		"target_suhu": 28,
 		"target_kelembapan": 55,
 		"suhu_awal": 50,
-		"kelembapan_awal": 10
+		"kelembapan_awal": 10,
+		"pipes": [
+			# Susunan Map Level 3 (3x3)
+			{"x": 0, "y": 0, "jenis": "VALVE", "rotasi": 90},
+			{"x": 1, "y": 0, "jenis": "SIKU", "rotasi": 0},
+			{"x": 2, "y": 0, "jenis": "SOIL", "rotasi": 0},
+			{"x": 0, "y": 1, "jenis": "SIKU", "rotasi": 90},
+			{"x": 1, "y": 1, "jenis": "LURUS", "rotasi": 0},
+			{"x": 2, "y": 1, "jenis": "SIKU", "rotasi": 180},
+			{"x": 0, "y": 2, "jenis": "SOIL", "rotasi": 0},
+			{"x": 1, "y": 2, "jenis": "SIKU", "rotasi": 270},
+			{"x": 2, "y": 2, "jenis": "TANAMAN", "rotasi": 0}
+		]
 	}
 }
 
-# Manajemen Level & Status
+# Manajemen Level & Status Game
 var level_sekarang: int = 1
 var suhu_saat_ini: int = 0
 var kelembapan_saat_ini: int = 0
+var level_selesai: bool = false
 
 # Sistem Koin
 var koin_sekarang: int = 0
@@ -49,10 +101,8 @@ var target_koin: int = 120
 var musik_aktif: bool = true
 
 # =================================================================
-# SAKLAR LOGIKA SIMULASI (TUGAS LANGKAH 5)
+# SAKLAR LOGIKA SIMULASI (UNTUK TESTING TUGAS LANGKAH 5)
 # =================================================================
-# Karena langkah 3 & 4 belum selesai dikerjakan temanmu, ubah variabel 
-# di bawah ini menjadi true/false secara manual untuk mengetes sistemmu!
 var simulasi_pipa_tersambung: bool = false
 var simulasi_suhu_sudah_pas: bool = false
 var simulasi_kelembapan_sudah_pas: bool = false
@@ -67,8 +117,18 @@ func muat_level(nomor_level: int) -> void:
 		return
 		
 	var data = DATA_LEVEL[nomor_level]
+	level_selesai = false
+	objek_tanaman_aktif = null
 	
-	# Mengganti gambar board berdasarkan slot export di Inspector
+	# Sembunyikan papan selamat jika ada
+	if has_node("PapanSelamat"):
+		$PapanSelamat.visible = false
+		
+	# 1. BERSIHKAN PENGHUNI GRID SEBELUMNYA
+	for child in $PipeGrid.get_children():
+		child.queue_free()
+	
+	# 2. GANTI GAMBAR BOARD UTAMA DI ATAS
 	if nomor_level == 1 and gambar_level_1:
 		$BoardLv1.texture = gambar_level_1
 	elif nomor_level == 2 and gambar_level_2:
@@ -79,11 +139,55 @@ func muat_level(nomor_level: int) -> void:
 	suhu_saat_ini = data["suhu_awal"]
 	kelembapan_saat_ini = data["kelembapan_awal"]
 	
-	# Update tampilan awal koin saat level dimuat
+	# Update Tampilan Skor Koin UI
 	$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang) + "/" + str(target_koin)
 	
+	# 3. GENERATOR OBJEK GRID OTOMATIS
+	if data.has("pipes"):
+		for pipe_info in data["pipes"]:
+			var objek_baru = null
+			
+			match pipe_info["jenis"]:
+				"LURUS":
+					objek_baru = PIPA_LURUS.instantiate()
+				"SIKU":
+					objek_baru = PIPA_SIKU.instantiate()
+				"VALVE":
+					objek_baru = VALVE.instantiate()
+				"SOIL":
+					objek_baru = SOIL.instantiate()
+				"TANAMAN":
+					objek_baru = TANAMAN.instantiate()
+					objek_tanaman_aktif = objek_baru 
+					
+			if objek_baru:
+				# Kalkulasi posisi koordinat grid ke koordinat pixel layar
+				var posisi_pixel_x = (pipe_info["x"] * grid_pixel_size) + grid_offset.x
+				var posisi_pixel_y = (pipe_info["y"] * grid_pixel_size) + grid_offset.y
+				
+				objek_baru.position = Vector2(posisi_pixel_x, posisi_pixel_y)
+				
+				# AUTO-SCALE: Dikecilkan secara proporsional agar hemat ruang
+				objek_baru.scale = Vector2(1.9, 1.9)
+				
+				# Set jenis variasi visual tanaman (Padi/Tomat/Jagung)
+				if pipe_info["jenis"] == "TANAMAN" and objek_baru.has_method("set_jenis_tanaman"):
+					objek_baru.set_jenis_tanaman(data["nama_tanaman"])
+				
+				# Terapkan rotasi awal dari data level (Khusus tipe pipa & valve)
+				if "rotation_degrees" in objek_baru and pipe_info["jenis"] in ["LURUS", "SIKU", "VALVE"]:
+					objek_baru.rotation_degrees = pipe_info["rotasi"]
+				
+				# KUNCI MUTLAK: Jika jenis kepingan adalah VALVE, matikan area deteksi kliknya
+				if pipe_info["jenis"] == "VALVE":
+					if objek_baru.has_node("Area2D"):
+						objek_baru.get_node("Area2D").input_pickable = false
+					
+				$PipeGrid.add_child(objek_baru)
+	
 	print("====================================")
-	print("BERHASIL MASUK: LEVEL ", nomor_level)
+	print("BERHASIL GENERATE GRID: LEVEL ", nomor_level)
+	print("Ukuran Grid: ", data["ukuran_grid"])
 	print("Tanaman Level Ini: ", data["nama_tanaman"])
 	print("====================================")
 
@@ -92,9 +196,7 @@ func muat_level(nomor_level: int) -> void:
 # LOGIKA TOMBOL MUSIK
 # =================================================================
 func _on_btn_musik_pressed() -> void:
-	# Balikkan status saklar (On jadi Off, Off jadi On)
 	musik_aktif = not musik_aktif
-	
 	if musik_aktif:
 		$InterfaceUI/BtnMusik.texture_normal = gambar_musik_hidup
 		print("Musik Menyala")
@@ -104,10 +206,12 @@ func _on_btn_musik_pressed() -> void:
 
 
 # =================================================================
-# LOGIKA CEK KEMENANGAN & KOIN (LANGKAH 5)
+# LOGIKA CEK KEMENANGAN & KOIN
 # =================================================================
 func cek_kondisi_menang() -> void:
-	# Memeriksa 3 syarat kemenangan (sementara menggunakan saklar simulasi)
+	if level_selesai: 
+		return
+		
 	if simulasi_pipa_tersambung and simulasi_suhu_sudah_pas and simulasi_kelembapan_sudah_pas:
 		pemicu_menang_level()
 	else:
@@ -115,23 +219,36 @@ func cek_kondisi_menang() -> void:
 
 
 func pemicu_menang_level() -> void:
+	level_selesai = true
 	print("Selamat! Kamu Menang!")
-	$PapanSelamat.visible = true # Memunculkan papan kemenangan di layar
 	
-	# Setiap kali menang level, hadiah koin bertambah 40 poin
+	# Pemicu agar visual tanaman otomatis berubah menjadi matang
+	if objek_tanaman_aktif and objek_tanaman_aktif.has_method("ubah_ke_matang"):
+		objek_tanaman_aktif.ubah_ke_matang()
+		
+	if has_node("PapanSelamat"):
+		$PapanSelamat.visible = true 
+	
 	koin_sekarang += 40
-	
-	# Batasi agar koin tidak melebihi target maksimal game
 	if koin_sekarang > target_koin:
 		koin_sekarang = target_koin
 		
-	# Perbarui teks koin di layar secara otomatis
 	$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang) + "/" + str(target_koin)
-	print("Koin bertambah! Koin saat ini: ", koin_sekarang)
 
 
-# Fungsi mendengarkan tombol keyboard (Untuk tes mandiri tanpa slider & pipa)
+# =================================================================
+# FUNGSI TESTING SIMULATOR KEYBOARD
+# =================================================================
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept"): # Tombol SPASI
+	# Tekan SPASI untuk mengecek kondisi kemenangan saat ini
+	if event.is_action_pressed("ui_accept"): 
 		print("--- MENCOBA TES CEK KEMENANGAN ---")
+		cek_kondisi_menang()
+		
+	# Tekan tombol TAB (ui_focus_next) untuk simulasi paksa menang (Auto-Win)
+	if event.is_action_pressed("ui_focus_next"):
+		print("--- SIMULASI AUTO-WIN DIAKTIFKAN ---")
+		simulasi_pipa_tersambung = true
+		simulasi_suhu_sudah_pas = true
+		simulasi_kelembapan_sudah_pas = true
 		cek_kondisi_menang()
