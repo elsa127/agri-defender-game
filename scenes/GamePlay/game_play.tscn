@@ -10,6 +10,18 @@
 [ext_resource type="Texture2D" uid="uid://brldxrw70e2uf" path="res://asset_gambar/gambar_button/butto_back.png" id="8_dfb4y"]
 [ext_resource type="Texture2D" uid="uid://drwq6ndbk1ubv" path="res://asset_gambar/gambar_board/Poin_game.png" id="9_ohli0"]
 [ext_resource type="Texture2D" uid="uid://cs1ow7g1ma7sm" path="res://asset_gambar/gambar_board/board_selamat (1).png" id="10_6uuxa"]
+[ext_resource type="Texture2D" uid="uid://b2kxxtk0sh88e" path="res://asset_gambar/gambar_board/panel_suhu.png" id="11_6uuxa"]
+[ext_resource type="FontFile" uid="uid://d4ecrtf4e6pvo" path="res://font/Baloo-Regular.ttf" id="12_n58gl"]
+[ext_resource type="Texture2D" uid="uid://d2y4g8tbhhfkr" path="res://asset_gambar/gambar_board/suhu_control.png" id="12_pmesn"]
+[ext_resource type="Texture2D" uid="uid://v0ahwup0ltaj" path="res://asset_gambar/gambar_board/kelembapan.png" id="13_n58gl"]
+[ext_resource type="Texture2D" uid="uid://duspkj6jcbc62" path="res://asset_gambar/gambar_board/panel_kelembapan.png" id="14_jt2ue"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7gmu8"]
+load_path = "res://.godot/imported/suhu_control.png-eb90f7f69bdb943340812e115fb37ad6.ctex"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7n77a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3ydn5"]
 
 [node name="GamePlay" type="Node2D" unique_id=1845933922]
 position = Vector2(-106, -54)
@@ -23,7 +35,7 @@ position = Vector2(330, 517)
 texture = ExtResource("1_1xumu")
 
 [node name="BoardLv1" type="Sprite2D" parent="." unique_id=1617134507]
-position = Vector2(329, 110)
+position = Vector2(331, 107)
 texture = ExtResource("3_ikud1")
 
 [node name="PipeGrid" type="Node2D" parent="." unique_id=2145890552]
@@ -33,6 +45,30 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Termometer" type="TextureRect" parent="InterfaceUI" unique_id=1773817453]
+layout_mode = 0
+offset_left = 439.0
+offset_top = 373.0
+offset_right = 512.0
+offset_bottom = 667.0
+texture = ExtResource("11_6uuxa")
+
+[node name="SliderSuhu" type="VSlider" parent="InterfaceUI/Termometer" unique_id=442605936]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.5680272
+offset_left = 13.0
+offset_top = 270.0
+offset_right = 66.0
+offset_bottom = 278.0
+theme_override_icons/grabber = SubResource("CompressedTexture2D_7gmu8")
+theme_override_icons/grabber_highlight = ExtResource("12_pmesn")
+theme_override_styles/slider = SubResource("StyleBoxEmpty_7n77a")
+min_value = 10.0
+max_value = 60.0
+value = 10.0
 metadata/_edit_use_anchors_ = true
 
 [node name="BtnMusik" type="TextureButton" parent="InterfaceUI" unique_id=494262827]
@@ -72,15 +108,50 @@ texture = ExtResource("9_ohli0")
 metadata/_edit_use_anchors_ = true
 
 [node name="TxtKoin" type="Label" parent="InterfaceUI/PnlKoin" unique_id=1756796870]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.021276595
+anchor_top = -0.04225352
+anchor_right = 0.07446808
+anchor_bottom = 0.112676054
 offset_left = 29.0
 offset_top = 39.0
 offset_right = 72.0
 offset_bottom = 62.0
+theme_override_colors/font_color = Color(0.33, 0.2112, 0.132, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_fonts/font = ExtResource("12_n58gl")
+theme_override_font_sizes/font_size = 21
 text = "0/120"
 metadata/_edit_use_anchors_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1870858558]
+[node name="Kelembapan" type="TextureRect" parent="InterfaceUI" unique_id=75780151]
+layout_mode = 0
+offset_left = 209.0
+offset_top = 280.0
+offset_right = 392.0
+offset_bottom = 350.0
+texture = ExtResource("13_n58gl")
+
+[node name="SliderKelembapan" type="HSlider" parent="InterfaceUI/Kelembapan" unique_id=258575002]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 38.0
+offset_right = 139.0
+offset_bottom = 58.0
+theme_override_icons/grabber = ExtResource("14_jt2ue")
+theme_override_icons/grabber_highlight = ExtResource("14_jt2ue")
+theme_override_styles/slider = SubResource("StyleBoxEmpty_3ydn5")
+
+[node name="LblAngkaKelembapan" type="Label" parent="InterfaceUI/Kelembapan/SliderKelembapan" unique_id=352356243]
+layout_mode = 0
+offset_left = 26.0
+offset_top = -3.0
+offset_right = 66.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(0.29, 0.14558001, 0.049300004, 1)
+
+[node name="PapanSelamat" type="Sprite2D" parent="." unique_id=1870858558]
 visible = false
 position = Vector2(332, 561)
 texture = ExtResource("10_6uuxa")

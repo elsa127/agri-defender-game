@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dd4i2r8p5l7ia" path="res://scenes/scene_pipa/pipa_t.tscn" id="1_ivapw"]
 
 [node name="Node2D" unique_id=212703674 instance=ExtResource("1_ivapw")]
+position = Vector2(137, 86)
 
 [node name="Sprite2D" parent="." index="0" unique_id=690836390]
 texture = ExtResource("1_g3me1")

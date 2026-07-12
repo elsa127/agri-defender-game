@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cycu40df1m3l3"]
+
+[ext_resource type="PackedScene" path="res://scenes/scene_pipa/pipa lurus.tscn" id="1_4xt6j"]
+
+[node name="Node2D" unique_id=507461858 instance=ExtResource("1_4xt6j")]

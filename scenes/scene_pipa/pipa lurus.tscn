@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cswav6b71v4e2"]
+
+[ext_resource type="Texture2D" uid="uid://de3h78yo4p7af" path="res://asset_gambar/gambar_pipa/pipa lurus.png" id="2_3usao"]
+[ext_resource type="Script" uid="uid://oqxg45tij8al" path="res://scenes/scene_pipa/pipa lurus.gd" id="2_s5dop"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
+size = Vector2(75, 76)
+
+[node name="Sprite2D" type="Sprite2D" unique_id=865124823]
+position = Vector2(81, 66)
+texture = ExtResource("2_3usao")
+script = ExtResource("2_s5dop")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1870247002]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=685026675]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_7n77a")

@@ -107,6 +107,12 @@ var simulasi_pipa_tersambung: bool = false
 var simulasi_suhu_sudah_pas: bool = false
 var simulasi_kelembapan_sudah_pas: bool = false
 
+# =================================================================
+# TAMBAHAN: VARIABEL LOGIKA SIMULASI DEBIT AIR & KELEMBAPAN 
+# =================================================================
+var suhu_sekarang: int = 0
+var debit_air_terpilih: String = "MATI"
+
 
 func _ready() -> void:
 	muat_level(level_sekarang)
@@ -138,6 +144,22 @@ func muat_level(nomor_level: int) -> void:
 	
 	suhu_saat_ini = data["suhu_awal"]
 	kelembapan_saat_ini = data["kelembapan_awal"]
+	
+	# TAMBAHAN INITIALIZATION SAAT LEVEL DIMUAT
+	suhu_sekarang = data["suhu_awal"]
+	debit_air_terpilih = "MATI"
+	simulasi_suhu_sudah_pas = (suhu_sekarang == data["target_suhu"])
+	simulasi_kelembapan_sudah_pas = (kelembapan_saat_ini == data["target_kelembapan"])
+	
+	if has_node("SliderSuhu"):
+		$SliderSuhu.value = suhu_sekarang
+		if has_node("SliderSuhu/LblAngkaSuhu"):
+			$SliderSuhu/LblAngkaSuhu.text = str(suhu_sekarang) + "°C"
+			
+	if has_node("Kelembapan/SliderKelembapan"):
+		$Kelembapan/SliderKelembapan.value = kelembapan_saat_ini
+		if has_node("Kelembapan/SliderKelembapan/LblAngkaKelembapan"):
+			$Kelembapan/SliderKelembapan/LblAngkaKelembapan.text = str(kelembapan_saat_ini) + "%"
 	
 	# Update Tampilan Skor Koin UI
 	$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang) + "/" + str(target_koin)
@@ -237,6 +259,53 @@ func pemicu_menang_level() -> void:
 
 
 # =================================================================
+# TAMBAHAN: FUNGSI RESPON GESER SLIDER SUHU & UPDATE OTOMATIS KELEMBAPAN
+# =================================================================
+func _on_slider_suhu_value_changed(value: float) -> void:
+	if level_selesai: return
+	suhu_sekarang = int(value)
+	suhu_saat_ini = int(value)
+	
+	if has_node("SliderSuhu/LblAngkaSuhu"):
+		$SliderSuhu/LblAngkaSuhu.text = str(suhu_sekarang) + "°C"
+	
+	simulasi_suhu_sudah_pas = (suhu_sekarang == DATA_LEVEL[level_sekarang]["target_suhu"])
+	cek_kondisi_menang()
+
+func set_debit_air_simulasi(jenis_debit: String) -> void:
+	debit_air_terpilih = jenis_debit
+	var data = DATA_LEVEL[level_sekarang]
+	
+	match debit_air_terpilih:
+		"MATI":
+			kelembapan_saat_ini = data["kelembapan_awal"]
+		"KECIL":
+			kelembapan_saat_ini = 40
+		"SEDANG":
+			kelembapan_saat_ini = data["target_kelembapan"] # Target level 1 (60)
+		"BESAR":
+			kelembapan_saat_ini = 95
+			
+	# MENYESUAIKAN PATH BARU: Karena sekarang sudah di dalam InterfaceUI
+	var slider_kelem = get_node_or_null("InterfaceUI/Kelembapan/SliderKelembapan")
+	
+	if slider_kelem:
+		# Set nilai slider secara paksa
+		slider_kelem.value = kelembapan_saat_ini
+		print("BERHASIL: Slider Kelembapan bergerak ke -> ", kelembapan_saat_ini)
+		
+		# Menembak LblAngkaKelembapan yang sudah kamu buat
+		var label_angka = slider_kelem.get_node_or_null("LblAngkaKelembapan")
+		if label_angka:
+			label_angka.text = str(kelembapan_saat_ini) + "%"
+	else:
+		print("ERROR: Jalur Node salah, tidak ditemukan di InterfaceUI/Kelembapan/SliderKelembapan")
+			
+	simulasi_kelembapan_sudah_pas = (kelembapan_saat_ini == data["target_kelembapan"])
+	cek_kondisi_menang()
+
+
+# =================================================================
 # FUNGSI TESTING SIMULATOR KEYBOARD
 # =================================================================
 func _input(event: InputEvent) -> void:
@@ -252,3 +321,16 @@ func _input(event: InputEvent) -> void:
 		simulasi_suhu_sudah_pas = true
 		simulasi_kelembapan_sudah_pas = true
 		cek_kondisi_menang()
+		
+	# TAMBAHAN: TOMBOL TESTING DEBIT AIR (Gunakan Angka 1, 2, 3 di Keyboard untuk Demo)
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_1:
+			print("--- SIMULASI: DEBIT AIR KECIL (40%) ---")
+			set_debit_air_simulasi("KECIL")
+		elif event.keycode == KEY_2:
+			print("--- SIMULASI: DEBIT AIR SEDANG (TARGET IDEAL) ---")
+			simulasi_pipa_tersambung = true # Pura-pura pipa dialiri air sepenuhnya
+			set_debit_air_simulasi("SEDANG")
+		elif event.keycode == KEY_3:
+			print("--- SIMULASI: DEBIT AIR BESAR (95%) ---")
+			set_debit_air_simulasi("BESAR")
