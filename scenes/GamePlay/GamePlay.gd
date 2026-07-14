@@ -17,8 +17,8 @@ const PIPA_SIKU = preload("res://scenes/scene_pipa/pipa_siku.tscn")
 const PIPA_T = preload("res://scenes/scene_pipa/pipa_t.tscn")
 const PIPA_X = preload("res://scenes/scene_pipa/pipa_x.tscn")
 const VALVE = preload("res://scenes/scene_pipa/solenoid_valve.tscn") # Hulu air (soil.png)
-const SOIL = preload("res://scenes/tanaman/tanahkosong.tscn")       # Tanah kosong statis
-const TANAMAN = preload("res://scenes/tanaman/tanaman.tscn")         # Induk tanaman pintar
+const SOIL = preload("res://scenes/tanaman/tanahkosong.tscn")        # Tanah kosong statis
+const TANAMAN = preload("res://scenes/tanaman/tanaman.tscn")          # Induk tanaman pintar
 
 # Referensi untuk mencatat objek tanaman yang sedang aktif di layar
 var objek_tanaman_aktif: Node2D = null
@@ -151,15 +151,24 @@ func muat_level(nomor_level: int) -> void:
 	simulasi_suhu_sudah_pas = (suhu_sekarang == data["target_suhu"])
 	simulasi_kelembapan_sudah_pas = (kelembapan_saat_ini == data["target_kelembapan"])
 	
-	if has_node("SliderSuhu"):
-		$SliderSuhu.value = suhu_sekarang
-		if has_node("SliderSuhu/LblAngkaSuhu"):
-			$SliderSuhu/LblAngkaSuhu.text = str(suhu_sekarang) + "°C"
+	# --- PERBAIKAN NODE JALUR SUHU & TARGET SUHU (DIUBAH SESUAI SCENE TREE) ---
+	var node_slider_suhu = get_node_or_null("InterfaceUI/Termometer/SliderSuhu")
+	var node_label_target = get_node_or_null("InterfaceUI/Termometer/LblTargetSuhu")
+	
+	if node_slider_suhu:
+		node_slider_suhu.value = suhu_sekarang
+		var label_angka = node_slider_suhu.get_node_or_null("LblAngkaSuhu")
+		if label_angka:
+			label_angka.text = str(suhu_sekarang) + "°C"
 			
-	if has_node("Kelembapan/SliderKelembapan"):
-		$Kelembapan/SliderKelembapan.value = kelembapan_saat_ini
-		if has_node("Kelembapan/SliderKelembapan/LblAngkaKelembapan"):
-			$Kelembapan/SliderKelembapan/LblAngkaKelembapan.text = str(kelembapan_saat_ini) + "%"
+	if node_label_target:
+		node_label_target.text = str(data["target_suhu"]) + "°C"
+	# --- PERBAIKAN JALUR SELESAI ---
+			
+	if has_node("InterfaceUI/Kelembapan/SliderKelembapan"):
+		$"InterfaceUI/Kelembapan/SliderKelembapan".value = kelembapan_saat_ini
+		if has_node("InterfaceUI/Kelembapan/SliderKelembapan/LblAngkaKelembapan"):
+			$"InterfaceUI/Kelembapan/SliderKelembapan/LblAngkaKelembapan".text = str(kelembapan_saat_ini) + "%"
 	
 	# Update Tampilan Skor Koin UI
 	$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang) + "/" + str(target_koin)
@@ -259,42 +268,75 @@ func pemicu_menang_level() -> void:
 
 
 # =================================================================
-# TAMBAHAN: FUNGSI RESPON GESER SLIDER SUHU & UPDATE OTOMATIS KELEMBAPAN
+# RESPON SAAT PEMAIN MENGGESER SLIDER KELEMABAPAN SECARA MANUAL
 # =================================================================
-func _on_slider_suhu_value_changed(value: float) -> void:
+func _on_slider_kelembapan_value_changed(value: float) -> void:
 	if level_selesai: return
-	suhu_sekarang = int(value)
-	suhu_saat_ini = int(value)
 	
-	if has_node("SliderSuhu/LblAngkaSuhu"):
-		$SliderSuhu/LblAngkaSuhu.text = str(suhu_sekarang) + "°C"
-	
-	simulasi_suhu_sudah_pas = (suhu_sekarang == DATA_LEVEL[level_sekarang]["target_suhu"])
-	cek_kondisi_menang()
-
-func set_debit_air_simulasi(jenis_debit: String) -> void:
-	debit_air_terpilih = jenis_debit
+	kelembapan_saat_ini = int(value)
 	var data = DATA_LEVEL[level_sekarang]
 	
-	match debit_air_terpilih:
-		"MATI":
-			kelembapan_saat_ini = data["kelembapan_awal"]
-		"KECIL":
-			kelembapan_saat_ini = 40
-		"SEDANG":
-			kelembapan_saat_ini = data["target_kelembapan"] # Target level 1 (60)
-		"BESAR":
-			kelembapan_saat_ini = 95
-			
-	# MENYESUAIKAN PATH BARU: Karena sekarang sudah di dalam InterfaceUI
+	# 1. Update teks persen kelembapan di dalam kotak putih atas
 	var slider_kelem = get_node_or_null("InterfaceUI/Kelembapan/SliderKelembapan")
-	
 	if slider_kelem:
-		# Set nilai slider secara paksa
-		slider_kelem.value = kelembapan_saat_ini
+		var label_angka = slider_kelem.get_node_or_null("LblAngkaKelembapan")
+		if label_angka:
+			label_angka.text = str(kelembapan_saat_ini) + "%"
+			
+	# 2. LOGIKA BARU: Kelembapan di Hijau (Rendah) = Suhu di Atas/Merah (Tinggi)
+	#                Kelembapan di Merah (Tinggi) = Suhu di Bawah/Biru (Rendah)
+	var rentang_kelembapan = 100.0 # Rentang maksimal slider kelembapan (0 - 100)
+	
+	if rentang_kelembapan != 0:
+		# Hitung rasio kebalikan (inverse ratio)
+		var rasio_terbalik = 1.0 - (float(kelembapan_saat_ini) / rentang_kelembapan)
+		
+		# Batas bawah termometer (10°C) dan batas atas termometer (60°C) berdasarkan gambar UI
+		var suhu_min = 10
+		var suhu_max = 60
+		
+		# Kalkulasi nilai suhu saat ini berdasarkan rasio terbalik
+		suhu_saat_ini = int(suhu_min + ((suhu_max - suhu_min) * rasio_terbalik))
+	else:
+		suhu_saat_ini = data["suhu_awal"]
+		
+	# 3. Update otomatis posisi handle Slider Suhu di sebelah kanan
+	var slider_suhu = get_node_or_null("InterfaceUI/Termometer/SliderSuhu")
+	if slider_suhu:
+		slider_suhu.value = suhu_saat_ini
+		var label_suhu = slider_suhu.get_node_or_null("LblAngkaSuhu")
+		if label_suhu:
+			label_suhu.text = str(suhu_saat_ini) + "°C"
+			
+	# 4. Validasi apakah kedua nilai sudah pas dengan target level
+	simulasi_kelembapan_sudah_pas = (kelembapan_saat_ini == data["target_kelembapan"])
+	simulasi_suhu_sudah_pas = (suhu_saat_ini == data["target_suhu"])
+	
+	cek_kondisi_menang()
+
+
+# =================================================================
+# SAKLAR SIMULASI DEBIT AIR (UNTUK PRESENTASI KEYBOARD ANGKA 1-3)
+# =================================================================
+func set_debit_air_simulasi(jenis_debit: String) -> void:
+	var data = DATA_LEVEL[level_sekarang]
+	var target_kelem_simulasi = data["kelembapan_awal"]
+	
+	match jenis_debit:
+		"MATI":
+			target_kelem_simulasi = data["kelembapan_awal"]
+		"KECIL":
+			target_kelem_simulasi = 30
+		"SEDANG":
+			target_kelem_simulasi = data["target_kelembapan"] # Target Ideal
+		"BESAR":
+			target_kelem_simulasi = 90
+			
+	var slider_kelem = get_node_or_null("InterfaceUI/Kelembapan/SliderKelembapan")
+	if slider_kelem:
+		slider_kelem.value = target_kelem_simulasi
 		print("BERHASIL: Slider Kelembapan bergerak ke -> ", kelembapan_saat_ini)
 		
-		# Menembak LblAngkaKelembapan yang sudah kamu buat
 		var label_angka = slider_kelem.get_node_or_null("LblAngkaKelembapan")
 		if label_angka:
 			label_angka.text = str(kelembapan_saat_ini) + "%"
@@ -309,12 +351,10 @@ func set_debit_air_simulasi(jenis_debit: String) -> void:
 # FUNGSI TESTING SIMULATOR KEYBOARD
 # =================================================================
 func _input(event: InputEvent) -> void:
-	# Tekan SPASI untuk mengecek kondisi kemenangan saat ini
 	if event.is_action_pressed("ui_accept"): 
 		print("--- MENCOBA TES CEK KEMENANGAN ---")
 		cek_kondisi_menang()
 		
-	# Tekan tombol TAB (ui_focus_next) untuk simulasi paksa menang (Auto-Win)
 	if event.is_action_pressed("ui_focus_next"):
 		print("--- SIMULASI AUTO-WIN DIAKTIFKAN ---")
 		simulasi_pipa_tersambung = true
@@ -322,15 +362,14 @@ func _input(event: InputEvent) -> void:
 		simulasi_kelembapan_sudah_pas = true
 		cek_kondisi_menang()
 		
-	# TAMBAHAN: TOMBOL TESTING DEBIT AIR (Gunakan Angka 1, 2, 3 di Keyboard untuk Demo)
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_1:
-			print("--- SIMULASI: DEBIT AIR KECIL (40%) ---")
+			print("--- SIMULASI: DEBIT AIR KECIL (30%) ---")
 			set_debit_air_simulasi("KECIL")
 		elif event.keycode == KEY_2:
 			print("--- SIMULASI: DEBIT AIR SEDANG (TARGET IDEAL) ---")
-			simulasi_pipa_tersambung = true # Pura-pura pipa dialiri air sepenuhnya
+			simulasi_pipa_tersambung = true 
 			set_debit_air_simulasi("SEDANG")
 		elif event.keycode == KEY_3:
-			print("--- SIMULASI: DEBIT AIR BESAR (95%) ---")
+			print("--- SIMULASI: DEBIT AIR BESAR (90%) ---")
 			set_debit_air_simulasi("BESAR")
