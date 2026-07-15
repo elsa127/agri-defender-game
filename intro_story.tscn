@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://boagwdh6s504p"]
+
+[ext_resource type="Texture2D" uid="uid://hl5w7bmixr30" path="res://asset_gambar/background/bg_cerita1.png" id="1_n6n6b"]
+[ext_resource type="FontFile" uid="uid://ch1gyi6508uk6" path="res://assets/font/Baloo2-VariableFont_wght.ttf" id="2_q3ba4"]
+[ext_resource type="Script" uid="uid://djyr2xxm0ceop" path="res://scripts/ui/intro_story_text.gd" id="3_vslun"]
+
+[node name="IntroStory" type="Control" unique_id=1430922344]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1547399534]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_n6n6b")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=753902827]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/normal_font = ExtResource("2_q3ba4")
+script = ExtResource("3_vslun")
