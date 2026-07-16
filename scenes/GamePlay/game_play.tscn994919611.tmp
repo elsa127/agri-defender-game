@@ -24,7 +24,7 @@ load_path = "res://.godot/imported/suhu_control.png-eb90f7f69bdb943340812e115fb3
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3ydn5"]
 
 [node name="GamePlay" type="Node2D" unique_id=1845933922]
-position = Vector2(-100, -20)
+position = Vector2(-106, -54)
 script = ExtResource("1_axmop")
 gambar_level_1 = ExtResource("3_ikud1")
 gambar_level_2 = ExtResource("3_fvsw3")
@@ -54,7 +54,6 @@ offset_top = 373.0
 offset_right = 512.0
 offset_bottom = 667.0
 texture = ExtResource("11_6uuxa")
-metadata/_edit_use_anchors_ = true
 
 [node name="SliderSuhu" type="VSlider" parent="InterfaceUI/Termometer" unique_id=442605936]
 layout_mode = 1
@@ -72,28 +71,17 @@ max_value = 60.0
 value = 10.0
 metadata/_edit_use_anchors_ = true
 
-[node name="LblAngkaSuhu" type="Label" parent="InterfaceUI/Termometer" unique_id=457970141]
-layout_mode = 1
-anchors_preset = -1
-anchor_bottom = 0.35000002
-offset_left = 35.0
-offset_top = 258.0
-offset_right = 65.0
-offset_bottom = 178.09999
-theme_override_fonts/font = ExtResource("12_n58gl")
-theme_override_font_sizes/font_size = 14
-
 [node name="LblTargetSuhu" type="Label" parent="InterfaceUI/Termometer" unique_id=2135776654]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.42465752
-anchor_top = 0.12244898
-anchor_right = 0.4861781
-anchor_bottom = 0.17665306
-offset_left = -15.0
-offset_top = 3.0
-offset_right = 19.508999
-offset_bottom = 13.063999
+anchor_left = 0.01369863
+anchor_top = -0.13945578
+anchor_right = 0.01369863
+anchor_bottom = -0.13945578
+offset_left = 16.0
+offset_top = 79.0
+offset_right = 55.0
+offset_bottom = 105.0
 theme_override_fonts/font = ExtResource("12_n58gl")
 metadata/_edit_use_anchors_ = true
 
@@ -158,7 +146,6 @@ offset_top = 280.0
 offset_right = 392.0
 offset_bottom = 350.0
 texture = ExtResource("13_n58gl")
-metadata/_edit_use_anchors_ = true
 
 [node name="SliderKelembapan" type="HSlider" parent="InterfaceUI/Kelembapan" unique_id=258575002]
 layout_mode = 0
@@ -169,7 +156,6 @@ offset_bottom = 58.0
 theme_override_icons/grabber = ExtResource("14_jt2ue")
 theme_override_icons/grabber_highlight = ExtResource("14_jt2ue")
 theme_override_styles/slider = SubResource("StyleBoxEmpty_3ydn5")
-metadata/_edit_use_anchors_ = true
 
 [node name="LblAngkaKelembapan" type="Label" parent="InterfaceUI/Kelembapan/SliderKelembapan" unique_id=352356243]
 layout_mode = 0
@@ -178,7 +164,6 @@ offset_top = -4.0
 offset_right = 174.0
 offset_bottom = 19.0
 theme_override_colors/font_color = Color(0.29, 0.14558001, 0.049300004, 1)
-metadata/_edit_use_anchors_ = true
 
 [node name="PapanSelamat" type="Sprite2D" parent="." unique_id=1870858558]
 visible = false
