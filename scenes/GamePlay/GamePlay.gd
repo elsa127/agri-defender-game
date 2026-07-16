@@ -137,13 +137,18 @@ func muat_level(nomor_level: int) -> void:
 	simulasi_suhu_sudah_pas = (suhu_saat_ini == data["target_suhu"])
 	simulasi_kelembapan_sudah_pas = (kelembapan_saat_ini == data["target_kelembapan"])
 	
-	# --- SINKRONISASI TAMPILAN AWAL SUHU & TARGET ---
+	# =================================================================
+	# --- BAGIAN PENTING: SINKRONISASI TAMPILAN AWAL SUHU & TARGET ---
+	# =================================================================
 	var node_slider_suhu = get_node_or_null("InterfaceUI/Termometer/SliderSuhu")
 	var node_label_target = get_node_or_null("InterfaceUI/Termometer/LblTargetSuhu")
+	var node_label_sekarang = get_node_or_null("InterfaceUI/Termometer/LblSuhuSekarang")
 	
+	# 1. Atur nilai awal Slider Suhu
 	if node_slider_suhu:
 		node_slider_suhu.value = suhu_saat_ini
 		
+		# 2. Update angka di samping bulat putih slider beserta posisi Y awalnya
 		var label_angka = node_slider_suhu.get_node_or_null("LblAngkaSuhu")
 		if not label_angka:
 			label_angka = get_node_or_null("InterfaceUI/Termometer/LblAngkaSuhu")
@@ -151,8 +156,24 @@ func muat_level(nomor_level: int) -> void:
 		if label_angka:
 			label_angka.text = str(suhu_saat_ini) + "°C"
 			
+			# Hitung posisi Y awal agar pas di tengah tombol grabber saat game mulai
+			var suhu_min = 10
+			var suhu_max = 60
+			var tinggi_slider = node_slider_suhu.size.y
+			var rasio_suhu = float(suhu_saat_ini - suhu_min) / float(suhu_max - suhu_min)
+			var area_aktif = tinggi_slider - 20
+			var posisi_y_lokal = node_slider_suhu.position.y + 10 + (area_aktif * (1.0 - rasio_suhu))
+			
+			label_angka.position = Vector2(node_slider_suhu.position.x + 22, posisi_y_lokal - 12)
+			
+	# 3. Tampilkan target level (tetap diam di bawah tulisan TARGET)
 	if node_label_target:
 		node_label_target.text = str(data["target_suhu"]) + "°C"
+		
+	# 4. Tampilkan suhu awal di kotak hijau besar atas (LblSuhuSekarang)
+	if node_label_sekarang:
+		node_label_sekarang.text = str(suhu_saat_ini) + "°C"
+	# =================================================================
 			
 	if has_node("InterfaceUI/Kelembapan/SliderKelembapan"):
 		$"InterfaceUI/Kelembapan/SliderKelembapan".value = kelembapan_saat_ini
@@ -271,15 +292,26 @@ func _on_slider_kelembapan_value_changed(value: float) -> void:
 	# Update Tampilan Barometer Suhu Sekarang secara Real-Time
 	var slider_suhu = get_node_or_null("InterfaceUI/Termometer/SliderSuhu")
 	if slider_suhu:
-		slider_suhu.value = suhu_saat_ini
+		slider_suhu.set_value(suhu_saat_ini)
 		
-		# Pencarian fleksibel untuk Label Teks Angka Suhu
-		var label_suhu = slider_suhu.get_node_or_null("LblAngkaSuhu")
-		if not label_suhu:
-			label_suhu = get_node_or_null("InterfaceUI/Termometer/LblAngkaSuhu")
-			
+		var label_suhu = get_node_or_null("InterfaceUI/Termometer/LblAngkaSuhu")
 		if label_suhu:
 			label_suhu.text = str(suhu_saat_ini) + "°C"
+			
+			var tinggi_slider = slider_suhu.size.y
+			var rasio_suhu_aktif = float(suhu_saat_ini - suhu_min) / float(suhu_max - suhu_min)
+			var area_aktif = tinggi_slider - 20 
+			var posisi_y_lokal = slider_suhu.position.y + 10 + (area_aktif * (1.0 - rasio_suhu_aktif))
+			
+			label_suhu.position = Vector2(slider_suhu.position.x + 27, posisi_y_lokal - 9)
+			
+	# =================================================================
+	# --- BAGIAN PENTING: UPDATE KOTAK HIJAU BESAR ATAS (SUHU SEKARANG) ---
+	# =================================================================
+	var label_sekarang = get_node_or_null("InterfaceUI/Termometer/LblSuhuSekarang")
+	if label_sekarang:
+		label_sekarang.text = str(suhu_saat_ini) + "°C"
+	# =================================================================
 			
 	simulasi_kelembapan_sudah_pas = (kelembapan_saat_ini == data["target_kelembapan"])
 	simulasi_suhu_sudah_pas = (suhu_saat_ini == data["target_suhu"])

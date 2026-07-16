@@ -64,6 +64,7 @@ offset_left = 13.0
 offset_top = 270.0
 offset_right = 66.0
 offset_bottom = 278.0
+mouse_filter = 2
 theme_override_icons/grabber = SubResource("CompressedTexture2D_7gmu8")
 theme_override_icons/grabber_highlight = ExtResource("12_pmesn")
 theme_override_styles/slider = SubResource("StyleBoxEmpty_7n77a")
@@ -76,26 +77,36 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 1
 anchors_preset = -1
 anchor_bottom = 0.35000002
-offset_left = 35.0
-offset_top = 258.0
-offset_right = 65.0
-offset_bottom = 178.09999
+offset_left = 36.0
+offset_top = 253.0
+offset_right = 66.0
+offset_bottom = 173.09999
 theme_override_fonts/font = ExtResource("12_n58gl")
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 10
 
 [node name="LblTargetSuhu" type="Label" parent="InterfaceUI/Termometer" unique_id=2135776654]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.42465752
-anchor_top = 0.12244898
-anchor_right = 0.4861781
-anchor_bottom = 0.17665306
+anchor_left = 0.46575344
+anchor_top = 0.25510204
+anchor_right = 0.527274
+anchor_bottom = 0.30930614
 offset_left = -15.0
 offset_top = 3.0
 offset_right = 19.508999
 offset_bottom = 13.063999
+theme_override_colors/font_color = Color(0.1333, 0.31, 0.1333, 1)
 theme_override_fonts/font = ExtResource("12_n58gl")
 metadata/_edit_use_anchors_ = true
+
+[node name="LblSuhuSekarang" type="Label" parent="InterfaceUI/Termometer" unique_id=206630969]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 39.0
+offset_right = 57.0
+offset_bottom = 65.0
+theme_override_fonts/font = ExtResource("12_n58gl")
+theme_override_font_sizes/font_size = 16
 
 [node name="BtnMusik" type="TextureButton" parent="InterfaceUI" unique_id=494262827]
 layout_mode = 0
