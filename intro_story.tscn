@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://boagwdh6s504p"]
 
 [ext_resource type="Texture2D" uid="uid://hl5w7bmixr30" path="res://asset_gambar/background/bg_cerita1.png" id="1_n6n6b"]
-[ext_resource type="FontFile" uid="uid://ch1gyi6508uk6" path="res://assets/font/Baloo2-VariableFont_wght.ttf" id="2_q3ba4"]
-[ext_resource type="Script" uid="uid://djyr2xxm0ceop" path="res://scripts/ui/intro_story_text.gd" id="3_vslun"]
+[ext_resource type="Texture2D" uid="uid://0k5dxbdwpm43" path="res://assets/image 5.png" id="2_q3ba4"]
+[ext_resource type="FontFile" uid="uid://d4ecrtf4e6pvo" path="res://font/Baloo-Regular.ttf" id="3_jcydu"]
+[ext_resource type="Script" uid="uid://dpm125su06il6" path="res://rich_text_label.gd" id="4_q3ba4"]
 
 [node name="IntroStory" type="Control" unique_id=1430922344]
 layout_mode = 3
@@ -21,13 +22,37 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_n6n6b")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=753902827]
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1226550477]
+custom_minimum_size = Vector2(260, 140)
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -276.0
+offset_top = -305.0
+offset_right = 283.0
+offset_bottom = -55.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_fonts/normal_font = ExtResource("2_q3ba4")
-script = ExtResource("3_vslun")
+texture = ExtResource("2_q3ba4")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="NinePatchRect" unique_id=2100492983]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 90.0
+offset_top = 42.0
+offset_right = -78.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.30588236, 0.20392157, 0.18039216, 1)
+theme_override_fonts/normal_font = ExtResource("3_jcydu")
+theme_override_font_sizes/normal_font_size = 24
+text = "Di sebuah desa pertanian yang subur, para petani menggantungkan hidup dari 
+hasil sawah dan kebun mereka."
+horizontal_alignment = 1
+script = ExtResource("4_q3ba4")
