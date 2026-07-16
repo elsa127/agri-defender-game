@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://hl5w7bmixr30" path="res://asset_gambar/background/bg_cerita1.png" id="1_n6n6b"]
 [ext_resource type="Texture2D" uid="uid://0k5dxbdwpm43" path="res://assets/image 5.png" id="2_q3ba4"]
 [ext_resource type="FontFile" uid="uid://d4ecrtf4e6pvo" path="res://font/Baloo-Regular.ttf" id="3_jcydu"]
-[ext_resource type="Script" uid="uid://dpm125su06il6" path="res://rich_text_label.gd" id="4_q3ba4"]
+[ext_resource type="Script" uid="uid://dpm125su06il6" path="res://scripts/ui/rich_text_label.gd" id="4_q3ba4"]
 
 [node name="IntroStory" type="Control" unique_id=1430922344]
 layout_mode = 3
