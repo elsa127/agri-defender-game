@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://0k5dxbdwpm43" path="res://assets/image 5.png" id="2_q3ba4"]
 [ext_resource type="FontFile" uid="uid://d4ecrtf4e6pvo" path="res://font/Baloo-Regular.ttf" id="3_jcydu"]
 [ext_resource type="Script" uid="uid://dpm125su06il6" path="res://scripts/ui/rich_text_label.gd" id="4_q3ba4"]
+[ext_resource type="Texture2D" uid="uid://cp3pu0uhpa1xm" path="res://asset_gambar/gambar_board/lala.png" id="5_vslun"]
 
 [node name="IntroStory" type="Control" unique_id=1430922344]
 layout_mode = 3
@@ -56,3 +57,9 @@ text = "Di sebuah desa pertanian yang subur, para petani menggantungkan hidup da
 hasil sawah dan kebun mereka."
 horizontal_alignment = 1
 script = ExtResource("4_q3ba4")
+
+[node name="LalaCharacter" type="Sprite2D" parent="." unique_id=2051882814]
+visible = false
+position = Vector2(189.99998, 912.00006)
+scale = Vector2(0.7332215, 0.6785714)
+texture = ExtResource("5_vslun")
