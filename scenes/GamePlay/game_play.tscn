@@ -193,7 +193,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="PapanSelamat" type="Sprite2D" parent="." unique_id=1870858558]
 visible = false
-position = Vector2(332, 561)
+z_index = 5
+position = Vector2(323, 523)
 texture = ExtResource("10_6uuxa")
 
 [connection signal="pressed" from="InterfaceUI/BtnMusik" to="." method="_on_btn_musik_pressed"]

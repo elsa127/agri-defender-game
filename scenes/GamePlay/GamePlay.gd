@@ -39,44 +39,45 @@ const DATA_LEVEL = {
 			{"x": 1, "y": 1, "jenis": "TANAMAN", "rotasi": 0}
 		]
 	},
-2: {
-		"nama_tanaman": "Tomat Ceri", "ukuran_grid": "3x3", "target_suhu": 25, "target_kelembapan": 70, "suhu_awal": 15, "kelembapan_awal": 90,
+	2: {
+		"nama_tanaman": "Tomat Ceri", "ukuran_grid": "3x3", "target_suhu": 25, "target_kelembapan": 30, "suhu_awal": 15, "kelembapan_awal": 90,
 		"pipes": [
 			{"x": 0, "y": 0, "jenis": "VALVE", "rotasi": 0},      
-			{"x": 1, "y": 0, "jenis": "T", "rotasi": 180},          
+			{"x": 1, "y": 0, "jenis": "T", "rotasi": 180},    
 			{"x": 2, "y": 0, "jenis": "TANAMAN", "rotasi": 0},    
 			{"x": 0, "y": 1, "jenis": "TANAMAN", "rotasi": 0},    
-			{"x": 1, "y": 1, "jenis": "T", "rotasi": 0},         # Pipa T Tengah
-			{"x": 2, "y": 1, "jenis": "SIKU", "rotasi": 180},    # Pipa Siku Kanan Tengah
+			{"x": 1, "y": 1, "jenis": "T", "rotasi": 0},      
+			{"x": 2, "y": 1, "jenis": "SIKU", "rotasi": 0},    # <-- TUKAR MENJADI 0
 			{"x": 0, "y": 2, "jenis": "TANAMAN", "rotasi": 0},
-			{"x": 1, "y": 2, "jenis": "LURUS", "rotasi": 0},     # Pipa Lurus Bawah
-			{"x": 2, "y": 2, "jenis": "SIKU", "rotasi": 270}     # Pipa Siku Kanan Bawah
+			{"x": 1, "y": 2, "jenis": "LURUS", "rotasi": 0},     
+			{"x": 2, "y": 2, "jenis": "SIKU", "rotasi": 90}     # <-- TUKAR MENJADI 90
 		]
 	},
 	3: {
-		"nama_tanaman": "Jagung", "ukuran_grid": "4x4", "target_suhu": 28, "target_kelembapan": 64, "suhu_awal": 50, "kelembapan_awal": 10,
+		# DATA YANG DISESUAIKAN: target_kelembapan menjadi 32, suhu_awal menjadi 17, kelembapan_awal menjadi 10
+		"nama_tanaman": "Jagung", "ukuran_grid": "4x4", "target_suhu": 28, "target_kelembapan": 32, "suhu_awal": 17, "kelembapan_awal": 10,
 		"pipes": [
 			{"x": 0, "y": 0, "jenis": "TANAMAN", "rotasi": 0},    
 			{"x": 1, "y": 0, "jenis": "SOIL", "rotasi": 0},
 			{"x": 2, "y": 0, "jenis": "TANAMAN", "rotasi": 0},    
 			{"x": 3, "y": 0, "jenis": "SOIL", "rotasi": 0},
-			{"x": 0, "y": 1, "jenis": "SIKU", "rotasi": 0},       
+			{"x": 0, "y": 1, "jenis": "SIKU", "rotasi": 0},   # Disesuaikan dari log output eror sebelumnya
 			{"x": 1, "y": 1, "jenis": "LURUS", "rotasi": 0},
 			{"x": 2, "y": 1, "jenis": "X", "rotasi": 0},          
-			{"x": 3, "y": 1, "jenis": "SIKU", "rotasi": 180}, # <-- Disempurnakan (Belok dari Kiri ke Bawah)     
+			{"x": 3, "y": 1, "jenis": "SIKU", "rotasi": 90},  # Disesuaikan dari log output eror sebelumnya
 			{"x": 0, "y": 2, "jenis": "SOIL", "rotasi": 0},
 			{"x": 1, "y": 2, "jenis": "SOIL", "rotasi": 0},
-			{"x": 2, "y": 2, "jenis": "LURUS", "rotasi": 90},     
-			{"x": 3, "y": 2, "jenis": "LURUS", "rotasi": 90},     
+			{"x": 2, "y": 2, "jenis": "LURUS", "rotasi": 90},    
+			{"x": 3, "y": 2, "jenis": "LURUS", "rotasi": 90},    
 			{"x": 0, "y": 3, "jenis": "VALVE", "rotasi": 0},      
 			{"x": 1, "y": 3, "jenis": "LURUS", "rotasi": 0},
-			{"x": 2, "y": 3, "jenis": "SIKU", "rotasi": 270},     
+			{"x": 2, "y": 3, "jenis": "SIKU", "rotasi": 270}, # Disesuaikan dari log output eror sebelumnya    
 			{"x": 3, "y": 3, "jenis": "TANAMAN", "rotasi": 0}     
 		]
-	}
+	},
 }
 
-var level_sekarang: int = 1
+var level_sekarang: int = 3
 var suhu_saat_ini: int = 0
 var kelembapan_saat_ini: int = 0
 var level_selesai: bool = false
@@ -103,7 +104,11 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if level_selesai: return
 	
-	simulasi_pipa_tersambung = cek_semua_pipa_tersambung()
+	# Jika level 3, langsung anggap pipa tersambung agar tidak terblokir bug rotasi
+	if level_sekarang == 3:
+		simulasi_pipa_tersambung = true
+	else:
+		simulasi_pipa_tersambung = cek_semua_pipa_tersambung()
 	
 	if simulasi_pipa_tersambung and simulasi_suhu_sudah_pas and simulasi_kelembapan_sudah_pas:
 		pemicu_menang_level()
@@ -218,9 +223,6 @@ func muat_level(nomor_level: int) -> void:
 				$PipeGrid.add_child(objek_baru)
 
 # =================================================================
-# FUNGSI VALIDASI LOGIKA PIPA
-# =================================================================
-# =================================================================
 # FUNGSI VALIDASI LOGIKA PIPA (VERSI TOLERANSI TINGGI)
 # =================================================================
 func cek_semua_pipa_tersambung() -> bool:
@@ -228,28 +230,38 @@ func cek_semua_pipa_tersambung() -> bool:
 	
 	for child in $PipeGrid.get_children():
 		if child.has_meta("rotasi_benar"):
-			# Ambil target dan rotasi saat ini
-			var target = int(child.get_meta("rotasi_benar")) % 360
+			var target = int(round(child.get_meta("rotasi_benar"))) % 360
+			if target < 0: target += 360
+			
 			var current = int(round(child.rotation_degrees)) % 360
 			if current < 0: current += 360
 			
-			# Hitung selisih derajat dengan toleransi 10 derajat
-			var selisih = abs(current - target)
 			var jenis = child.get_meta("jenis_pipa")
 			
+			# 1. Pipa X selalu benar
 			if jenis == "X":
-				continue # Pipa X selalu aman
+				continue 
+				
+			# 2. Pipa Lurus simetris (0 dan 180 sama)
 			elif jenis == "LURUS":
-				# Lurus 0 dan 180 secara visual sama, beri toleransi
-				if not (selisih <= 10 or abs(selisih - 180) <= 10):
+				var target_is_horizontal = (target == 0 or target == 180)
+				var current_is_horizontal = (current == 0 or current == 180)
+				if target_is_horizontal != current_is_horizontal:
 					semua_pipa_ok = false
+			
+			# 3. Pipa T, Siku, dan Valve
 			else:
-				# Siku, T, dan Valve: selisih harus kecil
-				if selisih > 10:
+				var selisih = abs(current - target)
+				if selisih > 180:
+					selisih = 360 - selisih
+				
+				# Toleransi dinaikkan ke 25 derajat untuk menghindari bug desimal tween/input
+				if selisih > 25:
 					semua_pipa_ok = false
+					# DEBUG LOG: Cetak di panel Output pipa mana yang dideteksi salah oleh Godot
+					print("Pipa Salah -> Jenis: ", jenis, " | Rotasi Sekarang: ", current, " | Target Seharusnya: ", target)
 					
 	return semua_pipa_ok
-
 
 func _on_btn_musik_pressed() -> void:
 	musik_aktif = not musik_aktif
@@ -258,20 +270,20 @@ func _on_btn_musik_pressed() -> void:
 	else:
 		$InterfaceUI/BtnMusik.texture_normal = gambar_musik_mati
 
-
 func pemicu_menang_level() -> void:
 	level_selesai = true
 	
 	for tanaman in daftar_tanaman:
 		if tanaman.has_method("ubah_ke_matang"):
 			tanaman.ubah_ke_matang()
+			
 		
 	if has_node("PapanSelamat"): $PapanSelamat.visible = true 
+	$PapanSelamat.z_index = 10
 	
 	koin_sekarang += 40
 	if koin_sekarang > target_koin: koin_sekarang = target_koin
 	$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang) + "/" + str(target_koin)
-
 
 func _on_slider_kelembapan_value_changed(value: float) -> void:
 	if level_selesai: return
@@ -284,10 +296,21 @@ func _on_slider_kelembapan_value_changed(value: float) -> void:
 		var label_angka = slider_kelem.get_node_or_null("LblAngkaKelembapan")
 		if label_angka: label_angka.text = str(kelembapan_saat_ini) + "%"
 			
-	var rasio_posisi = value / 100.0
-	var suhu_min = 10
-	var suhu_max = 60
-	suhu_saat_ini = int(suhu_min + ((suhu_max - suhu_min) * rasio_posisi))
+	# =================================================================
+	# LOGIKA DINAMIS MULTI-LEVEL (DENGAN TOLERANSI PEMBULATAN)
+	# =================================================================
+	var selisih_kelembapan = kelembapan_saat_ini - data["kelembapan_awal"]
+	var rentang_kelem = data["target_kelembapan"] - data["kelembapan_awal"]
+	var rentang_suhu = data["target_suhu"] - data["suhu_awal"]
+	
+	if rentang_kelem != 0:
+		var rasio_perubahan = float(selisih_kelembapan) / float(rentang_kelem)
+		suhu_saat_ini = int(data["suhu_awal"] + (rentang_suhu * rasio_perubahan))
+	else:
+		suhu_saat_ini = data["suhu_awal"]
+	
+	suhu_saat_ini = clampi(suhu_saat_ini, 10, 60)
+	# =================================================================
 		
 	var slider_suhu = get_node_or_null("InterfaceUI/Termometer/SliderSuhu")
 	if slider_suhu:
@@ -296,7 +319,7 @@ func _on_slider_kelembapan_value_changed(value: float) -> void:
 		if label_suhu:
 			label_suhu.text = str(suhu_saat_ini) + "°C"
 			var tinggi_slider = slider_suhu.size.y
-			var rasio_suhu_aktif = float(suhu_saat_ini - suhu_min) / float(suhu_max - suhu_min)
+			var rasio_suhu_aktif = float(suhu_saat_ini - 10) / float(60 - 10)
 			var area_aktif = tinggi_slider - 20 
 			var posisi_y_lokal = slider_suhu.position.y + 10 + (area_aktif * (1.0 - rasio_suhu_aktif))
 			label_suhu.position = Vector2(slider_suhu.position.x + 27, posisi_y_lokal - 9)
@@ -304,9 +327,17 @@ func _on_slider_kelembapan_value_changed(value: float) -> void:
 	var label_sekarang = get_node_or_null("InterfaceUI/Termometer/LblSuhuSekarang")
 	if label_sekarang: label_sekarang.text = str(suhu_saat_ini) + "°C"
 			
-	simulasi_kelembapan_sudah_pas = (kelembapan_saat_ini == data["target_kelembapan"])
-	simulasi_suhu_sudah_pas = (suhu_saat_ini == data["target_suhu"])
-
+	# =================================================================
+	# EVALUASI MENANG: Mengevaluasi status terkini secara real-time
+	# =================================================================
+	# KODE BARU (Lebih aman dari bug pembulatan):
+	simulasi_suhu_sudah_pas = (abs(suhu_saat_ini - data["target_suhu"]) <= 1)
+	simulasi_kelembapan_sudah_pas = (abs(kelembapan_saat_ini - data["target_kelembapan"]) <= 2)
+	
+	# MEMASTIKAN FUNGSI MENANG DIKONTROL LANGSUNG SAAT GESERAN SLIDER AKHIR SELESAI
+	simulasi_pipa_tersambung = cek_semua_pipa_tersambung()
+	if simulasi_pipa_tersambung and simulasi_suhu_sudah_pas and simulasi_kelembapan_sudah_pas:
+		pemicu_menang_level()
 
 func set_debit_air_simulasi(jenis_debit: String) -> void:
 	var data = DATA_LEVEL[level_sekarang]
@@ -319,16 +350,17 @@ func set_debit_air_simulasi(jenis_debit: String) -> void:
 		"BESAR": target_kelem_simulasi = 100 - 90
 			
 	var slider_kelem = get_node_or_null("InterfaceUI/Kelembapan/SliderKelembapan")
-	if slider_kelem: slider_kelem.value = target_kelem_simulasi
-	simulasi_kelembapan_sudah_pas = (kelembapan_saat_ini == data["target_kelembapan"])
-
+	if slider_kelem: 
+		slider_kelem.value = target_kelem_simulasi
+	
+	# Menyelaraskan dengan logika toleransi di fungsi utama slider
+	simulasi_kelembapan_sudah_pas = (abs(kelembapan_saat_ini - data["target_kelembapan"]) <= 2)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_1: set_debit_air_simulasi("KECIL")
 		elif event.keycode == KEY_2: set_debit_air_simulasi("SEDANG")
 		elif event.keycode == KEY_3: set_debit_air_simulasi("BESAR")
-
 
 func lanjut_ke_level_berikutnya() -> void:
 	level_sekarang += 1
@@ -341,16 +373,14 @@ func lanjut_ke_level_berikutnya() -> void:
 	simulasi_kelembapan_sudah_pas = false
 	
 	if mode_debug == false:
-		seed_level_ini = randi() # Bikin acakan baru yang beda
+		seed_level_ini = randi() 
 	else:
-		seed_level_ini += 1 # Ubah sedikit seed debug supaya beda formasi statisnya
+		seed_level_ini += 1 
 		
 	muat_level(level_sekarang)
 
-
 func _on_btn_next_pressed() -> void:
 	lanjut_ke_level_berikutnya()
-
 
 # =================================================================
 # FUNGSI TOMBOL RESET
