@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://db0qap0fk26xk"]
+
+[ext_resource type="Texture2D" uid="uid://hl5w7bmixr30" path="res://asset_gambar/background/bg_cerita1.png" id="1_gswpo"]
+[ext_resource type="Texture2D" uid="uid://b48tkobg17176" path="res://asset_gambar/gambar_board/main_lv_board.png" id="2_3rh63"]
+
+[node name="LevelSelection" type="Control" unique_id=63114121]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="." unique_id=57836787]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_gswpo")
+
+[node name="LevelBoard" type="TextureRect" parent="." unique_id=181666811]
+custom_minimum_size = Vector2(430, 700)
+layout_mode = 1
+offset_left = -56.0
+offset_top = 85.0
+offset_right = 826.0
+offset_bottom = 1280.0
+texture = ExtResource("2_3rh63")
+expand_mode = 1
+stretch_mode = 6
