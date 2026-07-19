@@ -1,15 +1,22 @@
 extends Node2D
 
-# Variabel untuk mencatat jenis tanaman aktif di level ini
-var jenis_tanaman_aktif: String = "Padi"
+var jenis_sekarang: String = ""
 
-# Fungsi ini dipanggil otomatis oleh GamePlay.gd saat level baru dimulai
+func _ready() -> void:
+	# Cek apakah GamePlay sudah mengatur jenis tanaman. 
+	# Jika sudah, tampilkan yang mentah. Jika belum, sembunyikan semua.
+	if jenis_sekarang != "":
+		ubah_ke_mentah()
+	else:
+		sembunyikan_semua()
+
 func set_jenis_tanaman(nama_tanaman: String) -> void:
-	jenis_tanaman_aktif = nama_tanaman
+	jenis_sekarang = nama_tanaman
+	ubah_ke_mentah()
+
+func ubah_ke_mentah() -> void:
 	sembunyikan_semua()
-	
-	# Memunculkan tanaman versi MENTAH sesuai target level
-	match jenis_tanaman_aktif:
+	match jenis_sekarang:
 		"Padi":
 			$PadiMentah.visible = true
 		"Tomat Ceri":
@@ -17,11 +24,9 @@ func set_jenis_tanaman(nama_tanaman: String) -> void:
 		"Jagung":
 			$JagungMentah.visible = true
 
-# Fungsi untuk mengubah visual menjadi MATANG saat menang level
 func ubah_ke_matang() -> void:
 	sembunyikan_semua()
-	
-	match jenis_tanaman_aktif:
+	match jenis_sekarang:
 		"Padi":
 			$PadiMatang.visible = true
 		"Tomat Ceri":
@@ -29,11 +34,6 @@ func ubah_ke_matang() -> void:
 		"Jagung":
 			$JagungMatang.visible = true
 
-# Fungsi untuk mengembalikan ke MENTAH jika syarat pipa/slider lepas kembali
-func ubah_ke_mentah() -> void:
-	set_jenis_tanaman(jenis_tanaman_aktif)
-
-# Reset semua mata sprite menjadi mati (hidden)
 func sembunyikan_semua() -> void:
 	$PadiMentah.visible = false
 	$PadiMatang.visible = false

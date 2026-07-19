@@ -126,15 +126,6 @@ offset_bottom = 222.0
 texture_normal = ExtResource("7_dlimn")
 metadata/_edit_use_anchors_ = true
 
-[node name="BtnKembali" type="TextureButton" parent="InterfaceUI" unique_id=1338026859]
-layout_mode = 0
-offset_left = 145.0
-offset_top = 82.0
-offset_right = 200.0
-offset_bottom = 152.0
-texture_normal = ExtResource("8_dfb4y")
-metadata/_edit_use_anchors_ = true
-
 [node name="PnlKoin" type="TextureRect" parent="InterfaceUI" unique_id=804316896]
 layout_mode = 0
 offset_left = 449.0
@@ -160,6 +151,15 @@ theme_override_constants/shadow_offset_x = 4
 theme_override_fonts/font = ExtResource("12_n58gl")
 theme_override_font_sizes/font_size = 21
 text = "0/120"
+metadata/_edit_use_anchors_ = true
+
+[node name="BtnKembali" type="TextureButton" parent="InterfaceUI/PnlKoin/TxtKoin" unique_id=1338026859]
+layout_mode = 0
+offset_left = -331.0
+offset_top = -39.0
+offset_right = -276.0
+offset_bottom = 31.0
+texture_normal = ExtResource("8_dfb4y")
 metadata/_edit_use_anchors_ = true
 
 [node name="Kelembapan" type="TextureRect" parent="InterfaceUI" unique_id=75780151]
@@ -197,4 +197,5 @@ position = Vector2(332, 561)
 texture = ExtResource("10_6uuxa")
 
 [connection signal="pressed" from="InterfaceUI/BtnMusik" to="." method="_on_btn_musik_pressed"]
+[connection signal="pressed" from="InterfaceUI/BtnReset" to="." method="_on_btn_reset_pressed"]
 [connection signal="value_changed" from="InterfaceUI/Kelembapan/SliderKelembapan" to="." method="_on_slider_kelembapan_value_changed"]
