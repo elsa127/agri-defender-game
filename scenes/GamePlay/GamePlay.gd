@@ -77,7 +77,7 @@ const DATA_LEVEL = {
 	},
 }
 
-var level_sekarang: int = 3
+var level_sekarang: int = 1
 var suhu_saat_ini: int = 0
 var kelembapan_saat_ini: int = 0
 var level_selesai: bool = false
@@ -273,17 +273,24 @@ func _on_btn_musik_pressed() -> void:
 func pemicu_menang_level() -> void:
 	level_selesai = true
 	
+	# 1. Ubah tanaman jadi matang
 	for tanaman in daftar_tanaman:
 		if tanaman.has_method("ubah_ke_matang"):
 			tanaman.ubah_ke_matang()
 			
+	# 2. Tambah koin ke total koin pemain
+	koin_sekarang += 50
+	if koin_sekarang > target_koin: 
+		koin_sekarang = target_koin
 		
-	if has_node("PapanSelamat"): $PapanSelamat.visible = true 
-	$PapanSelamat.z_index = 10
+	# 3. Update teks koin di UI atas (Header)
+	if has_node("InterfaceUI/PnlKoin/TxtKoin"):
+		$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang) + "/" + str(target_koin)
 	
-	koin_sekarang += 40
-	if koin_sekarang > target_koin: koin_sekarang = target_koin
-	$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang) + "/" + str(target_koin)
+	# 4. Tampilkan Papan Selamat 
+	# (Gambar koin, gambar "50 Poin", dan tombol OK otomatis ikut muncul!)
+	if has_node("PapanSelamat"): 
+		$PapanSelamat.visible = true
 
 func _on_slider_kelembapan_value_changed(value: float) -> void:
 	if level_selesai: return
@@ -395,3 +402,14 @@ func _on_btn_reset_pressed() -> void:
 	simulasi_kelembapan_sudah_pas = false
 	
 	muat_level(level_sekarang)
+
+
+func _on_btn_ok_pressed() -> void:
+	# 1. Sembunyikan kembali Papan Selamat
+	if has_node("PapanSelamat"):
+		$PapanSelamat.visible = false
+	elif has_node("InterfaceUI/PapanSelamat"):
+		$InterfaceUI/PapanSelamat.visible = false
+		
+	# 2. Panggil fungsi untuk lanjut ke level berikutnya
+	lanjut_ke_level_berikutnya()

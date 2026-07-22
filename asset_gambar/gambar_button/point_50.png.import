@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cs1ow7g1ma7sm"
-path="res://.godot/imported/board_selamat (1).png-52bd72347e791ada2f9ec65327349acd.ctex"
+uid="uid://b5a8iohldwsmw"
+path="res://.godot/imported/point_50.png-e4321ba529c93522faa91e37de6f1901.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset_gambar/gambar_board/board_selamat (1).png"
-dest_files=["res://.godot/imported/board_selamat (1).png-52bd72347e791ada2f9ec65327349acd.ctex"]
+source_file="res://asset_gambar/gambar_button/point_50.png"
+dest_files=["res://.godot/imported/point_50.png-e4321ba529c93522faa91e37de6f1901.ctex"]
 
 [params]
 
