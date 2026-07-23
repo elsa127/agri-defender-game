@@ -1,7 +1,13 @@
 [gd_scene format=3 uid="uid://db0qap0fk26xk"]
 
+[ext_resource type="Script" uid="uid://cmwaghtc3xns" path="res://scenes/level_selection.gd" id="1_0rqca"]
 [ext_resource type="Texture2D" uid="uid://hl5w7bmixr30" path="res://asset_gambar/background/bg_cerita1.png" id="1_gswpo"]
 [ext_resource type="Texture2D" uid="uid://b48tkobg17176" path="res://asset_gambar/gambar_board/main_lv_board.png" id="2_3rh63"]
+[ext_resource type="Texture2D" uid="uid://dv4y7istfsljq" path="res://asset_gambar/gambar_asset_menu/beli.png" id="3_42rqe"]
+[ext_resource type="Texture2D" uid="uid://bgwb7y4o66di2" path="res://asset_gambar/gambar_asset_menu/level.png" id="4_rcujv"]
+[ext_resource type="Texture2D" uid="uid://043twur1012e" path="res://asset_gambar/gambar_asset_menu/nama_menu.png" id="4_tuscg"]
+[ext_resource type="Texture2D" uid="uid://bmt4kf2t215qa" path="res://asset_gambar/gambar_asset_menu/info.png" id="5_efsdc"]
+[ext_resource type="Texture2D" uid="uid://dvl2nba2buli2" path="res://asset_gambar/gambar_asset_menu/menu_terpilih.png" id="5_rcujv"]
 
 [node name="LevelSelection" type="Control" unique_id=63114121]
 layout_mode = 3
@@ -10,6 +16,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_0rqca")
 
 [node name="Background" type="TextureRect" parent="." unique_id=57836787]
 layout_mode = 1
@@ -30,3 +37,153 @@ offset_bottom = 1280.0
 texture = ExtResource("2_3rh63")
 expand_mode = 1
 stretch_mode = 6
+
+[node name="TokoGroup" type="Control" parent="." unique_id=1094261808]
+custom_minimum_size = Vector2(160, 160)
+anchors_preset = 0
+offset_left = 85.0
+offset_top = 1165.0
+offset_right = 245.0
+offset_bottom = 1325.0
+
+[node name="TokoNamePlate" type="Control" parent="TokoGroup" unique_id=1027451211]
+anchors_preset = 0
+offset_right = 160.0
+
+[node name="TokoBoardNormal" type="TextureRect" parent="TokoGroup/TokoNamePlate" unique_id=1034062639]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 67.0
+offset_right = 128.0
+offset_bottom = 107.0
+texture = ExtResource("4_tuscg")
+stretch_mode = 5
+
+[node name="TokoBoardActive" type="TextureRect" parent="TokoGroup/TokoNamePlate" unique_id=1866676238]
+visible = false
+layout_mode = 0
+offset_left = 19.0
+offset_top = 1.0
+offset_right = 144.0
+offset_bottom = 126.0
+texture = ExtResource("5_rcujv")
+stretch_mode = 5
+
+[node name="TokoIcon" type="TextureButton" parent="TokoGroup" unique_id=560878398]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 0
+offset_top = 4.0
+offset_right = 160.0
+offset_bottom = 94.0
+texture_normal = ExtResource("3_42rqe")
+stretch_mode = 5
+
+[node name="TokoTextActive" type="Label" parent="." unique_id=1995058998]
+layout_mode = 0
+offset_left = 87.0
+offset_top = 1237.0
+offset_right = 247.0
+offset_bottom = 1263.0
+theme_override_font_sizes/font_size = 18
+text = "Toko"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelGroup" type="Control" parent="." unique_id=1528282731]
+anchors_preset = 0
+offset_left = 285.0
+offset_top = 1146.0
+offset_right = 425.0
+offset_bottom = 1290.0
+
+[node name="LevelNamePlate" type="Control" parent="LevelGroup" unique_id=778263194]
+anchors_preset = 0
+offset_right = 140.0
+
+[node name="LevelBoardNormal" type="TextureRect" parent="LevelGroup/LevelNamePlate" unique_id=1898827996]
+visible = false
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 91.0
+offset_right = 125.0
+offset_bottom = 131.0
+texture = ExtResource("4_tuscg")
+stretch_mode = 5
+
+[node name="LevelBoardActive" type="TextureRect" parent="LevelGroup/LevelNamePlate" unique_id=1520712227]
+custom_minimum_size = Vector2(140, 55)
+layout_mode = 1
+offset_left = 2.0
+offset_top = 19.0
+offset_right = 142.0
+offset_bottom = 144.0
+texture = ExtResource("5_rcujv")
+stretch_mode = 5
+
+[node name="LevelTextActive" type="Label" parent="LevelGroup" unique_id=106852999]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 96.0
+offset_right = 146.0
+offset_bottom = 122.0
+theme_override_font_sizes/font_size = 18
+text = "Level"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelIcon" type="TextureButton" parent="LevelGroup" unique_id=300180123]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 0
+offset_left = 3.0
+offset_top = 13.0
+offset_right = 143.0
+offset_bottom = 113.0
+texture_normal = ExtResource("4_rcujv")
+stretch_mode = 5
+
+[node name="InfoGroup" type="Control" parent="." unique_id=855784156]
+anchors_preset = 0
+offset_left = 511.0
+offset_top = 1165.0
+offset_right = 601.0
+offset_bottom = 1289.0
+
+[node name="InfoNamePlate" type="Control" parent="InfoGroup" unique_id=753979799]
+anchors_preset = 0
+offset_top = 70.0
+offset_right = 90.0
+offset_bottom = 70.0
+
+[node name="InfoBoardNormal" type="TextureRect" parent="InfoGroup/InfoNamePlate" unique_id=1613851297]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("4_tuscg")
+
+[node name="InfoBoardActive" type="TextureRect" parent="InfoGroup/InfoNamePlate" unique_id=1447935345]
+visible = false
+layout_mode = 0
+offset_left = -17.0
+offset_top = -70.0
+offset_right = 108.0
+offset_bottom = 55.0
+texture = ExtResource("5_rcujv")
+
+[node name="InfoIcon" type="TextureButton" parent="InfoGroup" unique_id=1297622482]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 0
+offset_right = 90.0
+offset_bottom = 90.0
+texture_normal = ExtResource("5_efsdc")
+
+[node name="InfoTextActive" type="Label" parent="InfoGroup" unique_id=1654173732]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 74.0
+offset_right = 93.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 18
+text = "Info"
+horizontal_alignment = 1
+vertical_alignment = 1
