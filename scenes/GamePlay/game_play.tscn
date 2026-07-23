@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://d2y4g8tbhhfkr" path="res://asset_gambar/gambar_board/suhu_control.png" id="12_pmesn"]
 [ext_resource type="Texture2D" uid="uid://v0ahwup0ltaj" path="res://asset_gambar/gambar_board/kelembapan.png" id="13_n58gl"]
 [ext_resource type="Texture2D" uid="uid://duspkj6jcbc62" path="res://asset_gambar/gambar_board/panel_kelembapan.png" id="14_jt2ue"]
+[ext_resource type="Texture2D" uid="uid://wtvrcp2yodoi" path="res://asset_gambar/gambar_board/lala board.png" id="15_n58gl"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7gmu8"]
 load_path = "res://.godot/imported/suhu_control.png-eb90f7f69bdb943340812e115fb37ad6.ctex"
@@ -190,6 +191,31 @@ offset_right = 174.0
 offset_bottom = 19.0
 theme_override_colors/font_color = Color(0.29, 0.14558001, 0.049300004, 1)
 metadata/_edit_use_anchors_ = true
+
+[node name="PanelDialog" type="Control" parent="InterfaceUI" unique_id=525278419]
+layout_mode = 1
+anchor_left = 3.05
+anchor_top = 17.725
+anchor_right = 3.05
+anchor_bottom = 17.725
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="BgLala" type="TextureRect" parent="InterfaceUI/PanelDialog" unique_id=864507804]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("15_n58gl")
+metadata/_edit_use_anchors_ = true
+
+[node name="LblTeks" type="Label" parent="InterfaceUI/PanelDialog" unique_id=795361887]
+layout_mode = 0
+offset_left = 148.0
+offset_top = 49.0
+offset_right = 394.0
+offset_bottom = 159.0
+theme_override_fonts/font = ExtResource("12_n58gl")
 
 [node name="PapanSelamat" type="Sprite2D" parent="." unique_id=1870858558]
 visible = false
