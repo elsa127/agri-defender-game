@@ -14,7 +14,9 @@
 [ext_resource type="Texture2D" uid="uid://d2y4g8tbhhfkr" path="res://asset_gambar/gambar_board/suhu_control.png" id="12_pmesn"]
 [ext_resource type="Texture2D" uid="uid://v0ahwup0ltaj" path="res://asset_gambar/gambar_board/kelembapan.png" id="13_n58gl"]
 [ext_resource type="Texture2D" uid="uid://duspkj6jcbc62" path="res://asset_gambar/gambar_board/panel_kelembapan.png" id="14_jt2ue"]
+[ext_resource type="Texture2D" uid="uid://ca5stlpg1ahc3" path="res://asset_gambar/gambar_board/hint.png" id="15_bxo6d"]
 [ext_resource type="Texture2D" uid="uid://bxm0on1fk12po" path="res://asset_gambar/gambar_board/papan_selamat.png" id="15_n58gl"]
+[ext_resource type="Texture2D" uid="uid://8auqiqwtgcnu" path="res://asset_gambar/gambar_board/board_kosong.png" id="16_el7j4"]
 [ext_resource type="Texture2D" uid="uid://bmveornl4e30q" path="res://asset_gambar/gambar_board/poin_asset.png" id="16_n58gl"]
 [ext_resource type="Texture2D" uid="uid://nn0qq5k6dodj" path="res://asset_gambar/gambar_button/button_ok.png" id="17_7gmu8"]
 [ext_resource type="Texture2D" uid="uid://b5a8iohldwsmw" path="res://asset_gambar/gambar_button/point_50.png" id="18_bxo6d"]
@@ -120,6 +122,15 @@ offset_bottom = 300.0
 texture_normal = ExtResource("6_cj1m4")
 metadata/_edit_use_anchors_ = true
 
+[node name="BtnKembali" type="TextureButton" parent="InterfaceUI" unique_id=1338026859]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 72.0
+offset_right = 198.0
+offset_bottom = 142.0
+texture_normal = ExtResource("8_dfb4y")
+metadata/_edit_use_anchors_ = true
+
 [node name="BtnReset" type="TextureButton" parent="InterfaceUI" unique_id=2138526220]
 layout_mode = 0
 offset_left = 478.0
@@ -141,10 +152,10 @@ metadata/_edit_use_anchors_ = true
 [node name="TxtKoin" type="Label" parent="InterfaceUI/PnlKoin" unique_id=1756796870]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.021276595
-anchor_top = -0.04225352
-anchor_right = 0.07446808
-anchor_bottom = 0.112676054
+anchor_left = 0.18085106
+anchor_top = -0.36619717
+anchor_right = 0.4574468
+anchor_bottom = -0.014084507
 offset_left = 29.0
 offset_top = 39.0
 offset_right = 72.0
@@ -152,17 +163,7 @@ offset_bottom = 62.0
 theme_override_colors/font_color = Color(0.33, 0.2112, 0.132, 1)
 theme_override_constants/shadow_offset_x = 4
 theme_override_fonts/font = ExtResource("12_n58gl")
-theme_override_font_sizes/font_size = 21
-text = "0/120"
-metadata/_edit_use_anchors_ = true
-
-[node name="BtnKembali" type="TextureButton" parent="InterfaceUI/PnlKoin/TxtKoin" unique_id=1338026859]
-layout_mode = 0
-offset_left = -331.0
-offset_top = -39.0
-offset_right = -276.0
-offset_bottom = 31.0
-texture_normal = ExtResource("8_dfb4y")
+theme_override_font_sizes/font_size = 25
 metadata/_edit_use_anchors_ = true
 
 [node name="Kelembapan" type="TextureRect" parent="InterfaceUI" unique_id=75780151]
@@ -194,6 +195,51 @@ offset_bottom = 19.0
 theme_override_colors/font_color = Color(0.29, 0.14558001, 0.049300004, 1)
 metadata/_edit_use_anchors_ = true
 
+[node name="Hint" type="TextureButton" parent="InterfaceUI" unique_id=540805098]
+layout_mode = 0
+offset_left = 293.0
+offset_top = 713.0
+offset_right = 360.0
+offset_bottom = 758.0
+texture_normal = ExtResource("15_bxo6d")
+
+[node name="BgBadge" type="TextureRect" parent="InterfaceUI/Hint" unique_id=1136772033]
+self_modulate = Color(0.60850006, 1, 0.13, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.22200002
+offset_left = 53.0
+offset_top = -6.0
+offset_right = 73.0
+offset_bottom = 4.0099993
+texture = ExtResource("14_jt2ue")
+
+[node name="LblSisaHint" type="Label" parent="InterfaceUI/Hint" unique_id=1995878605]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.94000006
+anchor_right = 0.94000006
+offset_left = -4.9800034
+offset_top = -8.0
+offset_right = 14.019997
+offset_bottom = 18.0
+theme_override_colors/font_color = Color(0.9506, 0.98, 0.95109004, 1)
+theme_override_colors/font_shadow_color = Color(0.9051163, 0.98880225, 0.9914929, 0)
+theme_override_fonts/font = ExtResource("12_n58gl")
+
+[node name="papan_hint" type="Sprite2D" parent="InterfaceUI" unique_id=576973912]
+visible = false
+position = Vector2(323, 603.00006)
+scale = Vector2(0.78341013, 0.73616236)
+texture = ExtResource("16_el7j4")
+
+[node name="button_ok" type="TextureButton" parent="InterfaceUI/papan_hint" unique_id=2093966760]
+offset_left = -63.823566
+offset_top = 145.34828
+offset_right = 95.17644
+offset_bottom = 196.34828
+texture_normal = ExtResource("17_7gmu8")
+
 [node name="PapanSelamat" type="Sprite2D" parent="." unique_id=1870858558]
 visible = false
 z_index = 5
@@ -205,7 +251,7 @@ position = Vector2(4.999999, -20)
 scale = Vector2(0.88125, 0.82824427)
 texture = ExtResource("16_n58gl")
 
-[node name="TextureButton" type="TextureButton" parent="PapanSelamat" unique_id=1132699729]
+[node name="Button_ok" type="TextureButton" parent="PapanSelamat" unique_id=1132699729]
 offset_left = -76.0
 offset_top = 191.0
 offset_right = 83.0
@@ -219,4 +265,6 @@ texture = ExtResource("18_bxo6d")
 [connection signal="pressed" from="InterfaceUI/BtnMusik" to="." method="_on_btn_musik_pressed"]
 [connection signal="pressed" from="InterfaceUI/BtnReset" to="." method="_on_btn_reset_pressed"]
 [connection signal="value_changed" from="InterfaceUI/Kelembapan/SliderKelembapan" to="." method="_on_slider_kelembapan_value_changed"]
-[connection signal="pressed" from="PapanSelamat/TextureButton" to="." method="_on_btn_ok_pressed"]
+[connection signal="pressed" from="InterfaceUI/Hint" to="." method="_on_hint_pressed"]
+[connection signal="pressed" from="InterfaceUI/papan_hint/button_ok" to="." method="_on_buttonOk_Hint_pressed"]
+[connection signal="pressed" from="PapanSelamat/Button_ok" to="." method="_on_btn_ok_pressed"]
