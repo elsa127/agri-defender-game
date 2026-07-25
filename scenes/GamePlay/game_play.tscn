@@ -20,6 +20,11 @@
 [ext_resource type="Texture2D" uid="uid://bmveornl4e30q" path="res://asset_gambar/gambar_board/poin_asset.png" id="16_n58gl"]
 [ext_resource type="Texture2D" uid="uid://nn0qq5k6dodj" path="res://asset_gambar/gambar_button/button_ok.png" id="17_7gmu8"]
 [ext_resource type="Texture2D" uid="uid://b5a8iohldwsmw" path="res://asset_gambar/gambar_button/point_50.png" id="18_bxo6d"]
+[ext_resource type="Texture2D" uid="uid://cm3ys5e4wmram" path="res://asset_gambar/gambar_button/CLOSE.png" id="18_gfrei"]
+[ext_resource type="Texture2D" uid="uid://gjyav5neus4e" path="res://asset_gambar/gambar_button/kelembapan.png" id="19_lecix"]
+[ext_resource type="Texture2D" uid="uid://ddrygblotxpkl" path="res://asset_gambar/gambar_board/hint_habis.png" id="20_6jtns"]
+[ext_resource type="Texture2D" uid="uid://ebivolsmb8cl" path="res://asset_gambar/gambar_button/button_beli_hint.png" id="21_hcvdi"]
+[ext_resource type="Texture2D" uid="uid://dbrboccnowknb" path="res://asset_gambar/gambar_board/papan_beli_hint.png" id="22_2t0op"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7gmu8"]
 load_path = "res://.godot/imported/suhu_control.png-eb90f7f69bdb943340812e115fb37ad6.ctex"
@@ -27,6 +32,33 @@ load_path = "res://.godot/imported/suhu_control.png-eb90f7f69bdb943340812e115fb3
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7n77a"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3ydn5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7n77a"]
+bg_color = Color(1, 0.874, 0.72, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.8745098, 0.72156864, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lecix"]
+bg_color = Color(1, 0.8745098, 0.72156864, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.972549, 0.827451, 0.60784316, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_djemk"]
+load_path = "res://.godot/imported/CLOSE.png-34eed621532f754ea8234145e8e8dc1c.ctex"
 
 [node name="GamePlay" type="Node2D" unique_id=1845933922]
 position = Vector2(-100, -20)
@@ -40,7 +72,7 @@ position = Vector2(330, 496)
 texture = ExtResource("1_1xumu")
 
 [node name="BoardLv1" type="Sprite2D" parent="." unique_id=1617134507]
-position = Vector2(331, 107)
+position = Vector2(331, 91)
 texture = ExtResource("3_ikud1")
 
 [node name="PipeGrid" type="Node2D" parent="." unique_id=2145890552]
@@ -228,17 +260,141 @@ theme_override_colors/font_shadow_color = Color(0.9051163, 0.98880225, 0.9914929
 theme_override_fonts/font = ExtResource("12_n58gl")
 
 [node name="papan_hint" type="Sprite2D" parent="InterfaceUI" unique_id=576973912]
-visible = false
 position = Vector2(323, 603.00006)
 scale = Vector2(0.78341013, 0.73616236)
 texture = ExtResource("16_el7j4")
 
 [node name="button_ok" type="TextureButton" parent="InterfaceUI/papan_hint" unique_id=2093966760]
-offset_left = -63.823566
-offset_top = 145.34828
-offset_right = 95.17644
-offset_bottom = 196.34828
+offset_left = -71.482376
+offset_top = 145.34827
+offset_right = 87.517624
+offset_bottom = 196.34827
 texture_normal = ExtResource("17_7gmu8")
+
+[node name="btn_close" type="TextureButton" parent="InterfaceUI/papan_hint" unique_id=1886543722]
+offset_left = 82.970566
+offset_top = -271.67932
+offset_right = 1252.2177
+offset_bottom = 941.3683
+texture_normal = ExtResource("18_gfrei")
+
+[node name="kotak_tanaman" type="PanelContainer" parent="InterfaceUI/papan_hint" unique_id=616501970]
+offset_left = -142.9647
+offset_top = -160.2908
+offset_right = 158.2823
+offset_bottom = -19.017609
+theme_override_styles/panel = SubResource("StyleBoxFlat_7n77a")
+
+[node name="hint_tanaman" type="TextureRect" parent="InterfaceUI/papan_hint" unique_id=169016928]
+offset_left = -144.24117
+offset_top = -158.93237
+offset_right = 155.72942
+offset_bottom = -42.11035
+expand_mode = 1
+stretch_mode = 5
+
+[node name="lbl_nama_tanaman" type="Label" parent="InterfaceUI/papan_hint" unique_id=1986633477]
+texture_filter = 2
+anchors_preset = -1
+anchor_left = 0.45000002
+anchor_top = 0.36800003
+anchor_right = 0.586
+anchor_bottom = 0.44200003
+offset_left = -338.2647
+offset_top = -252.43356
+offset_right = -98.594635
+offset_bottom = -249.07288
+theme_override_colors/font_color = Color(0.5019608, 0.23529412, 0.003921569, 1)
+theme_override_fonts/font = ExtResource("12_n58gl")
+theme_override_font_sizes/font_size = 21
+horizontal_alignment = 1
+
+[node name="kelembapan" type="TextureRect" parent="InterfaceUI/papan_hint" unique_id=846613441]
+offset_left = -151.9
+offset_top = -17.65918
+offset_right = -95.899994
+offset_bottom = 38.34082
+texture = ExtResource("19_lecix")
+
+[node name="lbl_kelembapan" type="Label" parent="InterfaceUI/papan_hint" unique_id=2059340725]
+offset_left = -105.94705
+offset_top = -8.150391
+offset_right = 151.9
+offset_bottom = 38.034973
+theme_override_colors/font_color = Color(0.46666667, 0.30588236, 0.09803922, 1)
+theme_override_fonts/font = ExtResource("12_n58gl")
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[node name="lbl_hint" type="Label" parent="InterfaceUI/papan_hint" unique_id=608977269]
+offset_left = -103.394104
+offset_top = -236.36096
+offset_right = 105.605896
+offset_bottom = -188.36096
+theme_override_fonts/font = ExtResource("12_n58gl")
+theme_override_font_sizes/font_size = 30
+text = "HINT TANAMAN"
+
+[node name="Panel" type="Panel" parent="InterfaceUI/papan_hint" unique_id=2021221146]
+offset_left = -139.1353
+offset_top = 40.751816
+offset_right = 155.72939
+offset_bottom = 127.68913
+theme_override_styles/panel = SubResource("StyleBoxFlat_lecix")
+
+[node name="Label" type="Label" parent="InterfaceUI/papan_hint/Panel" unique_id=188830750]
+layout_mode = 0
+offset_left = 12.764711
+offset_top = 2.7167919
+offset_right = 284.65292
+offset_bottom = 85.57891
+theme_override_colors/font_color = Color(0.10980392, 0.16078432, 0.16078432, 1)
+theme_override_colors/font_shadow_color = Color(0.98039216, 0.83137256, 0.6117647, 1)
+theme_override_fonts/font = ExtResource("12_n58gl")
+theme_override_font_sizes/font_size = 16
+text = "Pastikan kelembapan sesuai agar tumbuhan tumbuh dengan maksimal"
+autowrap_mode = 2
+justification_flags = 171
+
+[node name="PapanHintHabis" type="TextureRect" parent="InterfaceUI" unique_id=659662143]
+layout_mode = 0
+offset_left = 103.0
+offset_top = 277.0
+offset_right = 537.0
+offset_bottom = 819.0
+texture = ExtResource("20_6jtns")
+
+[node name="BtnBeliHint" type="TextureButton" parent="InterfaceUI/PapanHintHabis" unique_id=916434374]
+layout_mode = 0
+offset_left = 123.0
+offset_top = 402.0
+offset_right = 323.0
+offset_bottom = 458.0
+texture_normal = ExtResource("21_hcvdi")
+
+[node name="BtnClose" type="TextureButton" parent="InterfaceUI/PapanHintHabis" unique_id=1850733642]
+layout_mode = 0
+offset_left = 303.0
+offset_top = -6.0
+offset_right = 402.0
+offset_bottom = 93.0
+texture_normal = SubResource("CompressedTexture2D_djemk")
+
+[node name="PapanBeliHint" type="TextureRect" parent="InterfaceUI" unique_id=1235377845]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 280.0
+offset_right = 533.0
+offset_bottom = 822.0
+texture = ExtResource("22_2t0op")
+
+[node name="BtnClose" type="TextureButton" parent="InterfaceUI/PapanBeliHint" unique_id=250797261]
+layout_mode = 0
+offset_left = 305.0
+offset_top = 3.0
+offset_right = 404.0
+offset_bottom = 102.0
+texture_normal = ExtResource("18_gfrei")
 
 [node name="PapanSelamat" type="Sprite2D" parent="." unique_id=1870858558]
 visible = false
