@@ -31,7 +31,7 @@ var seed_level_ini: int = 0
 # ==========================================
 # VARIABEL SISTEM HINT 3 TAHAP
 # ==========================================
-var sisa_hint: int = 3 # Diubah ke 0 sesuai kondisi contoh UI
+var sisa_hint: int = 3
 var tahap_hint: int = 0 # 0 = Nyut-Nyut, 1 = Putar Otomatis, 2 = Papan Hint
 
 const DATA_LEVEL = {
@@ -78,7 +78,7 @@ const DATA_LEVEL = {
 		"nama_tanaman": "Jagung",
 		"path_gambar": "res://asset_gambar/gambar_tanaman/jagung_hint.png",
 		"ukuran_grid": "4x4",
-		"target_suhu": 28,
+		"target_suhu": 30,
 		"target_kelembapan": 60,
 		"min_kelembapan": 40,
 		"max_kelembapan": 60,
@@ -112,7 +112,7 @@ var level_sekarang: int = 1
 var suhu_saat_ini: int = 0
 var kelembapan_saat_ini: int = 0
 var level_selesai: bool = false
-var koin_sekarang: int = 120
+var koin_sekarang: int = 0
 var target_koin: int = 1000
 var musik_aktif: bool = true
 var simulasi_pipa_tersambung: bool = false
@@ -141,23 +141,191 @@ func _ready() -> void:
 			
 			parent_ui.add_child(overlay)
 		
-	# --- TAMBAHAN: Hubungkan signal tombol pop-up secara otomatis ---
+	# Hubungkan signal pop-up secara otomatis
 	hubungkan_signal_popup()
 	
 	muat_level(level_sekarang)
-	# --- TAMBAHAN: FUNGSI HUBUNGKAN SIGNAL OTOMATIS ---
+
+# --- FUNGSI HUBUNGKAN SIGNAL OTOMATIS & SETUP TOMBOL TOKO ---
 func hubungkan_signal_popup() -> void:
 	var btn_beli = get_node_or_null("InterfaceUI/PapanHintHabis/BtnBeliHint")
 	if btn_beli and not btn_beli.pressed.is_connected(_on_btn_beli_hint_pressed):
-		btn_beli.pressed.connect(_on_btn_beli_hint_pressed)
+		btn_beli.pressed.connect(func(): anim_tombol_klik(btn_beli); _on_btn_beli_hint_pressed())
 		
 	var btn_close_habis = get_node_or_null("InterfaceUI/PapanHintHabis/BtnClose")
 	if btn_close_habis and not btn_close_habis.pressed.is_connected(_on_btn_close_hint_habis_pressed):
-		btn_close_habis.pressed.connect(_on_btn_close_hint_habis_pressed)
+		btn_close_habis.pressed.connect(func(): anim_tombol_klik(btn_close_habis); _on_btn_close_hint_habis_pressed())
 
 	var btn_close_beli = get_node_or_null("InterfaceUI/PapanBeliHint/BtnClose")
 	if btn_close_beli and not btn_close_beli.pressed.is_connected(_on_btn_close_beli_hint_pressed):
-		btn_close_beli.pressed.connect(_on_btn_close_beli_hint_pressed)
+		btn_close_beli.pressed.connect(func(): anim_tombol_klik(btn_close_beli); _on_btn_close_beli_hint_pressed())
+
+	# Connect Tombol OK pada Popup PoinTidakCukup
+	var btn_ok_poin = get_node_or_null("InterfaceUI/PapanBeliHint/PoinTidakCukup/BtnOk")
+	if btn_ok_poin and not btn_ok_poin.pressed.is_connected(_on_btn_ok_poin_tidak_cukup_pressed):
+		btn_ok_poin.pressed.connect(func(): anim_tombol_klik(btn_ok_poin); _on_btn_ok_poin_tidak_cukup_pressed())
+
+	# --- HUBUNGKAN PAKET-PAKET DENGAN SISTEM SENTUH GUI_INPUT BARU ---
+	var path_container = "InterfaceUI/PapanBeliHint/HintContainer"
+	
+	_setup_tombol_paket(path_container + "/Hint1", 1, 25)
+	_setup_tombol_paket(path_container + "/Hint5", 5, 110)
+	_setup_tombol_paket(path_container + "/Hint10", 10, 200)
+	_setup_tombol_paket(path_container + "/Hint20", 20, 350)
+
+# =================================================================
+# LOGIKA FEEDBACK SENTUHAN & TRANSAKSI PAKET HINT
+# =================================================================
+
+# Helper untuk mengikat efek sentuhan (Press/Release) dan transaksi pada kartu
+func _setup_tombol_paket(node_path: String, jumlah_hint: int, harga: int) -> void:
+	var btn = get_node_or_null(node_path)
+	if not btn: return
+	
+	btn.pivot_offset = btn.size / 2.0
+	
+	if btn.has_signal("gui_input"):
+		for conn in btn.gui_input.get_connections():
+			btn.gui_input.disconnect(conn.callable)
+			
+		btn.gui_input.connect(func(event: InputEvent):
+			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+				if event.pressed:
+					var tween_press = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+					tween_press.tween_property(btn, "scale", Vector2(0.92, 0.92), 0.08)
+				else:
+					var tween_release = create_tween().set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+					tween_release.tween_property(btn, "scale", Vector2(1.0, 1.0), 0.12)
+					
+					_on_paket_clicked(btn, jumlah_hint, harga)
+		)
+
+func _on_paket_clicked(btn_node: Control, jumlah_hint: int, harga: int) -> void:
+	# 1. Validasi Koin
+	if koin_sekarang < harga:
+		print("Koin tidak cukup! Membutuhkan: ", harga, " Koin kamu: ", koin_sekarang)
+		
+		# Feedback Shake/Goyang jika koin tidak cukup
+		var pos_asal = btn_node.position
+		var tween_gagal = create_tween()
+		tween_gagal.tween_property(btn_node, "position", pos_asal + Vector2(-8, 0), 0.04)
+		tween_gagal.tween_property(btn_node, "position", pos_asal + Vector2(8, 0), 0.04)
+		tween_gagal.tween_property(btn_node, "position", pos_asal, 0.04)
+		
+		# Tampilkan Popup PoinTidakCukup
+		tampilkan_poin_tidak_cukup()
+		return
+
+	# 2. Bersihkan highlight di kartu lain
+	_reset_semua_seleksi_paket()
+
+	# 3. Tampilkan Efek Terpilih (Border & Pointer di kartu ini)
+	var border_glow = btn_node.get_node_or_null("SelectionBorder")
+	if border_glow:
+		border_glow.visible = true
+
+	var pointer_icon = btn_node.get_node_or_null("PointerIcon")
+	if pointer_icon:
+		pointer_icon.visible = true
+
+	# 4. Feedback Pop
+	var tween_pop = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween_pop.tween_property(btn_node, "scale", Vector2(1.06, 1.06), 0.1)
+
+	# 5. Jeda sebentar lalu eksekusi transaksi
+	await get_tree().create_timer(0.25).timeout
+	
+	beli_paket_hint(jumlah_hint, harga)
+
+func _reset_semua_seleksi_paket() -> void:
+	var path_container = get_node_or_null("InterfaceUI/PapanBeliHint/HintContainer")
+	if not path_container: return
+
+	for child in path_container.get_children():
+		child.scale = Vector2.ONE
+		
+		var border = child.get_node_or_null("SelectionBorder")
+		if border: border.visible = false
+
+		var pointer = child.get_node_or_null("PointerIcon")
+		if pointer: pointer.visible = false
+
+# =================================================================
+# POPUP POIN TIDAK CUKUP
+# =================================================================
+# =================================================================
+# POPUP POIN TIDAK CUKUP DENGAN OVERLAY REDUP DI BELAKANGNYA
+# =================================================================
+func tampilkan_poin_tidak_cukup() -> void:
+	var node_pop = get_node_or_null("InterfaceUI/PapanBeliHint/PoinTidakCukup")
+	var node_papan_beli = get_node_or_null("InterfaceUI/PapanBeliHint")
+	
+	if not node_pop or not node_papan_beli: return
+
+	# 1. Buat atau ambil Overlay Redup khusus di dalam PapanBeliHint
+	var overlay_pop = node_papan_beli.get_node_or_null("OverlayRedupPop")
+	if not overlay_pop:
+		overlay_pop = ColorRect.new()
+		overlay_pop.name = "OverlayRedupPop"
+		overlay_pop.color = Color(0, 0, 0, 0.0)
+		overlay_pop.mouse_filter = Control.MOUSE_FILTER_STOP # Mencegah klik tembus ke PapanBeliHint
+		node_papan_beli.add_child(overlay_pop)
+	
+	# Posisikan overlay agar menutupi seluruh PapanBeliHint
+	overlay_pop.position = Vector2.ZERO
+	overlay_pop.size = node_papan_beli.size
+	overlay_pop.visible = true
+
+	# Pastikan urutan z-index / hirarki: Overlay berada persis di bawah PoinTidakCukup
+	node_papan_beli.move_child(overlay_pop, node_pop.get_index())
+
+	# Animasi meredupkan background PapanBeliHint
+	var tween_overlay = create_tween()
+	tween_overlay.tween_property(overlay_pop, "color:a", 0.6, 0.2)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+	# 2. Tampilkan Pop-Up Poin Tidak Cukup
+	node_pop.visible = true
+	if "pivot_offset" in node_pop:
+		node_pop.pivot_offset = node_pop.size / 2.0
+	node_pop.scale = Vector2.ZERO
+	
+	var tween_pop = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween_pop.tween_property(node_pop, "scale", Vector2.ONE, 0.25)
+
+func _on_btn_ok_poin_tidak_cukup_pressed() -> void:
+	var node_pop = get_node_or_null("InterfaceUI/PapanBeliHint/PoinTidakCukup")
+	var node_papan_beli = get_node_or_null("InterfaceUI/PapanBeliHint")
+
+	# 1. Hilangkan efek redup pada overlay
+	if node_papan_beli:
+		var overlay_pop = node_papan_beli.get_node_or_null("OverlayRedupPop")
+		if overlay_pop:
+			var tween_overlay = create_tween()
+			tween_overlay.tween_property(overlay_pop, "color:a", 0.0, 0.15)\
+				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+			tween_overlay.finished.connect(func(): overlay_pop.visible = false)
+
+	# 2. Animasi mengecilkan & menyembunyikan Pop-Up Poin Tidak Cukup
+	if node_pop:
+		var tween_pop = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		tween_pop.tween_property(node_pop, "scale", Vector2.ZERO, 0.15)
+		await tween_pop.finished
+		node_pop.visible = false
+
+# =================================================================
+# ANIMASI SENTUHAN / KLIK TOMBOL UMUM (JUICY EFFECT)
+# =================================================================
+func anim_tombol_klik(node_tombol: Control) -> void:
+	if not node_tombol: return
+	
+	node_tombol.pivot_offset = node_tombol.size / 2.0
+	
+	var tween = create_tween().set_parallel(false)
+	tween.tween_property(node_tombol, "scale", Vector2(0.9, 0.9), 0.08)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(node_tombol, "scale", Vector2.ONE, 0.12)\
+		.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 
 # =================================================================
 # PEMANTAU REAL-TIME KONDISI MENANG
@@ -186,10 +354,14 @@ func muat_level(nomor_level: int) -> void:
 	if has_node("InterfaceUI/PapanSelamat"): $InterfaceUI/PapanSelamat.visible = false
 	if has_node("InterfaceUI/papan_hint"): $InterfaceUI/papan_hint.visible = false
 	if has_node("InterfaceUI/PapanHintHabis"): $InterfaceUI/PapanHintHabis.visible = false
-	if has_node("InterfaceUI/PapanBeliHint"): $InterfaceUI/PapanBeliHint.visible = false
+	if has_node("InterfaceUI/PapanBeliHint"): 
+		$InterfaceUI/PapanBeliHint.visible = false
+		if has_node("InterfaceUI/PapanBeliHint/PoinTidakCukup"):
+			$InterfaceUI/PapanBeliHint/PoinTidakCukup.visible = false
 	
 	sembunyikan_overlay_redup()
 	perbarui_tampilan_hint()
+	perbarui_tampilan_koin()
 
 	for child in $PipeGrid.get_children(): child.queue_free()
 	
@@ -230,9 +402,6 @@ func muat_level(nomor_level: int) -> void:
 		$"InterfaceUI/Kelembapan/SliderKelembapan".value = kelembapan_saat_ini
 		if has_node("InterfaceUI/Kelembapan/SliderKelembapan/LblAngkaKelembapan"):
 			$"InterfaceUI/Kelembapan/SliderKelembapan/LblAngkaKelembapan".text = str(kelembapan_saat_ini) + "%"
-	
-	if has_node("InterfaceUI/PnlKoin/TxtKoin"):
-		$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang)
 	
 	if data.has("pipes"):
 		var ukuran_skala = Vector2(1.9, 1.9)
@@ -334,23 +503,18 @@ func _on_btn_musik_pressed() -> void:
 func pemicu_menang_level() -> void:
 	level_selesai = true
 	
-	# 1. Ubah semua tanaman ke kondisi matang
 	for tanaman in daftar_tanaman:
 		if tanaman.has_method("ubah_ke_matang"):
 			tanaman.ubah_ke_matang()
 			
-	# 2. Tambahkan koin
 	koin_sekarang += 50
 	if koin_sekarang > target_koin:
 		koin_sekarang = target_koin
 		
-	if has_node("InterfaceUI/PnlKoin/TxtKoin"):
-		$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang)
+	perbarui_tampilan_koin()
 	
-	# 3. Jeda delay 1.5 detik
 	await get_tree().create_timer(1.5).timeout
 	
-	# 4. Tampilkan Papan Kemenangan dengan Animasi & Overlay Redup
 	var node_papan_menang = null
 	if has_node("PapanSelamat"):
 		node_papan_menang = $PapanSelamat
@@ -359,6 +523,31 @@ func pemicu_menang_level() -> void:
 		
 	if node_papan_menang:
 		tampilkan_papan_menang_dengan_animasi(node_papan_menang)
+
+# --- FUNGSI UPDATE TAMPILAN KOIN DI SEMUA PINTU UI ---
+func perbarui_tampilan_koin() -> void:
+	if has_node("InterfaceUI/PnlKoin/TxtKoin"):
+		$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang)
+		
+	var node_papan_koin = get_node_or_null("InterfaceUI/PapanBeliHint/point/lblkoin")
+	if node_papan_koin:
+		var label_poin = node_papan_koin.get_node_or_null("Label")
+		if not label_poin:
+			label_poin = node_papan_koin.get_node_or_null("TxtPoint")
+		if not label_poin:
+			if node_papan_koin is Label:
+				label_poin = node_papan_koin
+
+		if label_poin:
+			label_poin.text = str(koin_sekarang)
+		else:
+			var new_lbl = Label.new()
+			new_lbl.name = "TxtPoint"
+			new_lbl.text = str(koin_sekarang)
+			new_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			new_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			new_lbl.size = node_papan_koin.size
+			node_papan_koin.add_child(new_lbl)
 
 # --- FUNGSI TAMPILKAN OVERLAY REDUP DENGAN LAYER POSISI TEPAT ---
 func tampilkan_overlay_redup_di_belakang(target_node) -> void:
@@ -369,9 +558,18 @@ func tampilkan_overlay_redup_di_belakang(target_node) -> void:
 	overlay.size = get_viewport_rect().size
 	overlay.visible = true
 	
-	# Pindahkan OverlayRedup tepat di bawah node popup yang sedang muncul
-	if target_node.get_parent() == overlay.get_parent():
-		overlay.get_parent().move_child(overlay, target_node.get_index())
+	var parent = target_node.get_parent()
+	if parent and overlay.get_parent() == parent:
+		var target_idx = target_node.get_index()
+		if overlay.get_index() > target_idx:
+			parent.move_child(overlay, target_idx)
+		else:
+			parent.move_child(overlay, max(0, target_idx - 1))
+	
+	if target_node is CanvasItem:
+		target_node.z_index = 10
+	if overlay is CanvasItem:
+		overlay.z_index = 5
 		
 	var tween = create_tween()
 	tween.tween_property(overlay, "color:a", 0.65, 0.35)\
@@ -449,9 +647,9 @@ func _on_slider_kelembapan_value_changed(value: float) -> void:
 	if label_sekarang:
 		label_sekarang.text = str(suhu_saat_ini) + "°C"
 			
-	simulasi_suhu_sudah_pas = (abs(suhu_saat_ini - data["target_suhu"]) <= 2)
+	simulasi_suhu_sudah_pas = (suhu_saat_ini == data["target_suhu"])
 	simulasi_kelembapan_sudah_pas = (
-		kelembapan_saat_ini >= data["min_kelembapan"] and 
+		kelembapan_saat_ini >= data["min_kelembapan"] and
 		kelembapan_saat_ini <= data["max_kelembapan"]
 	)
 	simulasi_pipa_tersambung = cek_semua_pipa_tersambung()
@@ -503,12 +701,45 @@ func _on_btn_reset_pressed() -> void:
 	if level_selesai:
 		return
 		
+	# 1. Animasi tombol klik (Juicy Feedback)
+	var btn_reset = get_node_or_null("InterfaceUI/BtnReset")
+	if not btn_reset:
+		btn_reset = get_node_or_null("BtnReset") # Mengantisipasi jika letaknya di root
+	if btn_reset:
+		anim_tombol_klik(btn_reset)
+
 	print("Meriset Level ", level_sekarang, "...")
+	
+	# 2. Ambil atau buat Overlay Transisi Layar
+	var overlay = get_node_or_null("InterfaceUI/OverlayRedup")
+	if overlay:
+		overlay.global_position = Vector2.ZERO
+		overlay.size = get_viewport_rect().size
+		overlay.visible = true
+		overlay.z_index = 100 # Pastikan overlay berada paling atas menutupi semua UI
+		
+		# Animasi Redup (Fade In ke Layar Gelap)
+		var tween_fade_in = create_tween()
+		tween_fade_in.tween_property(overlay, "color:a", 0.75, 0.25)\
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		await tween_fade_in.finished
+
+	# 3. Reset Status Variabel Permainan
 	simulasi_pipa_tersambung = false
 	simulasi_suhu_sudah_pas = false
 	simulasi_kelembapan_sudah_pas = false
 	
+	# 4. Muat Ulang Level (Grid Pipa, Kelembapan, dan Termometer kembali ke posisi awal)
 	muat_level(level_sekarang)
+
+	# 5. Animasi Terang Kembali (Fade Out Layar Gelap)
+	if overlay:
+		var tween_fade_out = create_tween()
+		tween_fade_out.tween_property(overlay, "color:a", 0.0, 0.3)\
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		await tween_fade_out.finished
+		overlay.visible = false
+		overlay.z_index = 0 # Kembalikan z-index ke posisi standar
 
 func _on_btn_ok_pressed() -> void:
 	if has_node("PapanSelamat"):
@@ -530,7 +761,6 @@ func perbarui_tampilan_hint() -> void:
 func _on_hint_pressed() -> void:
 	if level_selesai: return
 	
-	# --- JIKA HINT HABIS (0) -> MUNCULKAN POPUP HINT HABIS ---
 	if sisa_hint <= 0:
 		tampilkan_papan_hint_habis()
 		return
@@ -546,12 +776,12 @@ func _on_hint_pressed() -> void:
 			var jenis = child.get_meta("jenis_pipa")
 			var salah: bool = false
 			if jenis == "LURUS":
-				if (target == 0 or target == 180) != (current == 0 or current == 180): 
+				if (target == 0 or target == 180) != (current == 0 or current == 180):
 					salah = true
 			elif jenis in ["SIKU", "T"]:
 				var selisih = abs(current - target)
 				if selisih > 180: selisih = 360 - selisih
-				if selisih > 25: 
+				if selisih > 25:
 					salah = true
 				
 			if salah:
@@ -622,7 +852,6 @@ func perbarui_papan_hint() -> void:
 		var max_k = data.get("max_kelembapan", 70)
 		label_kelembapan.text = "Kelembapan \t\t" + str(min_k) + "% - " + str(max_k) + "%"
 
-	# Panggil overlay redup di belakang papan hint
 	tampilkan_papan_menang_dengan_animasi(node_papan)
 
 # =================================================================
@@ -634,22 +863,21 @@ func tampilkan_papan_hint_habis() -> void:
 	if node_papan:
 		tampilkan_papan_menang_dengan_animasi(node_papan)
 
-# Dipanggil dari Signal pressed tombol "BtnBeliHint" di dalam PapanHintHabis
 func _on_btn_beli_hint_pressed() -> void:
 	if has_node("InterfaceUI/PapanHintHabis"):
 		$InterfaceUI/PapanHintHabis.visible = false
 		
 	var node_toko = get_node_or_null("InterfaceUI/PapanBeliHint")
 	if node_toko:
+		_reset_semua_seleksi_paket()
+		perbarui_tampilan_koin()
 		tampilkan_papan_menang_dengan_animasi(node_toko)
 
-# Dipanggil dari Signal pressed tombol "BtnClose" di PapanHintHabis
 func _on_btn_close_hint_habis_pressed() -> void:
 	if has_node("InterfaceUI/PapanHintHabis"):
 		$InterfaceUI/PapanHintHabis.visible = false
 	sembunyikan_overlay_redup()
 
-# Dipanggil dari Signal pressed tombol Close (X) di PapanBeliHint
 func _on_btn_close_beli_hint_pressed() -> void:
 	if has_node("InterfaceUI/PapanBeliHint"):
 		$InterfaceUI/PapanBeliHint.visible = false
@@ -664,31 +892,14 @@ func beli_paket_hint(jumlah_hint: int, harga_koin: int) -> void:
 		koin_sekarang -= harga_koin
 		sisa_hint += jumlah_hint
 		
-		# Reset urutan hint jika sebelumnya sudah pernah habis
 		if sisa_hint > 0 and tahap_hint >= 3:
 			tahap_hint = 0
 			
 		perbarui_tampilan_hint()
+		perbarui_tampilan_koin()
 		
-		if has_node("InterfaceUI/PnlKoin/TxtKoin"):
-			$InterfaceUI/PnlKoin/TxtKoin.text = str(koin_sekarang)
-			
 		print("Berhasil membeli ", jumlah_hint, " Hint! Koin tersisa: ", koin_sekarang)
 		
-		# Tutup popup toko setelah berhasil beli
 		_on_btn_close_beli_hint_pressed()
 	else:
-		print("Koin tidak cukup! Membutuhkan: ", harga_koin, " Koin kamu: ", koin_sekarang)
-
-# Hubungkan masing-masing tombol paket di inspector ke fungsi-fungsi berikut:
-func _on_btn_beli_1_hint_pressed() -> void:
-	beli_paket_hint(1, 25)
-
-func _on_btn_beli_5_hint_pressed() -> void:
-	beli_paket_hint(5, 100)
-
-func _on_btn_beli_10_hint_pressed() -> void:
-	beli_paket_hint(10, 200)
-
-func _on_btn_beli_20_hint_pressed() -> void:
-	beli_paket_hint(20, 350)
+		tampilkan_poin_tidak_cukup()

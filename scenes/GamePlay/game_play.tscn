@@ -25,6 +25,16 @@
 [ext_resource type="Texture2D" uid="uid://ddrygblotxpkl" path="res://asset_gambar/gambar_board/hint_habis.png" id="20_6jtns"]
 [ext_resource type="Texture2D" uid="uid://ebivolsmb8cl" path="res://asset_gambar/gambar_button/button_beli_hint.png" id="21_hcvdi"]
 [ext_resource type="Texture2D" uid="uid://dbrboccnowknb" path="res://asset_gambar/gambar_board/papan_beli_hint.png" id="22_2t0op"]
+[ext_resource type="Texture2D" uid="uid://lghfqktqf58m" path="res://asset_gambar/gambar_board/1hint.png" id="23_1m0am"]
+[ext_resource type="Texture2D" uid="uid://nw56ibcmc70k" path="res://asset_gambar/gambar_board/5hint.png" id="24_b5st6"]
+[ext_resource type="Texture2D" uid="uid://l35yo7uytbiv" path="res://asset_gambar/gambar_button/25 point.png" id="24_imqgt"]
+[ext_resource type="Texture2D" uid="uid://cml2aqps34cox" path="res://asset_gambar/gambar_board/10hint.png" id="25_i2xw7"]
+[ext_resource type="Texture2D" uid="uid://cwluuoufibek1" path="res://asset_gambar/gambar_button/110 point.png" id="26_10hop"]
+[ext_resource type="Texture2D" uid="uid://b3mt2n6x56hux" path="res://asset_gambar/gambar_board/20hint.png" id="26_mb3gm"]
+[ext_resource type="Texture2D" uid="uid://coxpwd57kgtmn" path="res://asset_gambar/gambar_button/200 point.png" id="28_1jbh1"]
+[ext_resource type="Texture2D" uid="uid://cqy72texwdfff" path="res://asset_gambar/gambar_button/350 point.png" id="30_c6roe"]
+[ext_resource type="Texture2D" uid="uid://bqkpdq85torne" path="res://asset_gambar/gambar_button/koin.png" id="31_tq0pc"]
+[ext_resource type="Texture2D" uid="uid://c8nj4g60i8g0u" path="res://asset_gambar/gambar_board/Group 632.png" id="32_10hop"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7gmu8"]
 load_path = "res://.godot/imported/suhu_control.png-eb90f7f69bdb943340812e115fb37ad6.ctex"
@@ -382,10 +392,10 @@ texture_normal = SubResource("CompressedTexture2D_djemk")
 
 [node name="PapanBeliHint" type="TextureRect" parent="InterfaceUI" unique_id=1235377845]
 layout_mode = 0
-offset_left = 99.0
-offset_top = 280.0
-offset_right = 533.0
-offset_bottom = 822.0
+offset_left = 101.0
+offset_top = 270.0
+offset_right = 550.0
+offset_bottom = 824.0
 texture = ExtResource("22_2t0op")
 
 [node name="BtnClose" type="TextureButton" parent="InterfaceUI/PapanBeliHint" unique_id=250797261]
@@ -395,6 +405,102 @@ offset_top = 3.0
 offset_right = 404.0
 offset_bottom = 102.0
 texture_normal = ExtResource("18_gfrei")
+
+[node name="HintContainer" type="HBoxContainer" parent="InterfaceUI/PapanBeliHint" unique_id=419271703]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.037
+offset_left = 34.0
+offset_top = 249.0
+offset_right = 419.0
+offset_bottom = 426.502
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Hint1" type="TextureButton" parent="InterfaceUI/PapanBeliHint/HintContainer" unique_id=756060993]
+layout_mode = 2
+texture_normal = ExtResource("23_1m0am")
+
+[node name="25point" type="TextureButton" parent="InterfaceUI/PapanBeliHint/HintContainer/Hint1" unique_id=210692571]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 119.0
+offset_right = 73.0
+offset_bottom = 159.0
+texture_normal = ExtResource("24_imqgt")
+
+[node name="Hint5" type="TextureButton" parent="InterfaceUI/PapanBeliHint/HintContainer" unique_id=1262968840]
+layout_mode = 2
+texture_normal = ExtResource("24_b5st6")
+
+[node name="110point" type="TextureButton" parent="InterfaceUI/PapanBeliHint/HintContainer/Hint5" unique_id=402968540]
+layout_mode = 0
+offset_left = -19.0
+offset_top = 97.0
+offset_right = 100.0
+offset_bottom = 176.0
+texture_normal = ExtResource("26_10hop")
+
+[node name="Hint10" type="TextureButton" parent="InterfaceUI/PapanBeliHint/HintContainer" unique_id=865185780]
+layout_mode = 2
+texture_normal = ExtResource("25_i2xw7")
+
+[node name="200point" type="TextureButton" parent="InterfaceUI/PapanBeliHint/HintContainer/Hint10" unique_id=1953316870]
+layout_mode = 0
+offset_left = -17.0
+offset_top = 98.0
+offset_right = 102.0
+offset_bottom = 177.0
+texture_normal = ExtResource("28_1jbh1")
+
+[node name="Hint20" type="TextureButton" parent="InterfaceUI/PapanBeliHint/HintContainer" unique_id=1859394648]
+layout_mode = 2
+texture_normal = ExtResource("26_mb3gm")
+
+[node name="TextureButton" type="TextureButton" parent="InterfaceUI/PapanBeliHint/HintContainer/Hint20" unique_id=270408048]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 110.0
+offset_right = 81.0
+offset_bottom = 163.0
+texture_normal = ExtResource("30_c6roe")
+
+[node name="point" type="TextureRect" parent="InterfaceUI/PapanBeliHint" unique_id=1438088617]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.072000004
+offset_left = 241.0
+offset_top = 446.0
+offset_right = 281.0
+offset_bottom = 446.112
+texture = ExtResource("31_tq0pc")
+
+[node name="lblkoin" type="Label" parent="InterfaceUI/PapanBeliHint/point" unique_id=1777348717]
+layout_mode = 0
+offset_left = 41.0
+offset_top = 1.0
+offset_right = 93.0
+offset_bottom = 42.0
+theme_override_colors/font_color = Color(0.3882353, 0.27450982, 0.105882354, 1)
+theme_override_fonts/font = ExtResource("12_n58gl")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+
+[node name="PoinTidakCukup" type="TextureRect" parent="InterfaceUI/PapanBeliHint" unique_id=803324527]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 41.0
+offset_right = 418.0
+offset_bottom = 441.0
+texture = ExtResource("32_10hop")
+
+[node name="BtnOk" type="TextureButton" parent="InterfaceUI/PapanBeliHint/PoinTidakCukup" unique_id=479568515]
+layout_mode = 0
+offset_left = 111.0
+offset_top = 317.0
+offset_right = 270.0
+offset_bottom = 368.0
+texture_normal = ExtResource("17_7gmu8")
 
 [node name="PapanSelamat" type="Sprite2D" parent="." unique_id=1870858558]
 visible = false
