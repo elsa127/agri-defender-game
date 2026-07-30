@@ -72,3 +72,9 @@ func set_active(which):
 	elif which == "info":
 		if info_board_normal: info_board_normal.visible = false
 		if info_board_active: info_board_active.visible = true
+
+
+func _on_toko_icon_pressed() -> void:
+	# Tampilkan toko hint
+	$TokoHint.visible = true
+	print("✅ Toko Hint dibuka!")
