@@ -43,6 +43,7 @@ offset_right = 284.0
 offset_bottom = 445.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.8, 0.8)
 texture = ExtResource("1_1g0pf")
 stretch_mode = 5
 
@@ -275,3 +276,8 @@ offset_bottom = 126.0
 theme_override_fonts/font = ExtResource("8_rj6s6")
 theme_override_font_sizes/font_size = 45
 text = "TOKO HINT"
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=1571425862]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

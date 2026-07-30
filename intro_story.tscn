@@ -21,9 +21,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.8, 0.8)
 texture = ExtResource("1_n6n6b")
 
-[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1226550477]
+[node name="NinePatchRect" type="NinePatchRect" parent="TextureRect" unique_id=1226550477]
 custom_minimum_size = Vector2(260, 140)
 layout_mode = 1
 anchors_preset = 7
@@ -39,7 +40,7 @@ grow_horizontal = 2
 grow_vertical = 0
 texture = ExtResource("2_q3ba4")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="NinePatchRect" unique_id=2100492983]
+[node name="RichTextLabel" type="RichTextLabel" parent="TextureRect/NinePatchRect" unique_id=2100492983]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,7 +59,7 @@ hasil sawah dan kebun mereka."
 horizontal_alignment = 1
 script = ExtResource("4_q3ba4")
 
-[node name="LalaCharacter" type="Sprite2D" parent="." unique_id=2051882814]
+[node name="LalaCharacter" type="Sprite2D" parent="TextureRect" unique_id=2051882814]
 visible = false
 position = Vector2(189.99998, 912.00006)
 scale = Vector2(0.7332215, 0.6785714)

@@ -33,6 +33,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.8, 0.8)
 texture = ExtResource("1_gswpo")
 
 [node name="LevelBoard" type="TextureRect" parent="." unique_id=181666811]
@@ -42,23 +43,24 @@ offset_left = -56.0
 offset_top = 85.0
 offset_right = 826.0
 offset_bottom = 1280.0
+scale = Vector2(0.8, 0.8)
 texture = ExtResource("2_3rh63")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="TokoGroup" type="Control" parent="." unique_id=1094261808]
+[node name="TokoGroup" type="Control" parent="LevelBoard" unique_id=1094261808]
 custom_minimum_size = Vector2(160, 160)
 anchors_preset = 0
-offset_left = 85.0
-offset_top = 1165.0
-offset_right = 245.0
-offset_bottom = 1325.0
+offset_left = 141.0
+offset_top = 1080.0
+offset_right = 301.0
+offset_bottom = 1240.0
 
-[node name="TokoNamePlate" type="Control" parent="TokoGroup" unique_id=1027451211]
+[node name="TokoNamePlate" type="Control" parent="LevelBoard/TokoGroup" unique_id=1027451211]
 anchors_preset = 0
 offset_right = 160.0
 
-[node name="TokoBoardNormal" type="TextureRect" parent="TokoGroup/TokoNamePlate" unique_id=1034062639]
+[node name="TokoBoardNormal" type="TextureRect" parent="LevelBoard/TokoGroup/TokoNamePlate" unique_id=1034062639]
 layout_mode = 0
 offset_left = 36.0
 offset_top = 67.0
@@ -67,7 +69,7 @@ offset_bottom = 107.0
 texture = ExtResource("4_tuscg")
 stretch_mode = 5
 
-[node name="TokoBoardActive" type="TextureRect" parent="TokoGroup/TokoNamePlate" unique_id=1866676238]
+[node name="TokoBoardActive" type="TextureRect" parent="LevelBoard/TokoGroup/TokoNamePlate" unique_id=1866676238]
 visible = false
 layout_mode = 0
 offset_left = 19.0
@@ -77,7 +79,7 @@ offset_bottom = 126.0
 texture = ExtResource("5_rcujv")
 stretch_mode = 5
 
-[node name="TokoIcon" type="TextureButton" parent="TokoGroup" unique_id=560878398]
+[node name="TokoIcon" type="TextureButton" parent="LevelBoard/TokoGroup" unique_id=560878398]
 custom_minimum_size = Vector2(90, 90)
 layout_mode = 0
 offset_top = 4.0
@@ -86,29 +88,29 @@ offset_bottom = 94.0
 texture_normal = ExtResource("3_42rqe")
 stretch_mode = 5
 
-[node name="TokoTextActive" type="Label" parent="." unique_id=1995058998]
+[node name="TokoTextActive" type="Label" parent="LevelBoard" unique_id=1995058998]
 layout_mode = 0
-offset_left = 87.0
-offset_top = 1237.0
-offset_right = 247.0
-offset_bottom = 1263.0
+offset_left = 143.0
+offset_top = 1152.0
+offset_right = 302.99997
+offset_bottom = 1178.0
 theme_override_font_sizes/font_size = 18
 text = "Toko"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LevelGroup" type="Control" parent="." unique_id=1528282731]
+[node name="LevelGroup" type="Control" parent="LevelBoard" unique_id=1528282731]
 anchors_preset = 0
-offset_left = 285.0
-offset_top = 1146.0
-offset_right = 425.0
-offset_bottom = 1290.0
+offset_left = 341.0
+offset_top = 1061.0
+offset_right = 481.0
+offset_bottom = 1205.0
 
-[node name="LevelNamePlate" type="Control" parent="LevelGroup" unique_id=778263194]
+[node name="LevelNamePlate" type="Control" parent="LevelBoard/LevelGroup" unique_id=778263194]
 anchors_preset = 0
 offset_right = 140.0
 
-[node name="LevelBoardNormal" type="TextureRect" parent="LevelGroup/LevelNamePlate" unique_id=1898827996]
+[node name="LevelBoardNormal" type="TextureRect" parent="LevelBoard/LevelGroup/LevelNamePlate" unique_id=1898827996]
 visible = false
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 0
@@ -119,7 +121,7 @@ offset_bottom = 131.0
 texture = ExtResource("4_tuscg")
 stretch_mode = 5
 
-[node name="LevelBoardActive" type="TextureRect" parent="LevelGroup/LevelNamePlate" unique_id=1520712227]
+[node name="LevelBoardActive" type="TextureRect" parent="LevelBoard/LevelGroup/LevelNamePlate" unique_id=1520712227]
 custom_minimum_size = Vector2(140, 55)
 layout_mode = 1
 offset_left = 2.0
@@ -129,7 +131,7 @@ offset_bottom = 144.0
 texture = ExtResource("5_rcujv")
 stretch_mode = 5
 
-[node name="LevelTextActive" type="Label" parent="LevelGroup" unique_id=106852999]
+[node name="LevelTextActive" type="Label" parent="LevelBoard/LevelGroup" unique_id=106852999]
 layout_mode = 0
 offset_left = 6.0
 offset_top = 96.0
@@ -140,7 +142,7 @@ text = "Level"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LevelIcon" type="TextureButton" parent="LevelGroup" unique_id=300180123]
+[node name="LevelIcon" type="TextureButton" parent="LevelBoard/LevelGroup" unique_id=300180123]
 custom_minimum_size = Vector2(90, 90)
 layout_mode = 0
 offset_left = 3.0
@@ -150,26 +152,26 @@ offset_bottom = 113.0
 texture_normal = ExtResource("4_rcujv")
 stretch_mode = 5
 
-[node name="InfoGroup" type="Control" parent="." unique_id=855784156]
+[node name="InfoGroup" type="Control" parent="LevelBoard" unique_id=855784156]
 anchors_preset = 0
-offset_left = 511.0
-offset_top = 1165.0
-offset_right = 601.0
-offset_bottom = 1289.0
+offset_left = 567.0
+offset_top = 1080.0
+offset_right = 657.0
+offset_bottom = 1204.0
 
-[node name="InfoNamePlate" type="Control" parent="InfoGroup" unique_id=753979799]
+[node name="InfoNamePlate" type="Control" parent="LevelBoard/InfoGroup" unique_id=753979799]
 anchors_preset = 0
 offset_top = 70.0
 offset_right = 90.0
 offset_bottom = 70.0
 
-[node name="InfoBoardNormal" type="TextureRect" parent="InfoGroup/InfoNamePlate" unique_id=1613851297]
+[node name="InfoBoardNormal" type="TextureRect" parent="LevelBoard/InfoGroup/InfoNamePlate" unique_id=1613851297]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("4_tuscg")
 
-[node name="InfoBoardActive" type="TextureRect" parent="InfoGroup/InfoNamePlate" unique_id=1447935345]
+[node name="InfoBoardActive" type="TextureRect" parent="LevelBoard/InfoGroup/InfoNamePlate" unique_id=1447935345]
 visible = false
 layout_mode = 0
 offset_left = -17.0
@@ -178,14 +180,14 @@ offset_right = 108.0
 offset_bottom = 55.0
 texture = ExtResource("5_rcujv")
 
-[node name="InfoIcon" type="TextureButton" parent="InfoGroup" unique_id=1297622482]
+[node name="InfoIcon" type="TextureButton" parent="LevelBoard/InfoGroup" unique_id=1297622482]
 custom_minimum_size = Vector2(90, 90)
 layout_mode = 0
 offset_right = 90.0
 offset_bottom = 90.0
 texture_normal = ExtResource("5_efsdc")
 
-[node name="InfoTextActive" type="Label" parent="InfoGroup" unique_id=1654173732]
+[node name="InfoTextActive" type="Label" parent="LevelBoard/InfoGroup" unique_id=1654173732]
 layout_mode = 0
 offset_left = 3.0
 offset_top = 74.0
@@ -196,50 +198,50 @@ text = "Info"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Level1Button" type="TextureButton" parent="." unique_id=1878412556]
+[node name="Level1Button" type="TextureButton" parent="LevelBoard" unique_id=1878412556]
 layout_mode = 0
-offset_left = 85.0
-offset_top = 298.0
-offset_right = 275.0
-offset_bottom = 552.0
+offset_left = 141.0
+offset_top = 213.0
+offset_right = 331.0
+offset_bottom = 467.0
 texture_normal = ExtResource("10_crhqw")
 stretch_mode = 0
 
-[node name="Level2Button" type="TextureButton" parent="." unique_id=501746593]
+[node name="Level2Button" type="TextureButton" parent="LevelBoard" unique_id=501746593]
 custom_minimum_size = Vector2(75, 90)
 layout_mode = 1
-offset_left = 262.0
-offset_top = 298.0
-offset_right = 452.0
-offset_bottom = 552.0
+offset_left = 318.0
+offset_top = 213.0
+offset_right = 508.0
+offset_bottom = 467.0
 texture_normal = ExtResource("11_0oihc")
 stretch_mode = 0
 
-[node name="Level3Button" type="TextureButton" parent="." unique_id=1539154335]
+[node name="Level3Button" type="TextureButton" parent="LevelBoard" unique_id=1539154335]
 layout_mode = 0
-offset_left = 440.0
-offset_top = 298.0
-offset_right = 630.0
-offset_bottom = 552.0
+offset_left = 496.0
+offset_top = 213.0
+offset_right = 686.0
+offset_bottom = 467.0
 texture_normal = ExtResource("12_74jid")
 
-[node name="Level4Button" type="TextureButton" parent="." unique_id=1073677810]
+[node name="Level4Button" type="TextureButton" parent="LevelBoard" unique_id=1073677810]
 layout_mode = 0
-offset_left = 76.0
-offset_top = 518.0
-offset_right = 275.0
-offset_bottom = 783.0
+offset_left = 132.0
+offset_top = 433.0
+offset_right = 331.0
+offset_bottom = 698.0
 texture_normal = ExtResource("13_f5b06")
 
-[node name="Level5Button" type="TextureButton" parent="." unique_id=1226139307]
+[node name="Level5Button" type="TextureButton" parent="LevelBoard" unique_id=1226139307]
 layout_mode = 0
-offset_left = 272.0
-offset_top = 540.0
-offset_right = 462.0
-offset_bottom = 794.0
+offset_left = 328.0
+offset_top = 455.0
+offset_right = 518.0
+offset_bottom = 709.0
 texture_normal = ExtResource("14_4it42")
 
-[node name="TextLevel" type="Label" parent="Level5Button" unique_id=1170710860]
+[node name="TextLevel" type="Label" parent="LevelBoard/Level5Button" unique_id=1170710860]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -256,15 +258,15 @@ theme_override_fonts/font = ExtResource("14_0oihc")
 theme_override_font_sizes/font_size = 40
 text = "5"
 
-[node name="Level6Button" type="TextureButton" parent="." unique_id=534763961]
+[node name="Level6Button" type="TextureButton" parent="LevelBoard" unique_id=534763961]
 layout_mode = 0
-offset_left = 449.0
-offset_top = 538.0
-offset_right = 639.0
-offset_bottom = 792.0
+offset_left = 505.0
+offset_top = 453.0
+offset_right = 695.0
+offset_bottom = 707.0
 texture_normal = ExtResource("14_4it42")
 
-[node name="TextLevel" type="Label" parent="Level6Button" unique_id=1963838235]
+[node name="TextLevel" type="Label" parent="LevelBoard/Level6Button" unique_id=1963838235]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -281,15 +283,15 @@ theme_override_fonts/font = ExtResource("14_0oihc")
 theme_override_font_sizes/font_size = 40
 text = "6"
 
-[node name="Level7Button" type="TextureButton" parent="." unique_id=118428044]
+[node name="Level7Button" type="TextureButton" parent="LevelBoard" unique_id=118428044]
 layout_mode = 0
-offset_left = 93.0
-offset_top = 755.0
-offset_right = 283.0
-offset_bottom = 1009.0
+offset_left = 149.0
+offset_top = 670.0
+offset_right = 338.99997
+offset_bottom = 924.0
 texture_normal = ExtResource("14_4it42")
 
-[node name="TextLevel" type="Label" parent="Level7Button" unique_id=1107824605]
+[node name="TextLevel" type="Label" parent="LevelBoard/Level7Button" unique_id=1107824605]
 layout_mode = 0
 offset_left = 28.0
 offset_top = -3.0
@@ -299,15 +301,15 @@ theme_override_fonts/font = ExtResource("14_0oihc")
 theme_override_font_sizes/font_size = 40
 text = "7"
 
-[node name="Level8Button" type="TextureButton" parent="." unique_id=876711200]
+[node name="Level8Button" type="TextureButton" parent="LevelBoard" unique_id=876711200]
 layout_mode = 0
-offset_left = 273.0
-offset_top = 758.0
-offset_right = 463.0
-offset_bottom = 1012.0
+offset_left = 329.0
+offset_top = 673.0
+offset_right = 519.0
+offset_bottom = 927.0
 texture_normal = ExtResource("14_4it42")
 
-[node name="TextLevel" type="Label" parent="Level8Button" unique_id=1600651589]
+[node name="TextLevel" type="Label" parent="LevelBoard/Level8Button" unique_id=1600651589]
 layout_mode = 0
 offset_left = 25.0
 offset_top = -5.0
@@ -317,15 +319,15 @@ theme_override_fonts/font = ExtResource("14_0oihc")
 theme_override_font_sizes/font_size = 40
 text = "8"
 
-[node name="Level9Button" type="TextureButton" parent="." unique_id=1838095117]
+[node name="Level9Button" type="TextureButton" parent="LevelBoard" unique_id=1838095117]
 layout_mode = 0
-offset_left = 449.0
-offset_top = 758.0
-offset_right = 639.0
-offset_bottom = 1012.0
+offset_left = 505.0
+offset_top = 673.0
+offset_right = 695.0
+offset_bottom = 927.0
 texture_normal = ExtResource("14_4it42")
 
-[node name="TextLevel" type="Label" parent="Level9Button" unique_id=792594590]
+[node name="TextLevel" type="Label" parent="LevelBoard/Level9Button" unique_id=792594590]
 layout_mode = 0
 offset_left = 27.0
 offset_top = -5.0
@@ -335,33 +337,33 @@ theme_override_fonts/font = ExtResource("14_0oihc")
 theme_override_font_sizes/font_size = 40
 text = "9"
 
-[node name="Level10Button" type="TextureButton" parent="." unique_id=2141309593]
+[node name="Level10Button" type="TextureButton" parent="LevelBoard" unique_id=2141309593]
 layout_mode = 0
-offset_left = 85.0
-offset_top = 298.0
-offset_right = 275.0
-offset_bottom = 552.0
+offset_left = 141.0
+offset_top = 213.0
+offset_right = 330.99997
+offset_bottom = 467.0
 
-[node name="Level11Button" type="TextureButton" parent="." unique_id=903210911]
+[node name="Level11Button" type="TextureButton" parent="LevelBoard" unique_id=903210911]
 layout_mode = 0
-offset_left = 85.0
-offset_top = 298.0
-offset_right = 275.0
-offset_bottom = 552.0
+offset_left = 141.0
+offset_top = 213.0
+offset_right = 331.0
+offset_bottom = 467.0
 texture_normal = ExtResource("10_crhqw")
 
-[node name="Level12Button" type="TextureButton" parent="." unique_id=1091755391]
+[node name="Level12Button" type="TextureButton" parent="LevelBoard" unique_id=1091755391]
 layout_mode = 0
-offset_left = 85.0
-offset_top = 298.0
-offset_right = 275.0
-offset_bottom = 552.0
+offset_left = 141.0
+offset_top = 213.0
+offset_right = 331.0
+offset_bottom = 467.0
 texture_normal = ExtResource("10_crhqw")
 
 [node name="UIPoin" type="Control" parent="." unique_id=1942303952]
 anchors_preset = 0
 offset_left = 20.0
-offset_right = 220.0
+offset_right = 219.99997
 offset_bottom = 105.0
 
 [node name="IconKoin" type="TextureRect" parent="UIPoin" unique_id=211076084]
@@ -384,5 +386,6 @@ text = "120"
 [node name="TokoHint" parent="." unique_id=636775149 instance=ExtResource("9_2wv3l")]
 visible = false
 layout_mode = 1
+offset_right = -6.181002e-05
 
-[connection signal="pressed" from="TokoGroup/TokoIcon" to="." method="_on_toko_icon_pressed"]
+[connection signal="pressed" from="LevelBoard/TokoGroup/TokoIcon" to="." method="_on_toko_icon_pressed"]
