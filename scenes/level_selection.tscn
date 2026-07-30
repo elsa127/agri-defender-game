@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://043twur1012e" path="res://asset_gambar/gambar_asset_menu/nama_menu.png" id="4_tuscg"]
 [ext_resource type="Texture2D" uid="uid://bmt4kf2t215qa" path="res://asset_gambar/gambar_asset_menu/info.png" id="5_efsdc"]
 [ext_resource type="Texture2D" uid="uid://dvl2nba2buli2" path="res://asset_gambar/gambar_asset_menu/menu_terpilih.png" id="5_rcujv"]
+[ext_resource type="PackedScene" uid="uid://bu2ideuj8juk0" path="res://scenes/toko_hint.tscn" id="9_2wv3l"]
 
 [node name="LevelSelection" type="Control" unique_id=63114121]
 layout_mode = 3
@@ -187,3 +188,6 @@ theme_override_font_sizes/font_size = 18
 text = "Info"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TokoHint" parent="." unique_id=636775149 instance=ExtResource("9_2wv3l")]
+layout_mode = 1
