@@ -66,15 +66,44 @@ func set_active(which):
 	if which == "toko":
 		if toko_board_normal: toko_board_normal.visible = false
 		if toko_board_active: toko_board_active.visible = true
+		# Menampilkan Toko Hint
+		if has_node("TokoHint"):
+			$TokoHint.visible = true
+			print("✅ Toko Hint dibuka!")
 	elif which == "level":
 		if level_board_normal: level_board_normal.visible = false
 		if level_board_active: level_board_active.visible = true
 	elif which == "info":
 		if info_board_normal: info_board_normal.visible = false
 		if info_board_active: info_board_active.visible = true
+		# Menampilkan Info Popup
+		if has_node("InfoPopup"):
+			$InfoPopup.visible = true
+			print("✅ Pop-up Info dibuka!")
 
 
 func _on_toko_icon_pressed() -> void:
 	# Tampilkan toko hint
-	$TokoHint.visible = true
-	print("✅ Toko Hint dibuka!")
+	if has_node("TokoHint"):
+		$TokoHint.visible = true
+		print("✅ Toko Hint dibuka!")
+
+
+func _on_info_icon_pressed() -> void:
+	# Tampilkan pop-up info
+	if has_node("InfoPopup"):
+		$InfoPopup.visible = true
+		print("✅ Pop-up Info dibuka!")
+
+
+# Fungsi tambahan untuk menutup Info Popup (hubungkan ke tombol Close/X di InfoPopup)
+func _on_close_button_pressed() -> void:
+	if has_node("InfoPopup"):
+		$InfoPopup.visible = false
+		print("❌ Pop-up Info ditutup!")
+
+
+func _on_close_info_pressed() -> void:
+	if has_node("InfoPopup"):
+		$InfoPopup.visible = false
+		print("❌ Pop-up Info ditutup!")

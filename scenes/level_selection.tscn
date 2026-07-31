@@ -16,6 +16,12 @@
 [ext_resource type="FontFile" uid="uid://d4ecrtf4e6pvo" path="res://font/Baloo-Regular.ttf" id="14_0oihc"]
 [ext_resource type="Texture2D" uid="uid://cqyyx63xygbqu" path="res://asset_gambar/gambar_asset_menu/lv_lock.png" id="14_4it42"]
 [ext_resource type="Texture2D" uid="uid://bodr2fs62l1fa" path="res://asset_gambar/gambar_board/poin menu.png" id="15_lwmgr"]
+[ext_resource type="Texture2D" uid="uid://2ojinfxo20b2" path="res://assets/tumbuhan.png" id="17_lwmgr"]
+[ext_resource type="Texture2D" uid="uid://bgl3yogci04h2" path="res://assets/text_tumbuhan.png" id="18_nc37p"]
+[ext_resource type="Texture2D" uid="uid://cfg214s1yb6f4" path="res://assets/drone.png" id="19_7jkdw"]
+[ext_resource type="Texture2D" uid="uid://d2ajtuon5ioht" path="res://assets/text_dronr.png" id="20_25sbw"]
+[ext_resource type="Texture2D" uid="uid://dqojbk7wrf44n" path="res://assets/Info.png" id="21_nc37p"]
+[ext_resource type="Texture2D" uid="uid://bbtb367m3h6tj" path="res://assets/IconClose.png" id="22_7jkdw"]
 
 [node name="LevelSelection" type="Control" unique_id=63114121]
 layout_mode = 3
@@ -383,9 +389,88 @@ theme_override_fonts/font = ExtResource("14_0oihc")
 theme_override_font_sizes/font_size = 24
 text = "120"
 
+[node name="IconTumbuhan" type="TextureRect" parent="." unique_id=1421511867]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 814.0
+offset_right = 166.0
+offset_bottom = 964.0
+texture = ExtResource("17_lwmgr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextTumbuhan" type="TextureRect" parent="." unique_id=236250326]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 814.0
+offset_right = 262.0
+offset_bottom = 964.0
+texture = ExtResource("18_nc37p")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconDrone" type="TextureRect" parent="." unique_id=1804634625]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 835.0
+offset_right = 372.0
+offset_bottom = 935.0
+texture = ExtResource("19_7jkdw")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextDrone" type="TextureRect" parent="." unique_id=1369639466]
+layout_mode = 0
+offset_left = 350.0
+offset_top = 818.0
+offset_right = 500.0
+offset_bottom = 968.0
+texture = ExtResource("20_25sbw")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="TokoHint" parent="." unique_id=636775149 instance=ExtResource("9_2wv3l")]
 visible = false
 layout_mode = 1
-offset_right = -6.181002e-05
+offset_right = -6.1035156e-05
+
+[node name="InfoPopup" type="Control" parent="." unique_id=914279548]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="InfoPopup" unique_id=1317534776]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="InfoBoard" type="TextureRect" parent="InfoPopup" unique_id=844104220]
+layout_mode = 0
+offset_left = 63.0
+offset_top = 293.0
+offset_right = 513.0
+offset_bottom = 743.0
+texture = ExtResource("21_nc37p")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CloseInfo" type="TextureButton" parent="InfoPopup" unique_id=732073892]
+layout_mode = 1
+offset_left = 358.0
+offset_top = 331.0
+offset_right = 398.0
+offset_bottom = 371.0
+texture_normal = ExtResource("22_7jkdw")
+ignore_texture_size = true
+stretch_mode = 0
 
 [connection signal="pressed" from="LevelBoard/TokoGroup/TokoIcon" to="." method="_on_toko_icon_pressed"]
+[connection signal="pressed" from="LevelBoard/InfoGroup/InfoIcon" to="." method="_on_info_icon_pressed"]
+[connection signal="pressed" from="InfoPopup/CloseInfo" to="." method="_on_close_info_pressed"]
