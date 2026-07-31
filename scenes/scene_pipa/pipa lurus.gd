@@ -34,7 +34,12 @@ func rotate_piece():
 	
 	tween.tween_property(self, "rotation_degrees", target_rotation, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.finished.connect(_on_rotation_finished)
-
+	
+	# --- MEMAINKAN EFEK SUARA DARI GAMEPLAY ---
+	var sfx = get_tree().current_scene.get_node_or_null("SfxPutar")
+	if sfx:
+		sfx.play()
+	# ------------------------------------------
 
 func _on_rotation_finished():
 	is_rotating = false
@@ -88,6 +93,7 @@ func hentikan_nyut_nyut() -> void:
 
 
 # 3. Dipanggil SAAT TOMBOL HINT DIKLIK: Hentikan nyut-nyut & Putar Otomatis
+# 3. Dipanggil SAAT TOMBOL HINT DIKLIK: Hentikan nyut-nyut & Putar Otomatis
 func putar_otomatis_via_hint() -> void:
 	sudah_pernah_diputar = true
 	hentikan_nyut_nyut()
@@ -96,3 +102,9 @@ func putar_otomatis_via_hint() -> void:
 		var rotasi_target = float(get_meta("rotasi_benar"))
 		var tween_putar = create_tween()
 		tween_putar.tween_property(self, "rotation_degrees", rotasi_target, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		
+		# --- MEMAINKAN EFEK SUARA JUGA SAAT DIPUTAR HINT ---
+		var sfx = get_tree().current_scene.get_node_or_null("SfxPutar")
+		if sfx:
+			sfx.play()
+		# ---------------------------------------------------

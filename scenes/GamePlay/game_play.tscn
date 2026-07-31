@@ -35,6 +35,10 @@
 [ext_resource type="Texture2D" uid="uid://cqy72texwdfff" path="res://asset_gambar/gambar_button/350 point.png" id="30_c6roe"]
 [ext_resource type="Texture2D" uid="uid://bqkpdq85torne" path="res://asset_gambar/gambar_button/koin.png" id="31_tq0pc"]
 [ext_resource type="Texture2D" uid="uid://c8nj4g60i8g0u" path="res://asset_gambar/gambar_board/Group 632.png" id="32_10hop"]
+[ext_resource type="Texture2D" uid="uid://c5578yspmh3f4" path="res://asset_gambar/gambar_board/funfact_padi.png" id="33_1jbh1"]
+[ext_resource type="Texture2D" uid="uid://wtvrcp2yodoi" path="res://asset_gambar/gambar_board/lala_board.png" id="34_c6roe"]
+[ext_resource type="AudioStream" uid="uid://wfuhp3yhslob" path="res://sound/bg_music.mp3" id="38_tq0pc"]
+[ext_resource type="AudioStream" uid="uid://cqytvsjdyio0t" path="res://sound/sound_efect_touch.mp3" id="39_pen3g"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7gmu8"]
 load_path = "res://.godot/imported/suhu_control.png-eb90f7f69bdb943340812e115fb37ad6.ctex"
@@ -70,8 +74,12 @@ corner_radius_bottom_left = 10
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_djemk"]
 load_path = "res://.godot/imported/CLOSE.png-34eed621532f754ea8234145e8e8dc1c.ctex"
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ukoi7"]
+bg_color = Color(1, 1, 1, 0)
+draw_center = false
+
 [node name="GamePlay" type="Node2D" unique_id=1845933922]
-position = Vector2(-100, -20)
+position = Vector2(-103, -34)
 script = ExtResource("1_axmop")
 gambar_level_1 = ExtResource("3_ikud1")
 gambar_level_2 = ExtResource("3_fvsw3")
@@ -130,6 +138,7 @@ offset_right = 66.0
 offset_bottom = 173.09999
 theme_override_fonts/font = ExtResource("12_n58gl")
 theme_override_font_sizes/font_size = 10
+metadata/_edit_use_anchors_ = true
 
 [node name="LblTargetSuhu" type="Label" parent="InterfaceUI/Termometer" unique_id=2135776654]
 layout_mode = 1
@@ -154,6 +163,7 @@ offset_right = 57.0
 offset_bottom = 65.0
 theme_override_fonts/font = ExtResource("12_n58gl")
 theme_override_font_sizes/font_size = 16
+metadata/_edit_use_anchors_ = true
 
 [node name="BtnMusik" type="TextureButton" parent="InterfaceUI" unique_id=494262827]
 layout_mode = 0
@@ -238,12 +248,18 @@ theme_override_colors/font_color = Color(0.29, 0.14558001, 0.049300004, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="Hint" type="TextureButton" parent="InterfaceUI" unique_id=540805098]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.075
+anchor_top = -0.75
+anchor_right = 0.075
+anchor_bottom = -0.75
 offset_left = 293.0
 offset_top = 713.0
 offset_right = 360.0
 offset_bottom = 758.0
 texture_normal = ExtResource("15_bxo6d")
+metadata/_edit_use_anchors_ = true
 
 [node name="BgBadge" type="TextureRect" parent="InterfaceUI/Hint" unique_id=1136772033]
 self_modulate = Color(0.60850006, 1, 0.13, 1)
@@ -255,6 +271,7 @@ offset_top = -6.0
 offset_right = 73.0
 offset_bottom = 4.0099993
 texture = ExtResource("14_jt2ue")
+metadata/_edit_use_anchors_ = true
 
 [node name="LblSisaHint" type="Label" parent="InterfaceUI/Hint" unique_id=1995878605]
 layout_mode = 1
@@ -268,8 +285,10 @@ offset_bottom = 18.0
 theme_override_colors/font_color = Color(0.9506, 0.98, 0.95109004, 1)
 theme_override_colors/font_shadow_color = Color(0.9051163, 0.98880225, 0.9914929, 0)
 theme_override_fonts/font = ExtResource("12_n58gl")
+metadata/_edit_use_anchors_ = true
 
 [node name="papan_hint" type="Sprite2D" parent="InterfaceUI" unique_id=576973912]
+visible = false
 position = Vector2(323, 603.00006)
 scale = Vector2(0.78341013, 0.73616236)
 texture = ExtResource("16_el7j4")
@@ -279,6 +298,7 @@ offset_left = -71.482376
 offset_top = 145.34827
 offset_right = 87.517624
 offset_bottom = 196.34827
+mouse_filter = 1
 texture_normal = ExtResource("17_7gmu8")
 
 [node name="btn_close" type="TextureButton" parent="InterfaceUI/papan_hint" unique_id=1886543722]
@@ -286,6 +306,7 @@ offset_left = 82.970566
 offset_top = -271.67932
 offset_right = 1252.2177
 offset_bottom = 941.3683
+mouse_filter = 1
 texture_normal = ExtResource("18_gfrei")
 
 [node name="kotak_tanaman" type="PanelContainer" parent="InterfaceUI/papan_hint" unique_id=616501970]
@@ -293,6 +314,7 @@ offset_left = -142.9647
 offset_top = -160.2908
 offset_right = 158.2823
 offset_bottom = -19.017609
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7n77a")
 
 [node name="hint_tanaman" type="TextureRect" parent="InterfaceUI/papan_hint" unique_id=169016928]
@@ -502,6 +524,142 @@ offset_right = 270.0
 offset_bottom = 368.0
 texture_normal = ExtResource("17_7gmu8")
 
+[node name="PanelFunFact" type="Control" parent="InterfaceUI" unique_id=1841385327]
+layout_mode = 1
+anchor_left = 3.475
+anchor_top = 18.725
+anchor_right = 13.225
+anchor_bottom = 22.95
+offset_left = -20.0
+metadata/_edit_use_anchors_ = true
+
+[node name="BgFunFact" type="TextureRect" parent="InterfaceUI/PanelFunFact" unique_id=1055002104]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.06097561
+anchor_top = -0.13017751
+anchor_right = 0.8195122
+anchor_bottom = 0.93491125
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("33_1jbh1")
+metadata/_edit_use_anchors_ = true
+
+[node name="LblTeksFunFact" type="Label" parent="InterfaceUI/PanelFunFact" unique_id=175269300]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3682927
+anchor_top = 0.23117161
+anchor_right = 0.8338049
+anchor_bottom = 0.7810651
+offset_top = -0.06800079
+offset_right = 0.13998413
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.27450982, 0.12156863, 0.011764706, 1)
+theme_override_fonts/font = ExtResource("12_n58gl")
+theme_override_font_sizes/font_size = 13
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="PapanTutorialLala" type="Control" parent="InterfaceUI" unique_id=544916761]
+layout_mode = 1
+anchor_left = 2.775
+anchor_top = 0.8
+anchor_right = 13.725
+anchor_bottom = 23.850002
+offset_bottom = -6.1035156e-05
+metadata/_edit_use_anchors_ = true
+
+[node name="GelapAtas" type="ColorRect" parent="InterfaceUI/PapanTutorialLala" unique_id=2107679979]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.014
+anchor_bottom = 1.0
+offset_right = -0.13201904
+offset_bottom = 9.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.7137255)
+metadata/_edit_use_anchors_ = true
+
+[node name="GelapBawah" type="ColorRect" parent="InterfaceUI/PapanTutorialLala" unique_id=950105383]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.014
+anchor_bottom = 1.0
+offset_right = -0.13201904
+offset_bottom = 9.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.7137255)
+metadata/_edit_use_anchors_ = true
+
+[node name="GelapKanan" type="ColorRect" parent="InterfaceUI/PapanTutorialLala" unique_id=1285740629]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.014
+anchor_bottom = 1.0
+offset_right = -0.13201904
+offset_bottom = 9.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.7137255)
+metadata/_edit_use_anchors_ = true
+
+[node name="GelapKiri" type="ColorRect" parent="InterfaceUI/PapanTutorialLala" unique_id=1473171540]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.014
+anchor_bottom = 1.0
+offset_right = -0.13201904
+offset_bottom = 9.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.7137255)
+metadata/_edit_use_anchors_ = true
+
+[node name="AreaFokus" type="Panel" parent="InterfaceUI/PapanTutorialLala" unique_id=1488532355]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.187
+anchor_bottom = 0.079
+offset_right = 14.093994
+offset_bottom = 17.161995
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ukoi7")
+metadata/_edit_use_anchors_ = true
+
+[node name="KarakterLala" type="TextureRect" parent="InterfaceUI/PapanTutorialLala" unique_id=1492323094]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05943379
+anchor_top = 0.7825618
+anchor_right = 0.9204338
+anchor_bottom = 0.9665618
+offset_left = -20.032001
+offset_top = -19.522034
+offset_right = 90.849976
+offset_bottom = 3.829956
+texture = ExtResource("34_c6roe")
+metadata/_edit_use_anchors_ = true
+
+[node name="LblTeksLala" type="Label" parent="InterfaceUI/PapanTutorialLala" unique_id=639929494]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3724338
+anchor_top = 0.8245618
+anchor_right = 0.9084338
+anchor_bottom = 0.9285618
+offset_left = -0.12600708
+offset_top = -0.24603271
+offset_right = 0.10598755
+offset_bottom = -0.1340332
+theme_override_colors/font_color = Color(0.3882353, 0.27450982, 0.105882354, 1)
+theme_override_fonts/font = ExtResource("12_n58gl")
+theme_override_font_sizes/font_size = 13
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
 [node name="PapanSelamat" type="Sprite2D" parent="." unique_id=1870858558]
 visible = false
 z_index = 5
@@ -523,6 +681,12 @@ texture_normal = ExtResource("17_7gmu8")
 [node name="point_50" type="Sprite2D" parent="PapanSelamat" unique_id=683529314]
 position = Vector2(5, 4)
 texture = ExtResource("18_bxo6d")
+
+[node name="BgMusic" type="AudioStreamPlayer2D" parent="." unique_id=1475604467]
+stream = ExtResource("38_tq0pc")
+
+[node name="SfxPutar" type="AudioStreamPlayer2D" parent="." unique_id=523744526]
+stream = ExtResource("39_pen3g")
 
 [connection signal="pressed" from="InterfaceUI/BtnMusik" to="." method="_on_btn_musik_pressed"]
 [connection signal="pressed" from="InterfaceUI/BtnReset" to="." method="_on_btn_reset_pressed"]
