@@ -20,3 +20,11 @@ func beli_hint(jumlah_hint_dibeli: int, harga: int) -> bool:
 		return true # Berhasil
 	else:
 		return false # Gagal (poin tidak cukup)
+
+# --- SISTEM LEVEL UNLOCK/LOCK ---
+var unlocked_level: int = 1
+
+func complete_level(current_level: int) -> void:
+	if current_level >= unlocked_level:
+		unlocked_level = current_level + 1
+		print("🎉 Level baru terbuka! Level aktif sekarang:", unlocked_level)

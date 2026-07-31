@@ -11,8 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://bu2ideuj8juk0" path="res://scenes/toko_hint.tscn" id="9_2wv3l"]
 [ext_resource type="Texture2D" uid="uid://6l1l7xuhlebd" path="res://asset_gambar/gambar_asset_menu/lv_padi.png" id="10_crhqw"]
 [ext_resource type="Texture2D" uid="uid://cwfrn61477upr" path="res://asset_gambar/gambar_asset_menu/lv_tomat.png" id="11_0oihc"]
+[ext_resource type="Texture2D" uid="uid://do8cj1wiv2710" path="res://assets/IconGembok.png" id="11_7jkdw"]
 [ext_resource type="Texture2D" uid="uid://boaow5stikue0" path="res://asset_gambar/gambar_asset_menu/lv_jagung.png" id="12_74jid"]
-[ext_resource type="Texture2D" uid="uid://bhprts6lac7sy" path="res://asset_gambar/gambar_asset_menu/lv_wortel.png" id="13_f5b06"]
 [ext_resource type="FontFile" uid="uid://d4ecrtf4e6pvo" path="res://font/Baloo-Regular.ttf" id="14_0oihc"]
 [ext_resource type="Texture2D" uid="uid://cqyyx63xygbqu" path="res://asset_gambar/gambar_asset_menu/lv_lock.png" id="14_4it42"]
 [ext_resource type="Texture2D" uid="uid://bodr2fs62l1fa" path="res://asset_gambar/gambar_board/poin menu.png" id="15_lwmgr"]
@@ -214,6 +214,7 @@ texture_normal = ExtResource("10_crhqw")
 stretch_mode = 0
 
 [node name="Level2Button" type="TextureButton" parent="LevelBoard" unique_id=501746593]
+clip_children = 2
 custom_minimum_size = Vector2(75, 90)
 layout_mode = 1
 offset_left = 318.0
@@ -223,7 +224,33 @@ offset_bottom = 467.0
 texture_normal = ExtResource("11_0oihc")
 stretch_mode = 0
 
+[node name="DarkOverlay" type="ColorRect" parent="LevelBoard/Level2Button" unique_id=1481106316]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="LockOverlay" type="TextureRect" parent="LevelBoard/Level2Button" unique_id=573880969]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.9999883
+offset_top = -0.5000114
+offset_right = 6.9999847
+offset_bottom = -0.50001526
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_7jkdw")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Level3Button" type="TextureButton" parent="LevelBoard" unique_id=1539154335]
+clip_children = 2
 layout_mode = 0
 offset_left = 496.0
 offset_top = 213.0
@@ -231,13 +258,45 @@ offset_right = 686.0
 offset_bottom = 467.0
 texture_normal = ExtResource("12_74jid")
 
+[node name="DarkOverlay" type="ColorRect" parent="LevelBoard/Level3Button" unique_id=90417328]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="LockOverlay" type="TextureRect" parent="LevelBoard/Level3Button" unique_id=1257484359]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_7jkdw")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Level4Button" type="TextureButton" parent="LevelBoard" unique_id=1073677810]
 layout_mode = 0
-offset_left = 132.0
-offset_top = 433.0
-offset_right = 331.0
-offset_bottom = 698.0
-texture_normal = ExtResource("13_f5b06")
+offset_left = 147.0
+offset_top = 450.5
+offset_right = 346.0
+offset_bottom = 715.5
+texture_normal = ExtResource("14_4it42")
+
+[node name="TextLevel" type="Label" parent="LevelBoard/Level4Button" unique_id=1441486455]
+layout_mode = 0
+offset_left = 24.25
+offset_top = -2.9999924
+offset_right = 64.25
+offset_bottom = 60.000008
+theme_override_fonts/font = ExtResource("14_0oihc")
+theme_override_font_sizes/font_size = 40
+text = "4"
 
 [node name="Level5Button" type="TextureButton" parent="LevelBoard" unique_id=1226139307]
 layout_mode = 0

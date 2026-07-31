@@ -15,6 +15,9 @@ func _ready():
 		info_icon.pressed.connect(func(): set_active("info"))
 	
 	call_deferred("set_active", "level")
+	
+	# Update status gembok/lock level saat scene dimuat
+	update_level_status()
 
 func _get_first_texture_button(group_name):
 	var group = get_node_or_null(group_name)
@@ -107,3 +110,31 @@ func _on_close_info_pressed() -> void:
 	if has_node("InfoPopup"):
 		$InfoPopup.visible = false
 		print("❌ Pop-up Info ditutup!")
+
+
+# --- SISTEM UPDATE UNLOCK/LOCK LEVEL ---
+func update_level_status() -> void:
+	# Loop mengecek Level 1 sampai 9
+	for i in range(1, 10):
+		# Mencari node tombol kartu level (misal Level1Button, Level2Button, dst)
+		var level_btn = get_node_or_null("Level" + str(i) + "Button")
+		
+		# Jika di scene kamu namanya beda (misal Level2Card / Level4Button),
+		# fungsi di bawah ini akan otomatis mencoba mencari alternate name
+		if not level_btn:
+			level_btn = get_node_or_null("Level" + str(i) + "Card")
+		
+		if level_btn:
+			var lock_overlay = level_btn.get_node_or_null("LockOverlay")
+			var dark_overlay = level_btn.get_node_or_null("DarkOverlay")
+			
+			if i <= GameManager.unlocked_level:
+				# Level Terbuka
+				level_btn.disabled = false
+				if lock_overlay: lock_overlay.visible = false
+				if dark_overlay: dark_overlay.visible = false
+			else:
+				# Level Terkunci
+				level_btn.disabled = true
+				if lock_overlay: lock_overlay.visible = true
+				if dark_overlay: dark_overlay.visible = true
