@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b4dsrjfocr35g"]
+
+[ext_resource type="Shader" uid="uid://dpu6iqpb150h4" path="res://scenes/GamePlay/air_mengalir.gdshader" id="2_nrbqw"]
+[ext_resource type="Script" uid="uid://bov2l48acc3dd" path="res://scenes/GamePlay/air_mengalir.gd" id="3_w80nd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7n77a"]
+shader = ExtResource("2_nrbqw")
+shader_parameter/kecepatan = 3.0
+shader_parameter/frekuensi_gelombang = 15.0
+shader_parameter/magnitudo_gelombang = 0.08
+
+[sub_resource type="GDScript" id="GDScript_nrbqw"]
+
+[node name="Airkecil" type="Node2D" unique_id=269665238]
+script = ExtResource("3_w80nd")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1625354066]
+material = SubResource("ShaderMaterial_7n77a")
+offset_left = 6.0
+offset_top = 3.0
+offset_right = 55.0
+offset_bottom = 15.0
+color = Color(0.20392157, 0.6862745, 0.98039216, 0.56078434)
+script = SubResource("GDScript_nrbqw")

@@ -6,5 +6,6 @@
 [node name="Node2D" unique_id=212703674 instance=ExtResource("1_mxcta")]
 
 [node name="Sprite2D" parent="." index="0" unique_id=690836390]
+clip_children = 0
 position = Vector2(0, 0)
 texture = ExtResource("2_dcc4y")
