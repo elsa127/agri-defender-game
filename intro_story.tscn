@@ -21,7 +21,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.8, 0.8)
+scale = Vector2(0.9, 0.9)
 texture = ExtResource("1_n6n6b")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="TextureRect" unique_id=1226550477]

@@ -446,7 +446,6 @@ offset_bottom = 73.0
 theme_override_colors/font_color = Color(0.41960785, 0.26666668, 0.13725491, 1)
 theme_override_fonts/font = ExtResource("14_0oihc")
 theme_override_font_sizes/font_size = 24
-text = "120"
 
 [node name="IconTumbuhan" type="TextureRect" parent="." unique_id=1421511867]
 layout_mode = 0
