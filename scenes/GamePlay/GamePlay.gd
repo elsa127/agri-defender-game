@@ -43,49 +43,49 @@ var tahap_hint: int = 0
 # ==========================================================
 # VARIABEL SISTEM TUTORIAL INTERAKTIF (MULTI-HOLE SUPPORT)
 # ==========================================================
-var indeks_dialog_lala: int = 0         # <--- TAMBAH INI
+var indeks_dialog_lala: int = 0         
 var tutorial_sudah_selesai: bool = false
 const FILE_TUTORIAL = "user://tutorial_lala.save"
-const FILE_KOIN = "user://data_koin.save"           # <--- TAMBAH INI   # <--- TAMBAH INI
+const FILE_KOIN = "user://data_koin.save"           
 var daftar_dialog_lala: Array = [
 	{
 		"teks": "Halo! Aku Lala. Ini adalah sawah padi pertama yang harus kita bantu. Lihat sumber air di sebelah kiri.",
-		"fokus": Vector4(10, 330, 280, 280) # Target Valve (Kotak Kiri)
+		"fokus": Vector4(10, 330, 280, 280) 
 	},
 	{
 		"teks": "Semua tanaman harus mendapatkan air, kelembapan, dan suhu harus sesuai target agar padi bisa tumbuh dengan baik.",
-		"fokus": Vector4(10, 330, 280, 280) # Target Valve (Kotak Kiri)
+		"fokus": Vector4(10, 330, 280, 280) 
 	},
 	{
 		"teks": "Lihat sumber air di sebelah kiri. Air harus mengalir dari sana menuju tanaman padi.",
-		"fokus": Vector4(10, 330, 140, 140) # Target Pipa Siku (Kotak Kanan)
+		"fokus": Vector4(10, 330, 140, 140) 
 	},
 	{
 		"teks": "Coba ketuk pipa ini untuk memutar arahnya ke tanaman padi!",
-		"fokus": Vector4(145, 330, 143, 143) # Target Pipa Siku (Kotak Kanan)
+		"fokus": Vector4(145, 330, 143, 143) 
 	},
 	{
 		"teks": "Selain air, suhu dan kelembapan juga penting untuk pertumbuhan padi.",
-		"fokus": Vector4(0, 0, 0, 0) # Full layar redup (tanpa lubang)
+		"fokus": Vector4(0, 0, 0, 0) 
 	},
 	{
 		"teks": "Coba lihat panel di atas! Ini adalah pengatur Kelembaban. Padi sangat suka lingkungan yang pas, tidak boleh terlalu kering ataupun terlalu basah.",
-		"fokus": Vector4(95, 245, 190, 70) # Target Panel Kelembapan
+		"fokus": Vector4(95, 245, 190, 70) 
 	},
 	{
 		"teks": "Perhatikan panel suhu di kanan. Geser pengatur kelembapan di atas sampai suhu berada di area target.",
 		"fokus_array": [
-			Vector4(95, 245, 190, 70),  # Lubang 1: Panel Kelembapan
-			Vector4(329, 340, 75, 295) # Lubang 2: Target Termometer
+			Vector4(95, 245, 190, 70),  
+			Vector4(329, 340, 75, 295) 
 		]
 	},
 	{
 		"teks": "Kalau kamu bingung, tekan tombol Hint untuk mendapatkan petunjuk.",
-		"fokus": Vector4(177, 645, 80, 50) # Target Panel Kelembapan
+		"fokus": Vector4(177, 645, 80, 50) 
 	},
 	{
 		"teks": "Selamat bermain....",
-		"fokus": Vector4(0, 0, 0, 0) # Full layar redup (tanpa lubang)
+		"fokus": Vector4(0, 0, 0, 0) 
 	}
 ]
 # ==========================================================
@@ -196,18 +196,16 @@ func _ready() -> void:
 		if file_koin:
 			koin_sekarang = file_koin.get_as_text().to_int()
 			file_koin.close()
+			
 	# --- PAKSA MUSIK NYALA & LOOPING OTOMATIS ---
 	var bg_music = get_node_or_null("BgMusic")
 	if bg_music:
-		# Nyalakan musik jika belum nyala
 		if not bg_music.playing:
 			bg_music.play()
-			
-		# Bikin musik ngulang sendiri dari awal kalau sudah habis
 		if not bg_music.finished.is_connected(bg_music.play):
 			bg_music.finished.connect(bg_music.play)
 	# ---------------------------------------------
-		
+	
 	if has_node("InterfaceUI"):
 		var parent_ui = $InterfaceUI
 		if not parent_ui.has_node("OverlayRedup"):
@@ -222,34 +220,45 @@ func _ready() -> void:
 	hubungkan_signal_popup()
 	muat_level(level_sekarang)
 
+	# --- SETUP SUARA SLIDER KELEMBAPAN ---
+	var slider_kelem = get_node_or_null("InterfaceUI/Kelembapan/SliderKelembapan")
+	if slider_kelem:
+		if not slider_kelem.drag_started.is_connected(_on_slider_drag_started):
+			slider_kelem.drag_started.connect(_on_slider_drag_started)
+		if not slider_kelem.drag_ended.is_connected(_on_slider_drag_ended):
+			slider_kelem.drag_ended.connect(_on_slider_drag_ended)
+	# --------------------------------------------------------------
+
+# ==========================================
+# FUNGSI SUARA KLIK GLOBAL (BARU)
+# ==========================================
+func mainkan_suara_klik() -> void:
+	var sfx = get_node_or_null("SfxKlik")
+	if sfx:
+		sfx.play()
+# ==========================================
+
 func hubungkan_signal_popup() -> void:
-	# 1. Tombol Beli Hint (Di Hint Habis)
 	var btn_beli = get_node_or_null("InterfaceUI/PapanHintHabis/BtnBeliHint")
 	if btn_beli and not btn_beli.pressed.is_connected(_on_btn_beli_hint_pressed):
 		btn_beli.pressed.connect(func(): anim_tombol_klik(btn_beli); _on_btn_beli_hint_pressed())
 		
-	# 2. Tombol Close (Di Hint Habis)
 	var btn_close_habis = get_node_or_null("InterfaceUI/PapanHintHabis/BtnClose")
 	if btn_close_habis and not btn_close_habis.pressed.is_connected(_on_btn_close_hint_habis_pressed):
 		btn_close_habis.pressed.connect(func(): anim_tombol_klik(btn_close_habis); _on_btn_close_hint_habis_pressed())
 
-	# 3. Tombol Close (Di Papan Beli Hint / Toko)
 	var btn_close_beli = get_node_or_null("InterfaceUI/PapanBeliHint/BtnClose")
 	if btn_close_beli and not btn_close_beli.pressed.is_connected(_on_btn_close_beli_hint_pressed):
 		btn_close_beli.pressed.connect(func(): anim_tombol_klik(btn_close_beli); _on_btn_close_beli_hint_pressed())
 
-	# 4. Tombol OK (Di Pop-up Poin Tidak Cukup)
 	var btn_ok_poin = get_node_or_null("InterfaceUI/PapanBeliHint/PoinTidakCukup/BtnOk")
 	if btn_ok_poin and not btn_ok_poin.pressed.is_connected(_on_btn_ok_poin_tidak_cukup_pressed):
 		btn_ok_poin.pressed.connect(func(): anim_tombol_klik(btn_ok_poin); _on_btn_ok_poin_tidak_cukup_pressed())
 
-	# 5. Tombol OK (Hijau) di Papan Hint Utama
 	var btn_ok_hint = get_node_or_null("InterfaceUI/papan_hint/buttonOk")
 	if btn_ok_hint and not btn_ok_hint.pressed.is_connected(_on_buttonOk_Hint_pressed):
 		btn_ok_hint.pressed.connect(func(): anim_tombol_klik(btn_ok_hint); _on_buttonOk_Hint_pressed())
 
-	# 6. Tombol Silang (Merah) di Papan Hint Utama
-	# (Ganti tulisan "BtnClose" di bawah ini kalau nama tombol merahmu di editor berbeda)
 	var btn_close_hint = get_node_or_null("InterfaceUI/papan_hint/BtnClose") 
 	if btn_close_hint and not btn_close_hint.pressed.is_connected(_on_buttonOk_Hint_pressed):
 		btn_close_hint.pressed.connect(func(): anim_tombol_klik(btn_close_hint); _on_buttonOk_Hint_pressed())
@@ -283,6 +292,7 @@ func _setup_tombol_paket(node_path: String, jumlah_hint: int, harga: int) -> voi
 		)
 
 func _on_paket_clicked(btn_node: Control, jumlah_hint: int, harga: int) -> void:
+	mainkan_suara_klik() # Suara klik
 	if koin_sekarang < harga:
 		var pos_asal = btn_node.position
 		var tween_gagal = create_tween()
@@ -367,6 +377,8 @@ func _on_btn_ok_poin_tidak_cukup_pressed() -> void:
 func anim_tombol_klik(node_tombol: Control) -> void:
 	if not node_tombol: return
 	
+	mainkan_suara_klik() # Suara klik dipanggil secara sentral di sini
+	
 	node_tombol.pivot_offset = node_tombol.size / 2.0
 	var tween = create_tween().set_parallel(false)
 	tween.tween_property(node_tombol, "scale", Vector2(0.9, 0.9), 0.08).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
@@ -374,9 +386,7 @@ func anim_tombol_klik(node_tombol: Control) -> void:
 
 func _process(_delta: float) -> void:
 	if level_selesai: return
-	
 	simulasi_pipa_tersambung = cek_semua_pipa_tersambung()
-	
 	if simulasi_pipa_tersambung and simulasi_suhu_sudah_pas and simulasi_kelembapan_sudah_pas:
 		pemicu_menang_level()
 
@@ -497,9 +507,7 @@ func muat_level(nomor_level: int) -> void:
 					
 				$PipeGrid.add_child(objek_baru)
 
-	# --- MUNCULKAN PANEL FUN FACT SETIAP KALI LEVEL DIMUAT ---
 	if has_node("InterfaceUI/PanelFunFact"):
-		# Sembunyikan HANYA JIKA di Level 1 DAN tutorial belum pernah selesai
 		if nomor_level == 1 and not tutorial_sudah_selesai:
 			$InterfaceUI/PanelFunFact.visible = false
 		else:
@@ -514,7 +522,6 @@ func muat_level(nomor_level: int) -> void:
 			elif nomor_level == 2: bg_ff.texture = bg_funfact_2
 			elif nomor_level == 3: bg_ff.texture = bg_funfact_3
 
-	# --- MUNCULKAN TUTORIAL LALA JIKA DI LEVEL 1 & BELUM PERNAH SELESAI ---
 	if nomor_level == 1 and not tutorial_sudah_selesai:
 		call_deferred("mulai_tutorial_lala")
 	else:
@@ -545,20 +552,28 @@ func cek_semua_pipa_tersambung() -> bool:
 	return semua_pipa_ok
 
 func _on_btn_musik_pressed() -> void:
+	mainkan_suara_klik() # Suara klik
 	musik_aktif = not musik_aktif
 	var bg_music = get_node_or_null("BgMusic")
 	
 	if musik_aktif:
 		$InterfaceUI/BtnMusik.texture_normal = gambar_musik_hidup
 		if bg_music:
-			bg_music.stream_paused = false # Lanjutkan lagu
+			bg_music.stream_paused = false
 	else:
 		$InterfaceUI/BtnMusik.texture_normal = gambar_musik_mati
 		if bg_music:
-			bg_music.stream_paused = true # Jeda lagu
+			bg_music.stream_paused = true 
 
 func pemicu_menang_level() -> void:
 	level_selesai = true
+	
+	# --- MAINKAN SUARA KEMENANGAN ---
+	var sfx_win = get_node_or_null("SfxWin")
+	if sfx_win:
+		sfx_win.play()
+	# --------------------------------
+	
 	if has_node("InterfaceUI/PanelFunFact"):
 		$InterfaceUI/PanelFunFact.visible = false
 	
@@ -599,12 +614,10 @@ func perbarui_tampilan_koin() -> void:
 			new_lbl.size = node_papan_koin.size
 			node_papan_koin.add_child(new_lbl)
 
-	# --- SIMPAN KOIN SECARA PERMANEN ---
 	var file_koin = FileAccess.open(FILE_KOIN, FileAccess.WRITE)
 	if file_koin:
 		file_koin.store_string(str(koin_sekarang))
 		file_koin.close()
-	# -----------------------------------
 
 func tampilkan_overlay_redup_di_belakang(target_node) -> void:
 	var overlay = get_node_or_null("InterfaceUI/OverlayRedup")
@@ -719,10 +732,14 @@ func lanjut_ke_level_berikutnya() -> void:
 	muat_level(level_sekarang)
 
 func _on_btn_next_pressed() -> void:
+	mainkan_suara_klik() # Suara klik
 	lanjut_ke_level_berikutnya()
 
 func _on_btn_reset_pressed() -> void:
 	if level_selesai: return
+	
+	# Suara klik tetap bunyi walau animasi gak ketemu
+	mainkan_suara_klik() 
 		
 	var btn_reset = get_node_or_null("InterfaceUI/BtnReset")
 	if not btn_reset: btn_reset = get_node_or_null("BtnReset") 
@@ -751,6 +768,7 @@ func _on_btn_reset_pressed() -> void:
 		overlay.z_index = 0 
 
 func _on_btn_ok_pressed() -> void:
+	mainkan_suara_klik() # Suara klik
 	if has_node("PapanSelamat"): $PapanSelamat.visible = false
 	elif has_node("InterfaceUI/PapanSelamat"): $InterfaceUI/PapanSelamat.visible = false
 	sembunyikan_overlay_redup()
@@ -761,6 +779,7 @@ func perbarui_tampilan_hint() -> void:
 		$InterfaceUI/Hint/LblSisaHint.text = str(sisa_hint)
 
 func _on_hint_pressed() -> void:
+	mainkan_suara_klik() # Suara klik
 	if level_selesai: return
 	if sisa_hint <= 0:
 		tampilkan_papan_hint_habis()
@@ -893,7 +912,6 @@ func tampilkan_dialog_lala() -> void:
 func atur_lubang_tutorial(node_lala: Control, data_dialog: Dictionary) -> void:
 	var layar = get_viewport_rect().size
 	
-	# 1. HAPUS KOTAK DINAMIS LAMA
 	var area_fokus = node_lala.get_node_or_null("AreaFokus")
 	if area_fokus:
 		area_fokus.visible = false
@@ -906,18 +924,15 @@ func atur_lubang_tutorial(node_lala: Control, data_dialog: Dictionary) -> void:
 			node_lala.remove_child(child)
 			child.queue_free()
 			
-	# Ambil warna asli dari kotak gelap bawaan (supaya nyambung sama editor)
 	var warna_gelap = Color(0, 0, 0, 0.65)
 	if node_lala.has_node("GelapAtas"):
 		warna_gelap = node_lala.get_node("GelapAtas").color
 		
-	# Sembunyikan kotak gelap bawaan
 	for nama in ["GelapAtas", "GelapBawah", "GelapKiri", "GelapKanan"]:
 		if node_lala.has_node(nama):
 			node_lala.get_node(nama).visible = false
 			node_lala.get_node(nama).mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	# 2. AMBIL DATA LUBANG (Bisa 1 atau Banyak)
 	var list_lubang = []
 	if data_dialog.has("fokus_array"):
 		for f in data_dialog["fokus_array"]:
@@ -928,8 +943,7 @@ func atur_lubang_tutorial(node_lala: Control, data_dialog: Dictionary) -> void:
 		if f != Vector4(0,0,0,0):
 			list_lubang.append(Rect2(f.x, f.y, f.z, f.w))
 
-	# 3. ALGORITMA PEMOTONGAN KOTAK GELAP (Rectangle Splitting)
-	var rects = [Rect2(0, 0, layar.x, layar.y)] # Mulai dari full layar
+	var rects = [Rect2(0, 0, layar.x, layar.y)] 
 	
 	for lubang in list_lubang:
 		var new_rects = []
@@ -937,18 +951,16 @@ func atur_lubang_tutorial(node_lala: Control, data_dialog: Dictionary) -> void:
 			if not r.intersects(lubang):
 				new_rects.append(r)
 			else:
-				# Potong kotak yang bertabrakan dengan lubang menjadi 4 bagian
-				if lubang.position.y > r.position.y: # Bagian Atas
+				if lubang.position.y > r.position.y: 
 					new_rects.append(Rect2(r.position.x, r.position.y, r.size.x, lubang.position.y - r.position.y))
-				if lubang.end.y < r.end.y: # Bagian Bawah
+				if lubang.end.y < r.end.y: 
 					new_rects.append(Rect2(r.position.x, lubang.end.y, r.size.x, r.end.y - lubang.end.y))
-				if lubang.position.x > r.position.x: # Bagian Kiri
+				if lubang.position.x > r.position.x: 
 					new_rects.append(Rect2(r.position.x, max(r.position.y, lubang.position.y), lubang.position.x - r.position.x, min(r.end.y, lubang.end.y) - max(r.position.y, lubang.position.y)))
-				if lubang.end.x < r.end.x: # Bagian Kanan
+				if lubang.end.x < r.end.x: 
 					new_rects.append(Rect2(lubang.end.x, max(r.position.y, lubang.position.y), r.end.x - lubang.end.x, min(r.end.y, lubang.end.y) - max(r.position.y, lubang.position.y)))
 		rects = new_rects
 
-	# 4. GAMBAR KOTAK-KOTAK GELAP BARU KE LAYAR
 	var z_index_pos = 0
 	for r in rects:
 		var kotak = ColorRect.new()
@@ -957,12 +969,11 @@ func atur_lubang_tutorial(node_lala: Control, data_dialog: Dictionary) -> void:
 		kotak.position = r.position
 		kotak.size = r.size
 		
-		# Hubungkan kotak sebagai tombol pelanjut dialog
 		kotak.mouse_filter = Control.MOUSE_FILTER_STOP
 		kotak.gui_input.connect(_on_papan_tutorial_lala_gui_input)
 		
 		node_lala.add_child(kotak)
-		node_lala.move_child(kotak, z_index_pos) # Taruh paling belakang
+		node_lala.move_child(kotak, z_index_pos) 
 		z_index_pos += 1
 
 func _on_papan_tutorial_lala_gui_input(event: InputEvent) -> void:
@@ -974,21 +985,19 @@ func _on_papan_tutorial_lala_gui_input(event: InputEvent) -> void:
 			tampilkan_dialog_lala()
 
 func _on_btn_lewati_tutorial_pressed() -> void:
+	mainkan_suara_klik() # Suara klik
 	tutup_tutorial_lala()
 
 func tutup_tutorial_lala() -> void:
 	var node_lala = get_node_or_null("InterfaceUI/PapanTutorialLala")
 	if node_lala: node_lala.visible = false
 	
-	# --- SIMPAN DATA PERMANEN BIAR TUTORIAL GAK MUNCUL LAGI ---
 	tutorial_sudah_selesai = true
 	var file = FileAccess.open(FILE_TUTORIAL, FileAccess.WRITE)
 	if file:
 		file.store_string("selesai")
 		file.close()
-	# ----------------------------------------------------------
 	
-	# Munculkan Panel Fun Fact setelah tutorial selesai
 	if has_node("InterfaceUI/PanelFunFact"):
 		var panel_ff = $InterfaceUI/PanelFunFact
 		panel_ff.visible = true
@@ -996,5 +1005,16 @@ func tutup_tutorial_lala() -> void:
 		panel_ff.pivot_offset = panel_ff.size / 2.0
 		var tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		tween.tween_property(panel_ff, "scale", Vector2.ONE, 0.4)
-		
-		
+
+# ==========================================
+# FUNGSI SUARA SLIDER KELEMBAPAN
+# ==========================================
+func _on_slider_drag_started() -> void:
+	var sfx = get_node_or_null("SfxSlider")
+	if sfx:
+		sfx.play()
+
+func _on_slider_drag_ended(_value_changed: bool) -> void:
+	var sfx = get_node_or_null("SfxSlider")
+	if sfx:
+		sfx.stop()

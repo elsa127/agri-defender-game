@@ -39,6 +39,9 @@
 [ext_resource type="Texture2D" uid="uid://wtvrcp2yodoi" path="res://asset_gambar/gambar_board/lala_board.png" id="34_c6roe"]
 [ext_resource type="AudioStream" uid="uid://wfuhp3yhslob" path="res://sound/bg_music.mp3" id="38_tq0pc"]
 [ext_resource type="AudioStream" uid="uid://cqytvsjdyio0t" path="res://sound/sound_efect_touch.mp3" id="39_pen3g"]
+[ext_resource type="AudioStream" uid="uid://c4dhabtadg0pu" path="res://sound/slider_sfx.mp3" id="40_ukoi7"]
+[ext_resource type="AudioStream" uid="uid://b7aa5464pice8" path="res://sound/button_sound.mp3" id="41_46hy7"]
+[ext_resource type="AudioStream" uid="uid://c0k8c4vl2mx76" path="res://sound/win_sound.mp3" id="42_mpfew"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7gmu8"]
 load_path = "res://.godot/imported/suhu_control.png-eb90f7f69bdb943340812e115fb37ad6.ctex"
@@ -687,6 +690,15 @@ stream = ExtResource("38_tq0pc")
 
 [node name="SfxPutar" type="AudioStreamPlayer2D" parent="." unique_id=523744526]
 stream = ExtResource("39_pen3g")
+
+[node name="SfxSlider" type="AudioStreamPlayer2D" parent="." unique_id=284263040]
+stream = ExtResource("40_ukoi7")
+
+[node name="SfxKlik" type="AudioStreamPlayer2D" parent="." unique_id=1981958679]
+stream = ExtResource("41_46hy7")
+
+[node name="SfxWin" type="AudioStreamPlayer2D" parent="." unique_id=1887319646]
+stream = ExtResource("42_mpfew")
 
 [connection signal="pressed" from="InterfaceUI/BtnMusik" to="." method="_on_btn_musik_pressed"]
 [connection signal="pressed" from="InterfaceUI/BtnReset" to="." method="_on_btn_reset_pressed"]
