@@ -294,8 +294,7 @@ theme_override_fonts/font = ExtResource("12_n58gl")
 metadata/_edit_use_anchors_ = true
 
 [node name="papan_hint" type="Sprite2D" parent="InterfaceUI" unique_id=576973912]
-visible = false
-position = Vector2(323, 603.00006)
+position = Vector2(320.00003, 549.00006)
 scale = Vector2(0.78341013, 0.73616236)
 texture = ExtResource("16_el7j4")
 
@@ -379,20 +378,19 @@ text = "Pastikan kelembapan sesuai agar tumbuhan tumbuh dengan maksimal"
 autowrap_mode = 2
 justification_flags = 171
 
-[node name="btn_close" type="TextureButton" parent="InterfaceUI/papan_hint" unique_id=1886543722]
-offset_left = 82.97058
-offset_top = -271.67926
-offset_right = 1252.2177
-offset_bottom = 941.36835
-mouse_filter = 2
-texture_normal = ExtResource("18_gfrei")
-
-[node name="buttonOk_Hint" type="TextureButton" parent="InterfaceUI/papan_hint" unique_id=2093966760]
-offset_left = -71.482346
-offset_top = 145.34827
-offset_right = 87.517654
-offset_bottom = 196.34827
+[node name="buttonOk_Hint" type="TextureButton" parent="InterfaceUI/papan_hint" unique_id=1235932893]
+offset_left = -62.54706
+offset_top = 131.76434
+offset_right = 96.45294
+offset_bottom = 182.76434
 texture_normal = ExtResource("17_7gmu8")
+
+[node name="btnclose" type="TextureButton" parent="InterfaceUI/papan_hint" unique_id=331572528]
+offset_left = 85.52353
+offset_top = -266.2457
+offset_right = 184.52353
+offset_bottom = -167.2457
+texture_normal = ExtResource("18_gfrei")
 
 [node name="PapanHintHabis" type="TextureRect" parent="InterfaceUI" unique_id=659662143]
 visible = false
@@ -712,6 +710,6 @@ stream = ExtResource("42_mpfew")
 [connection signal="pressed" from="InterfaceUI/BtnReset" to="." method="_on_btn_reset_pressed"]
 [connection signal="value_changed" from="InterfaceUI/Kelembapan/SliderKelembapan" to="." method="_on_slider_kelembapan_value_changed"]
 [connection signal="pressed" from="InterfaceUI/Hint" to="." method="_on_hint_pressed"]
-[connection signal="pressed" from="InterfaceUI/papan_hint/btn_close" to="." method="_on_btn_close_pressed"]
-[connection signal="pressed" from="InterfaceUI/papan_hint/buttonOk_Hint" to="." method="_on_buttonOk_hint_pressed"]
+[connection signal="pressed" from="InterfaceUI/papan_hint/buttonOk_Hint" to="." method="_on_buttonOk_Hint_pressed"]
+[connection signal="pressed" from="InterfaceUI/papan_hint/btnclose" to="." method="_on_btnclose_pressed"]
 [connection signal="pressed" from="PapanSelamat/Button_ok" to="." method="_on_btn_ok_pressed"]

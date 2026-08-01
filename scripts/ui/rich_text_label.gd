@@ -6,26 +6,33 @@ extends RichTextLabel
 @onready var background_texture = get_node_or_null("../../TextureRect")
 @onready var lala_character = get_node_or_null("../../LalaCharacter")
 
+# Pemutar audio untuk narasi cerita
+var voice_player: AudioStreamPlayer
+
 var story_pages = [
 	{
 		"background": preload("res://asset_gambar/background/bg_cerita1.png"),
 		"text": "Di sebuah desa pertanian yang subur, para petani menggantungkan hidup dari hasil sawah dan kebun mereka.",
-		"show_lala": false
+		"show_lala": false,
+		"voice": preload("res://sound/story_1.MP3") # Sesuaikan path foldernya
 	},
 	{
 		"background": preload("res://asset_gambar/background/bg_cerita2.png"),
 		"text": "Namun, cuaca mulai berubah. Suhu tidak stabil, tanah cepat kering, dan air tidak lagi mengalir merata ke tanaman.",
-		"show_lala": false
+		"show_lala": false,
+		"voice": preload("res://sound/story_2.MP3")
 	},
 	{
 		"background": preload("res://asset_gambar/background/bg_cerita2.png"),
 		"text": "Sekarang giliranmu membantu LALA. Sambungkan pipa, alirkan air ke tanaman, dan atur suhu agar panen berhasil!",
-		"show_lala": true
+		"show_lala": true,
+		"voice": preload("res://sound/story_3.MP3")
 	},
 	{
 		"background": preload("res://asset_gambar/background/bg_cerita2.png"),
 		"text": "LALA, asisten pertanian pintar, membawa sistem irigasi dan sensor lingkungan untuk menyelamatkan tanaman.",
-		"show_lala": true
+		"show_lala": true,
+		"voice": preload("res://sound/story_4.MP3")
 	}
 ]
 
@@ -33,6 +40,13 @@ var current_page = 0
 var active_tween: Tween
 
 func _ready():
+	# 1. Setup AudioStreamPlayer secara dinamis
+	voice_player = AudioStreamPlayer.new()
+	add_child(voice_player)
+	
+	# Menaikkan volume audio (dalam satuan desibel, misal +5 dB agar lebih kencang)
+	voice_player.volume_db = 5.0 
+	
 	load_page(0)
 
 func load_page(page_index: int):
@@ -48,6 +62,11 @@ func load_page(page_index: int):
 		background_texture.texture = page.background
 	if lala_character:
 		lala_character.visible = page.show_lala
+
+	# Putar audio narasi sesuai halaman
+	if page.has("voice") and page.voice:
+		voice_player.stream = page.voice
+		voice_player.play()
 
 	# Set teks awal
 	text = page.text

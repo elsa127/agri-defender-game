@@ -235,8 +235,8 @@ func _ready() -> void:
 		btn_ok.show_behind_parent = false
 		
 		# Hubungkan ulang secara aman via kode
-		if not btn_ok.pressed.is_connected(_on_buttonOk_hint_pressed):
-			btn_ok.pressed.connect(_on_buttonOk_hint_pressed)
+		if not btn_ok.pressed.is_connected(_on_buttonOk_Hint_pressed):
+			btn_ok.pressed.connect(_on_buttonOk_Hint_pressed)
 func muat_konfigurasi_level_1() -> void:
 	# Atur posisi pipa, jumlah putaran, atau tingkat kesulitan khusus Level 1 di sini
 	pass
@@ -283,17 +283,17 @@ func hubungkan_signal_popup() -> void:
 		)
 
 	var btn_ok_hint = get_node_or_null("InterfaceUI/papan_hint/buttonOk")
-	if btn_ok_hint and not btn_ok_hint.pressed.is_connected(_on_buttonOk_hint_pressed):
+	if btn_ok_hint and not btn_ok_hint.pressed.is_connected(_on_buttonOk_Hint_pressed):
 		btn_ok_hint.pressed.connect(func(): 
 			anim_tombol_klik(btn_ok_hint)
-			_on_buttonOk_hint_pressed()
+			_on_buttonOk_Hint_pressed()
 		)
 
 	var btn_close_hint = get_node_or_null("InterfaceUI/papan_hint/BtnClose") 
-	if btn_close_hint and not btn_close_hint.pressed.is_connected(_on_buttonOk_hint_pressed):
+	if btn_close_hint and not btn_close_hint.pressed.is_connected(_on_buttonOk_Hint_pressed):
 		btn_close_hint.pressed.connect(func(): 
 			anim_tombol_klik(btn_close_hint)
-			_on_buttonOk_hint_pressed()
+			_on_buttonOk_Hint_pressed()
 		)
 
 	var path_container = "InterfaceUI/PapanBeliHint/HintContainer"
@@ -1359,25 +1359,49 @@ func trigger_win() -> void:
 		$WinPopup.visible = true
 
 
-func _on_button_ok_pressed() -> void:
-	pass # Replace with function body.
-
-
-func _on_button_ok_hint_pressed() -> void:
-	pass # Replace with function body.
-
-
-func _on_buttonOk_hint_pressed() -> void:
+# Fungsi saat tombol OK di dalam pop-up hint ditekan
+func _on_buttonOk_Hint_pressed() -> void:
 	mainkan_suara_klik()
 	var papan = get_node_or_null("InterfaceUI/papan_hint")
 	if not papan: return
+	
+	# Cek apakah nodenya berjenis Control sebelum mengakses mouse_filter
+	if papan is Control:
+		papan.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.tween_property(papan, "scale", Vector2.ZERO, 0.2)
 	await tween.finished
 	
 	papan.visible = false
+	
+	if papan is Control:
+		papan.mouse_filter = Control.MOUSE_FILTER_STOP
+		
 	sembunyikan_overlay_redup()
+	
+	if tahap_hint == 2:
+		tahap_hint = 0
+
+# Fungsi saat tombol Close (X) di pojok pop-up hint ditekan
+func _on_btnclose_pressed() -> void:
+	_tutup_papan_hint()
+
+# Fungsi helper untuk animasi penutupan agar kodenya tidak berulang
+func _tutup_papan_hint() -> void:
+	mainkan_suara_klik()
+	var papan = get_node_or_null("InterfaceUI/papan_hint")
+	if not papan: return
+	
+	# Matikan mouse filter sementara agar tidak bisa diklik dua kali saat animasi
+	papan.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_property(papan, "scale", Vector2.ZERO, 0.2)
+	await tween.finished
+	
+	papan.visible = false
+	sembunyikan_overlay_redup() # Matikan background redup jika ada
 	
 	if tahap_hint == 2:
 		tahap_hint = 0
