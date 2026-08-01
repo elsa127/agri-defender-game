@@ -13,6 +13,26 @@ extends Node2D
 @onready var gambar_musik_hidup = preload("res://asset_gambar/gambar_button/button_musik_hidup.png")
 @onready var gambar_musik_mati = preload("res://asset_gambar/gambar_button/button_musik_mati.png")
 
+# --- 1. PRELOAD AUDIO LALA ---
+@onready var audio_lala_1 = preload("res://sound/lala_1.MP3")
+@onready var audio_lala_2 = preload("res://sound/lala_2.MP3")
+@onready var audio_lala_3 = preload("res://sound/lala_3.MP3")
+@onready var audio_lala_4 = preload("res://sound/lala_4.MP3")
+@onready var audio_lala_5 = preload("res://sound/lala_5.MP3")
+@onready var audio_lala_6 = preload("res://sound/lala_6.MP3")
+@onready var audio_lala_7 = preload("res://sound/lala_7.MP3")
+@onready var audio_lala_8 = preload("res://sound/lala_8.MP3")
+@onready var audio_lala_9 = preload("res://sound/lala_9.MP3")
+@onready var audio_lala_10 = preload("res://sound/lala_10.MP3")
+@onready var audio_lala_11 = preload("res://sound/lala_11.MP3")
+
+# --- 2. ARRAY AUDIO (WAJIB PAKAI @onready) ---
+@onready var daftar_audio_lala: Array = [
+	audio_lala_1, audio_lala_2, audio_lala_3, audio_lala_4, audio_lala_5,
+	audio_lala_6, audio_lala_7, audio_lala_8, audio_lala_9, audio_lala_10, audio_lala_11
+]
+
+# --- 3. PRELOAD SCENE & RESOURCE ---
 const PIPA_LURUS = preload("res://scenes/scene_pipa/pipa_lurus.tscn")
 const PIPA_SIKU = preload("res://scenes/scene_pipa/pipa_siku.tscn")
 const PIPA_T = preload("res://scenes/scene_pipa/pipa_t.tscn")
@@ -21,20 +41,17 @@ const VALVE = preload("res://scenes/scene_pipa/solenoid_valve.tscn")
 const SOIL = preload("res://scenes/tanaman/tanahkosong.tscn")
 const TANAMAN = preload("res://scenes/tanaman/tanaman.tscn")
 
-# Shader dipanggil langsung untuk jaminan keamanan
 const SHADER_AIR = preload("res://scenes/GamePlay/air_mengalir.gdshader")
 const AIR_SEGMENT = preload("res://scenes/GamePlay/airkecil.tscn")
 
-var daftar_tanaman: Array = []
+# --- 4. DEKLARASI VARIABEL GAMEPLAY & AUDIO PLAYER ---
+var audio_player: AudioStreamPlayer = null
 
+var daftar_tanaman: Array = []
 var grid_pixel_size = 135
 var grid_offset = Vector2(190, 440)
 
-# ==========================================
-# TOMBOL SAKTI UNTUK TESTING
-# ==========================================
 var mode_debug: bool = true
-# ==========================================
 
 var seed_level_ini: int = 0
 var sisa_hint: int = 3
@@ -44,18 +61,19 @@ var tutorial_sudah_selesai: bool = false
 const FILE_TUTORIAL = "user://tutorial_lala.save"
 const FILE_KOIN = "user://data_koin.save"           
 
+# --- 5. DAFTAR DIALOG ---
 var daftar_dialog_lala: Array = [
-	{"teks": "Halo! Aku Lala. Selamat Datang Di Sawah Ku!", "fokus": Vector4(0, 0, 0, 0)},
-	{"teks": "Ini adalah sawah padi pertama yang harus kita bantu.", "fokus": Vector4(0, 0, 0, 0)},
-	{"teks": "Semua tanaman harus mendapatkan air, kelembapan, dan suhu harus sesuai target agar padi bisa tumbuh dengan baik.", "fokus": Vector4(10, 330, 280, 280)},
-	{"teks": "Wah, lihat di sebelah kiri! Ini adalah sensor Selenoid Valve.", "fokus": Vector4(10, 330, 280, 280)},
-	{"teks": "Katup pintar ini bakal bukain jalan buat air menuju tanaman padi.", "fokus": Vector4(10, 330, 140, 140)},
-	{"teks": "Coba ketuk pipa ini untuk memutar arahnya ke tanaman padi!", "fokus": Vector4(145, 330, 143, 143)},
-	{"teks": "Selain air, suhu dan kelembapan juga penting untuk pertumbuhan padi.", "fokus": Vector4(0, 0, 0, 0)},
-	{"teks": "Coba lihat panel di atas! Ini adalah pengatur Kelembaban. Padi sangat suka lingkungan yang pas, tidak boleh terlalu kering ataupun terlalu basah.", "fokus": Vector4(95, 245, 190, 70)},
-	{"teks": "Perhatikan panel suhu di kanan. Geser pengatur kelembapan di atas sampai suhu berada di area target.", "fokus_array": [Vector4(95, 245, 190, 70), Vector4(329, 340, 75, 295)]},
-	{"teks": "Kalau kamu bingung, tekan tombol Hint untuk mendapatkan petunjuk.", "fokus": Vector4(177, 645, 80, 50)},
-	{"teks": "Selamat bermain....", "fokus": Vector4(0, 0, 0, 0)}
+	{"teks": "Halo! Aku Lala. Selamat Datang Di Sawah Ku!", "fokus": Vector4(0, 0, 0, 0), "audio_index": 0},
+	{"teks": "Ini adalah sawah padi pertama yang harus kita bantu.", "fokus": Vector4(0, 0, 0, 0), "audio_index": 1},
+	{"teks": "Semua tanaman harus mendapatkan air, kelembapan, dan suhu harus sesuai target agar padi bisa tumbuh dengan baik.", "fokus": Vector4(10, 330, 280, 280), "audio_index": 2},
+	{"teks": "Wah, lihat di sebelah kiri! Ini adalah sensor Selenoid Valve.", "fokus": Vector4(10, 330, 280, 280), "audio_index": 3},
+	{"teks": "Katup pintar ini bakal bukain jalan buat air menuju tanaman padi.", "fokus": Vector4(10, 330, 140, 140), "audio_index": 4},
+	{"teks": "Ketuk pipa untuk memutar arahnya. Susun pipa sampai air tersambung ke tanaman", "fokus": Vector4(145, 330, 143, 143), "audio_index": 5},
+	#{"teks": "Selain air, suhu dan kelembapan juga penting untuk pertumbuhan padi.", "fokus": Vector4(0, 0, 0, 0), "audio_index": 6},
+	{"teks": "Coba lihat panel di atas! Ini adalah pengatur Kelembaban. Padi sangat suka lingkungan yang pas, tidak boleh terlalu kering ataupun terlalu basah.", "fokus": Vector4(95, 245, 190, 70), "audio_index": 7},
+	{"teks": "Perhatikan panel suhu di kanan. Geser pengatur kelembapan di atas sampai suhu berada di area target.", "fokus_array": [Vector4(95, 245, 190, 70), Vector4(329, 340, 75, 295)], "audio_index": 8},
+	{"teks": "Kalau kamu bingung, tekan tombol Hint untuk mendapatkan petunjuk.", "fokus": Vector4(177, 645, 80, 50), "audio_index": 9},
+	{"teks": "Selamat bermain....", "fokus": Vector4(0, 0, 0, 0), "audio_index": 10}
 ]
 
 const DATA_LEVEL = {
@@ -72,7 +90,7 @@ const DATA_LEVEL = {
 		"kelembapan_awal": 20,
 		"pipes": [
 			{"x": 0, "y": 0, "jenis": "VALVE", "rotasi": 0},
-			{"x": 1, "y": 0, "jenis": "SIKU", "rotasi": 0},
+			{"x": 1, "y": 0, "jenis": "SIKU", "rotasi": 180},
 			{"x": 0, "y": 1, "jenis": "SOIL", "rotasi": 0},
 			{"x": 1, "y": 1, "jenis": "TANAMAN", "rotasi": 0}
 		]
@@ -90,7 +108,7 @@ const DATA_LEVEL = {
 		"kelembapan_awal": 10,
 		"pipes": [
 			{"x": 0, "y": 0, "jenis": "VALVE", "rotasi": 0},
-			{"x": 1, "y": 0, "jenis": "T", "rotasi": 180},
+			{"x": 1, "y": 0, "jenis": "T", "rotasi": 0},
 			{"x": 2, "y": 0, "jenis": "TANAMAN", "rotasi": 0},
 			{"x": 0, "y": 1, "jenis": "TANAMAN", "rotasi": 0},
 			{"x": 1, "y": 1, "jenis": "T", "rotasi": 0},
@@ -146,6 +164,10 @@ var debit_air_terpilih: String = "MATI"
 var status_air_mengalir: bool = false
 var container_air: Node2D = null
 
+# --- 2. VARIABEL AUDIO PLAYER DITAMBAHKAN DI SINI ---
+#var audio_player: AudioStreamPlayer = null
+# ----------------------------------------------------
+
 func _ready() -> void:
 	if mode_debug == false:
 		randomize()
@@ -169,6 +191,17 @@ func _ready() -> void:
 		if not bg_music.finished.is_connected(bg_music.play):
 			bg_music.finished.connect(bg_music.play)
 	
+	# --- 3. INISIALISASI AUDIO PLAYER DITAMBAHKAN DI SINI ---
+	if not audio_player:
+		audio_player = AudioStreamPlayer.new()
+	audio_player.name = "AudioDialogLala"
+	audio_player.volume_db = 0  # Set volume normal
+	audio_player.bus = "Master"  # Pastikan di bus Master
+	add_child(audio_player)
+	print("✅ AudioPlayer dibuat! Volume: ", audio_player.volume_db, " dB")
+	print("✅ AudioPlayer ada di scene: ", audio_player.get_parent())
+	# --------------------------------------------------------
+		
 	if has_node("InterfaceUI"):
 		var parent_ui = $InterfaceUI
 		if not parent_ui.has_node("OverlayRedup"):
@@ -182,14 +215,13 @@ func _ready() -> void:
 		
 	hubungkan_signal_popup()
 	muat_level(level_sekarang)
+	
 	var slider_kelem = get_node_or_null("InterfaceUI/Kelembapan/SliderKelembapan")
 	if slider_kelem:
 		if not slider_kelem.drag_started.is_connected(_on_slider_drag_started):
 			slider_kelem.drag_started.connect(_on_slider_drag_started)
 		if not slider_kelem.drag_ended.is_connected(_on_slider_drag_ended):
 			slider_kelem.drag_ended.connect(_on_slider_drag_ended)
-			
-			
 
 func mainkan_suara_klik() -> void:
 	var sfx = get_node_or_null("SfxKlik")
@@ -199,27 +231,45 @@ func mainkan_suara_klik() -> void:
 func hubungkan_signal_popup() -> void:
 	var btn_beli = get_node_or_null("InterfaceUI/PapanHintHabis/BtnBeliHint")
 	if btn_beli and not btn_beli.pressed.is_connected(_on_btn_beli_hint_pressed):
-		btn_beli.pressed.connect(func(): anim_tombol_klik(btn_beli); _on_btn_beli_hint_pressed())
+		btn_beli.pressed.connect(func(): 
+			anim_tombol_klik(btn_beli)
+			_on_btn_beli_hint_pressed()
+		)
 		
 	var btn_close_habis = get_node_or_null("InterfaceUI/PapanHintHabis/BtnClose")
 	if btn_close_habis and not btn_close_habis.pressed.is_connected(_on_btn_close_hint_habis_pressed):
-		btn_close_habis.pressed.connect(func(): anim_tombol_klik(btn_close_habis); _on_btn_close_hint_habis_pressed())
+		btn_close_habis.pressed.connect(func(): 
+			anim_tombol_klik(btn_close_habis)
+			_on_btn_close_hint_habis_pressed()
+		)
 
 	var btn_close_beli = get_node_or_null("InterfaceUI/PapanBeliHint/BtnClose")
 	if btn_close_beli and not btn_close_beli.pressed.is_connected(_on_btn_close_beli_hint_pressed):
-		btn_close_beli.pressed.connect(func(): anim_tombol_klik(btn_close_beli); _on_btn_close_beli_hint_pressed())
+		btn_close_beli.pressed.connect(func(): 
+			anim_tombol_klik(btn_close_beli)
+			_on_btn_close_beli_hint_pressed()
+		)
 
 	var btn_ok_poin = get_node_or_null("InterfaceUI/PapanBeliHint/PoinTidakCukup/BtnOk")
 	if btn_ok_poin and not btn_ok_poin.pressed.is_connected(_on_btn_ok_poin_tidak_cukup_pressed):
-		btn_ok_poin.pressed.connect(func(): anim_tombol_klik(btn_ok_poin); _on_btn_ok_poin_tidak_cukup_pressed())
+		btn_ok_poin.pressed.connect(func(): 
+			anim_tombol_klik(btn_ok_poin)
+			_on_btn_ok_poin_tidak_cukup_pressed()
+		)
 
 	var btn_ok_hint = get_node_or_null("InterfaceUI/papan_hint/buttonOk")
 	if btn_ok_hint and not btn_ok_hint.pressed.is_connected(_on_buttonOk_Hint_pressed):
-		btn_ok_hint.pressed.connect(func(): anim_tombol_klik(btn_ok_hint); _on_buttonOk_Hint_pressed())
+		btn_ok_hint.pressed.connect(func(): 
+			anim_tombol_klik(btn_ok_hint)
+			_on_buttonOk_Hint_pressed()
+		)
 
 	var btn_close_hint = get_node_or_null("InterfaceUI/papan_hint/BtnClose") 
 	if btn_close_hint and not btn_close_hint.pressed.is_connected(_on_buttonOk_Hint_pressed):
-		btn_close_hint.pressed.connect(func(): anim_tombol_klik(btn_close_hint); _on_buttonOk_Hint_pressed())
+		btn_close_hint.pressed.connect(func(): 
+			anim_tombol_klik(btn_close_hint)
+			_on_buttonOk_Hint_pressed()
+		)
 
 	var path_container = "InterfaceUI/PapanBeliHint/HintContainer"
 	_setup_tombol_paket(path_container + "/Hint1", 1, 25)
@@ -325,7 +375,6 @@ func anim_tombol_klik(node_tombol: Control) -> void:
 func _process(_delta: float) -> void:
 	if level_selesai: return
 	simulasi_pipa_tersambung = cek_semua_pipa_tersambung()
-	#set_animasi_air(simulasi_pipa_tersambung)
 	if simulasi_pipa_tersambung and simulasi_suhu_sudah_pas and simulasi_kelembapan_sudah_pas:
 		pemicu_menang_level()
 
@@ -642,6 +691,7 @@ func _on_btn_ok_pressed() -> void:
 	elif has_node("InterfaceUI/PapanSelamat"): $InterfaceUI/PapanSelamat.visible = false
 	sembunyikan_overlay_redup()
 	lanjut_ke_level_berikutnya()
+
 func perbarui_tampilan_hint() -> void:
 	if has_node("InterfaceUI/Hint/LblSisaHint"):
 		$InterfaceUI/Hint/LblSisaHint.text = str(sisa_hint)
@@ -709,10 +759,6 @@ func _on_hint_pressed() -> void:
 		sisa_hint -= 1
 		perbarui_tampilan_hint()
 
-# ==============================================================================
-# FUNGSI PENUTUP PAPAN HINT & SIGNAL HANDLER
-# ==============================================================================
-
 func tutup_papan_hint() -> void:
 	if has_node("InterfaceUI/papan_hint"):
 		$InterfaceUI/papan_hint.visible = false
@@ -721,16 +767,13 @@ func tutup_papan_hint() -> void:
 		
 	sembunyikan_overlay_redup()
 	
-	# Reset tahap_hint ke 0 agar siklus hint bisa berulang untuk penggunaan berikutnya
 	if tahap_hint == 2:
 		tahap_hint = 0
 
-# Signal tombol OK
 func _on_buttonOk_Hint_pressed() -> void:
 	mainkan_suara_klik()
 	tutup_papan_hint()
 
-# Signal tombol Close (Silang Merah)
 func _on_btn_close_pressed() -> void:
 	mainkan_suara_klik()
 	tutup_papan_hint()
@@ -787,14 +830,71 @@ func mulai_tutorial_lala() -> void:
 	tampilkan_dialog_lala()
 
 func tampilkan_dialog_lala() -> void:
+	print("📢 tampilkan_dialog_lala() dipanggil!")
+	print("📢 indeks_dialog_lala = ", indeks_dialog_lala)
+	
 	var node_lala = get_node_or_null("InterfaceUI/PapanTutorialLala")
-	if not node_lala: return
+	if not node_lala: 
+		print("❌ Node PapanTutorialLala tidak ditemukan!")
+		return
+	
 	node_lala.visible = true
 	var data_saat_ini = daftar_dialog_lala[indeks_dialog_lala]
 	var lbl = node_lala.get_node_or_null("LblTeksLala")
 	if not lbl: lbl = node_lala.get_node_or_null("KarakterLala/LblTeksLala")
-	if lbl: lbl.text = data_saat_ini["teks"]
+	if lbl: 
+		lbl.text = data_saat_ini["teks"]
+	
+	# Debug audio
+	var audio_index = data_saat_ini.get("audio_index", -1)
+	print(" Audio index dari data: ", audio_index)
+	print("📢 Jumlah audio di array: ", daftar_audio_lala.size())
+	print("📢 Audio di index ", audio_index, ": ", daftar_audio_lala[audio_index] if audio_index >= 0 and audio_index < daftar_audio_lala.size() else "INVALID")
+	
+	if audio_index >= 0 and audio_index < daftar_audio_lala.size():
+		print("🎵 Memanggil mainkan_audio_dialog...")
+		mainkan_audio_dialog(audio_index)
+	else:
+		print("❌ Audio index tidak valid: ", audio_index)
+		
 	atur_lubang_tutorial(node_lala, data_saat_ini)
+
+# ==========================================================
+# 5. FUNGSI BARU UNTUK MEMAINKAN AUDIO (DILETAKKAN DI LUAR FUNGSI LAIN)
+# ==========================================================
+func mainkan_audio_dialog(index: int) -> void:
+	print(" Fungsi dimainkan_audio_dialog dipanggil, index: ", index)
+	
+	if index < 0 or index >= daftar_audio_lala.size():
+		print("❌ Index out of range! Index: ", index, " | Size: ", daftar_audio_lala.size())
+		return
+	
+	if not audio_player:
+		print("❌ AudioPlayer belum dibuat!")
+		return
+	
+	var audio_stream = daftar_audio_lala[index]
+	print("🎵 Audio stream: ", audio_stream)
+	print("🎵 Audio stream valid? ", audio_stream != null)
+	
+	if audio_stream:
+		if audio_player.playing:
+			audio_player.stop()
+		
+		# Set volume ke 0 dB (normal)
+		audio_player.volume_db = 0
+		audio_player.bus = "Master"
+		
+		audio_player.stream = audio_stream
+		audio_player.play()
+		
+		print("▶️ Audio dimainkan!")
+		print("▶️ Playing status: ", audio_player.playing)
+		print("▶️ Volume: ", audio_player.volume_db, " dB")
+		print("▶️ Stream: ", audio_player.stream)
+	else:
+		print("❌ Audio stream NULL untuk index: ", index)
+		print("❌ Cek apakah file lala_", index + 1, ".MP3 ada di folder res://sound/")
 
 func atur_lubang_tutorial(node_lala: Control, data_dialog: Dictionary) -> void:
 	var layar = get_viewport_rect().size
@@ -867,6 +967,12 @@ func _on_btn_lewati_tutorial_pressed() -> void:
 func tutup_tutorial_lala() -> void:
 	var node_lala = get_node_or_null("InterfaceUI/PapanTutorialLala")
 	if node_lala: node_lala.visible = false
+	
+	# --- 6. STOP AUDIO SAAT TUTORIAL DITUTUP DITAMBAHKAN DI SINI ---
+	if audio_player and audio_player.playing:
+		audio_player.stop()
+	# ---------------------------------------------------------------
+	
 	tutorial_sudah_selesai = true
 	var file = FileAccess.open(FILE_TUTORIAL, FileAccess.WRITE)
 	if file:
