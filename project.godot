@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="agri-defender-game"
-run/main_scene="uid://bhhwhu1ivou0p"
+run/main_scene="uid://r0688sn1rlp3"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameManager="*uid://bu6y7047sesuy"
 
 [display]
 

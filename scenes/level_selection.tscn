@@ -1,0 +1,535 @@
+[gd_scene format=3 uid="uid://db0qap0fk26xk"]
+
+[ext_resource type="Script" uid="uid://cmwaghtc3xns" path="res://scenes/level_selection.gd" id="1_0rqca"]
+[ext_resource type="Texture2D" uid="uid://hl5w7bmixr30" path="res://asset_gambar/background/bg_cerita1.png" id="1_gswpo"]
+[ext_resource type="Texture2D" uid="uid://b48tkobg17176" path="res://asset_gambar/gambar_board/main_lv_board.png" id="2_3rh63"]
+[ext_resource type="Texture2D" uid="uid://dv4y7istfsljq" path="res://asset_gambar/gambar_asset_menu/beli.png" id="3_42rqe"]
+[ext_resource type="Texture2D" uid="uid://bgwb7y4o66di2" path="res://asset_gambar/gambar_asset_menu/level.png" id="4_rcujv"]
+[ext_resource type="Texture2D" uid="uid://043twur1012e" path="res://asset_gambar/gambar_asset_menu/nama_menu.png" id="4_tuscg"]
+[ext_resource type="Texture2D" uid="uid://bmt4kf2t215qa" path="res://asset_gambar/gambar_asset_menu/info.png" id="5_efsdc"]
+[ext_resource type="Texture2D" uid="uid://dvl2nba2buli2" path="res://asset_gambar/gambar_asset_menu/menu_terpilih.png" id="5_rcujv"]
+[ext_resource type="PackedScene" uid="uid://bu2ideuj8juk0" path="res://scenes/toko_hint.tscn" id="9_2wv3l"]
+[ext_resource type="Texture2D" uid="uid://6l1l7xuhlebd" path="res://asset_gambar/gambar_asset_menu/lv_padi.png" id="10_crhqw"]
+[ext_resource type="Texture2D" uid="uid://cwfrn61477upr" path="res://asset_gambar/gambar_asset_menu/lv_tomat.png" id="11_0oihc"]
+[ext_resource type="Texture2D" uid="uid://do8cj1wiv2710" path="res://assets/IconGembok.png" id="11_7jkdw"]
+[ext_resource type="Texture2D" uid="uid://boaow5stikue0" path="res://asset_gambar/gambar_asset_menu/lv_jagung.png" id="12_74jid"]
+[ext_resource type="FontFile" uid="uid://d4ecrtf4e6pvo" path="res://font/Baloo-Regular.ttf" id="14_0oihc"]
+[ext_resource type="Texture2D" uid="uid://cqyyx63xygbqu" path="res://asset_gambar/gambar_asset_menu/lv_lock.png" id="14_4it42"]
+[ext_resource type="Texture2D" uid="uid://bodr2fs62l1fa" path="res://asset_gambar/gambar_board/poin menu.png" id="15_lwmgr"]
+[ext_resource type="Texture2D" uid="uid://2ojinfxo20b2" path="res://assets/tumbuhan.png" id="17_lwmgr"]
+[ext_resource type="Texture2D" uid="uid://bgl3yogci04h2" path="res://assets/text_tumbuhan.png" id="18_nc37p"]
+[ext_resource type="Texture2D" uid="uid://cfg214s1yb6f4" path="res://assets/drone.png" id="19_7jkdw"]
+[ext_resource type="Texture2D" uid="uid://d2ajtuon5ioht" path="res://assets/text_dronr.png" id="20_25sbw"]
+[ext_resource type="Texture2D" uid="uid://dqojbk7wrf44n" path="res://assets/Info.png" id="21_nc37p"]
+[ext_resource type="Texture2D" uid="uid://bbtb367m3h6tj" path="res://assets/IconClose.png" id="22_7jkdw"]
+
+[node name="LevelSelection" type="Control" unique_id=63114121]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0rqca")
+
+[node name="Background" type="TextureRect" parent="." unique_id=57836787]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_gswpo")
+
+[node name="LevelBoard" type="TextureRect" parent="." unique_id=181666811]
+custom_minimum_size = Vector2(430, 700)
+layout_mode = 1
+offset_left = -56.0
+offset_top = 85.0
+offset_right = 826.0
+offset_bottom = 1280.0
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_3rh63")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TokoGroup" type="Control" parent="LevelBoard" unique_id=1094261808]
+custom_minimum_size = Vector2(160, 160)
+anchors_preset = 0
+offset_left = 141.0
+offset_top = 1080.0
+offset_right = 301.0
+offset_bottom = 1240.0
+
+[node name="TokoNamePlate" type="Control" parent="LevelBoard/TokoGroup" unique_id=1027451211]
+anchors_preset = 0
+offset_right = 160.0
+
+[node name="TokoBoardNormal" type="TextureRect" parent="LevelBoard/TokoGroup/TokoNamePlate" unique_id=1034062639]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 67.0
+offset_right = 128.0
+offset_bottom = 107.0
+texture = ExtResource("4_tuscg")
+stretch_mode = 5
+
+[node name="TokoBoardActive" type="TextureRect" parent="LevelBoard/TokoGroup/TokoNamePlate" unique_id=1866676238]
+visible = false
+layout_mode = 0
+offset_left = 19.0
+offset_top = 1.0
+offset_right = 144.0
+offset_bottom = 126.0
+texture = ExtResource("5_rcujv")
+stretch_mode = 5
+
+[node name="TokoIcon" type="TextureButton" parent="LevelBoard/TokoGroup" unique_id=560878398]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 0
+offset_top = 4.0
+offset_right = 160.0
+offset_bottom = 94.0
+texture_normal = ExtResource("3_42rqe")
+stretch_mode = 5
+
+[node name="TokoTextActive" type="Label" parent="LevelBoard" unique_id=1995058998]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 1152.0
+offset_right = 302.99997
+offset_bottom = 1178.0
+theme_override_font_sizes/font_size = 18
+text = "Toko"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelGroup" type="Control" parent="LevelBoard" unique_id=1528282731]
+anchors_preset = 0
+offset_left = 341.0
+offset_top = 1061.0
+offset_right = 481.0
+offset_bottom = 1205.0
+
+[node name="LevelNamePlate" type="Control" parent="LevelBoard/LevelGroup" unique_id=778263194]
+anchors_preset = 0
+offset_right = 140.0
+
+[node name="LevelBoardNormal" type="TextureRect" parent="LevelBoard/LevelGroup/LevelNamePlate" unique_id=1898827996]
+visible = false
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 91.0
+offset_right = 125.0
+offset_bottom = 131.0
+texture = ExtResource("4_tuscg")
+stretch_mode = 5
+
+[node name="LevelBoardActive" type="TextureRect" parent="LevelBoard/LevelGroup/LevelNamePlate" unique_id=1520712227]
+custom_minimum_size = Vector2(140, 55)
+layout_mode = 1
+offset_left = 2.0
+offset_top = 19.0
+offset_right = 142.0
+offset_bottom = 144.0
+texture = ExtResource("5_rcujv")
+stretch_mode = 5
+
+[node name="LevelTextActive" type="Label" parent="LevelBoard/LevelGroup" unique_id=106852999]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 96.0
+offset_right = 146.0
+offset_bottom = 122.0
+theme_override_font_sizes/font_size = 18
+text = "Level"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelIcon" type="TextureButton" parent="LevelBoard/LevelGroup" unique_id=300180123]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 0
+offset_left = 3.0
+offset_top = 13.0
+offset_right = 143.0
+offset_bottom = 113.0
+texture_normal = ExtResource("4_rcujv")
+stretch_mode = 5
+
+[node name="InfoGroup" type="Control" parent="LevelBoard" unique_id=855784156]
+anchors_preset = 0
+offset_left = 567.0
+offset_top = 1080.0
+offset_right = 657.0
+offset_bottom = 1204.0
+
+[node name="InfoNamePlate" type="Control" parent="LevelBoard/InfoGroup" unique_id=753979799]
+anchors_preset = 0
+offset_top = 70.0
+offset_right = 90.0
+offset_bottom = 70.0
+
+[node name="InfoBoardNormal" type="TextureRect" parent="LevelBoard/InfoGroup/InfoNamePlate" unique_id=1613851297]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("4_tuscg")
+
+[node name="InfoBoardActive" type="TextureRect" parent="LevelBoard/InfoGroup/InfoNamePlate" unique_id=1447935345]
+visible = false
+layout_mode = 0
+offset_left = -17.0
+offset_top = -70.0
+offset_right = 108.0
+offset_bottom = 55.0
+texture = ExtResource("5_rcujv")
+
+[node name="InfoIcon" type="TextureButton" parent="LevelBoard/InfoGroup" unique_id=1297622482]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 0
+offset_right = 90.0
+offset_bottom = 90.0
+texture_normal = ExtResource("5_efsdc")
+
+[node name="InfoTextActive" type="Label" parent="LevelBoard/InfoGroup" unique_id=1654173732]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 74.0
+offset_right = 93.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 18
+text = "Info"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Level1Button" type="TextureButton" parent="LevelBoard" unique_id=1878412556]
+layout_mode = 0
+offset_left = 141.0
+offset_top = 213.0
+offset_right = 331.0
+offset_bottom = 467.0
+texture_normal = ExtResource("10_crhqw")
+stretch_mode = 0
+
+[node name="Level2Button" type="TextureButton" parent="LevelBoard" unique_id=501746593]
+clip_children = 2
+custom_minimum_size = Vector2(75, 90)
+layout_mode = 1
+offset_left = 318.0
+offset_top = 213.0
+offset_right = 508.0
+offset_bottom = 467.0
+texture_normal = ExtResource("11_0oihc")
+stretch_mode = 0
+
+[node name="DarkOverlay" type="ColorRect" parent="LevelBoard/Level2Button" unique_id=1481106316]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="LockOverlay" type="TextureRect" parent="LevelBoard/Level2Button" unique_id=573880969]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.9999883
+offset_top = -0.5000114
+offset_right = 6.9999847
+offset_bottom = -0.50001526
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_7jkdw")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Level3Button" type="TextureButton" parent="LevelBoard" unique_id=1539154335]
+clip_children = 2
+layout_mode = 0
+offset_left = 496.0
+offset_top = 213.0
+offset_right = 686.0
+offset_bottom = 467.0
+texture_normal = ExtResource("12_74jid")
+
+[node name="DarkOverlay" type="ColorRect" parent="LevelBoard/Level3Button" unique_id=90417328]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="LockOverlay" type="TextureRect" parent="LevelBoard/Level3Button" unique_id=1257484359]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_7jkdw")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Level4Button" type="TextureButton" parent="LevelBoard" unique_id=1073677810]
+layout_mode = 0
+offset_left = 147.0
+offset_top = 450.5
+offset_right = 346.0
+offset_bottom = 715.5
+texture_normal = ExtResource("14_4it42")
+
+[node name="TextLevel" type="Label" parent="LevelBoard/Level4Button" unique_id=1441486455]
+layout_mode = 0
+offset_left = 24.25
+offset_top = -2.9999924
+offset_right = 64.25
+offset_bottom = 60.000008
+theme_override_fonts/font = ExtResource("14_0oihc")
+theme_override_font_sizes/font_size = 40
+text = "4"
+
+[node name="Level5Button" type="TextureButton" parent="LevelBoard" unique_id=1226139307]
+layout_mode = 0
+offset_left = 328.0
+offset_top = 455.0
+offset_right = 518.0
+offset_bottom = 709.0
+texture_normal = ExtResource("14_4it42")
+
+[node name="TextLevel" type="Label" parent="LevelBoard/Level5Button" unique_id=1170710860]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -67.0
+offset_top = -131.0
+offset_right = -27.0
+offset_bottom = -68.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("14_0oihc")
+theme_override_font_sizes/font_size = 40
+text = "5"
+
+[node name="Level6Button" type="TextureButton" parent="LevelBoard" unique_id=534763961]
+layout_mode = 0
+offset_left = 505.0
+offset_top = 453.0
+offset_right = 695.0
+offset_bottom = 707.0
+texture_normal = ExtResource("14_4it42")
+
+[node name="TextLevel" type="Label" parent="LevelBoard/Level6Button" unique_id=1963838235]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -131.0
+offset_right = -28.0
+offset_bottom = -68.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("14_0oihc")
+theme_override_font_sizes/font_size = 40
+text = "6"
+
+[node name="Level7Button" type="TextureButton" parent="LevelBoard" unique_id=118428044]
+layout_mode = 0
+offset_left = 149.0
+offset_top = 670.0
+offset_right = 338.99997
+offset_bottom = 924.0
+texture_normal = ExtResource("14_4it42")
+
+[node name="TextLevel" type="Label" parent="LevelBoard/Level7Button" unique_id=1107824605]
+layout_mode = 0
+offset_left = 28.0
+offset_top = -3.0
+offset_right = 68.0
+offset_bottom = 60.0
+theme_override_fonts/font = ExtResource("14_0oihc")
+theme_override_font_sizes/font_size = 40
+text = "7"
+
+[node name="Level8Button" type="TextureButton" parent="LevelBoard" unique_id=876711200]
+layout_mode = 0
+offset_left = 329.0
+offset_top = 673.0
+offset_right = 519.0
+offset_bottom = 927.0
+texture_normal = ExtResource("14_4it42")
+
+[node name="TextLevel" type="Label" parent="LevelBoard/Level8Button" unique_id=1600651589]
+layout_mode = 0
+offset_left = 25.0
+offset_top = -5.0
+offset_right = 65.0
+offset_bottom = 58.0
+theme_override_fonts/font = ExtResource("14_0oihc")
+theme_override_font_sizes/font_size = 40
+text = "8"
+
+[node name="Level9Button" type="TextureButton" parent="LevelBoard" unique_id=1838095117]
+layout_mode = 0
+offset_left = 505.0
+offset_top = 673.0
+offset_right = 695.0
+offset_bottom = 927.0
+texture_normal = ExtResource("14_4it42")
+
+[node name="TextLevel" type="Label" parent="LevelBoard/Level9Button" unique_id=792594590]
+layout_mode = 0
+offset_left = 27.0
+offset_top = -5.0
+offset_right = 67.0
+offset_bottom = 58.0
+theme_override_fonts/font = ExtResource("14_0oihc")
+theme_override_font_sizes/font_size = 40
+text = "9"
+
+[node name="Level10Button" type="TextureButton" parent="LevelBoard" unique_id=2141309593]
+layout_mode = 0
+offset_left = 141.0
+offset_top = 213.0
+offset_right = 330.99997
+offset_bottom = 467.0
+
+[node name="Level11Button" type="TextureButton" parent="LevelBoard" unique_id=903210911]
+layout_mode = 0
+offset_left = 141.0
+offset_top = 213.0
+offset_right = 331.0
+offset_bottom = 467.0
+texture_normal = ExtResource("10_crhqw")
+
+[node name="Level12Button" type="TextureButton" parent="LevelBoard" unique_id=1091755391]
+layout_mode = 0
+offset_left = 141.0
+offset_top = 213.0
+offset_right = 331.0
+offset_bottom = 467.0
+texture_normal = ExtResource("10_crhqw")
+
+[node name="UIPoin" type="Control" parent="." unique_id=1942303952]
+anchors_preset = 0
+offset_left = 20.0
+offset_right = 219.99997
+offset_bottom = 105.0
+
+[node name="IconKoin" type="TextureRect" parent="UIPoin" unique_id=211076084]
+layout_mode = 0
+offset_right = 140.0
+offset_bottom = 105.0
+texture = ExtResource("15_lwmgr")
+
+[node name="TextPoin" type="Label" parent="UIPoin" unique_id=387694611]
+layout_mode = 1
+offset_left = 58.0
+offset_top = 34.0
+offset_right = 98.0
+offset_bottom = 73.0
+theme_override_colors/font_color = Color(0.41960785, 0.26666668, 0.13725491, 1)
+theme_override_fonts/font = ExtResource("14_0oihc")
+theme_override_font_sizes/font_size = 24
+
+[node name="IconTumbuhan" type="TextureRect" parent="." unique_id=1421511867]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 814.0
+offset_right = 166.0
+offset_bottom = 964.0
+texture = ExtResource("17_lwmgr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextTumbuhan" type="TextureRect" parent="." unique_id=236250326]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 814.0
+offset_right = 262.0
+offset_bottom = 964.0
+texture = ExtResource("18_nc37p")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconDrone" type="TextureRect" parent="." unique_id=1804634625]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 835.0
+offset_right = 372.0
+offset_bottom = 935.0
+texture = ExtResource("19_7jkdw")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextDrone" type="TextureRect" parent="." unique_id=1369639466]
+layout_mode = 0
+offset_left = 350.0
+offset_top = 818.0
+offset_right = 500.0
+offset_bottom = 968.0
+texture = ExtResource("20_25sbw")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TokoHint" parent="." unique_id=636775149 instance=ExtResource("9_2wv3l")]
+visible = false
+layout_mode = 1
+offset_right = -6.1035156e-05
+
+[node name="InfoPopup" type="Control" parent="." unique_id=914279548]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="InfoPopup" unique_id=1317534776]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="InfoBoard" type="TextureRect" parent="InfoPopup" unique_id=844104220]
+layout_mode = 0
+offset_left = 63.0
+offset_top = 293.0
+offset_right = 513.0
+offset_bottom = 743.0
+texture = ExtResource("21_nc37p")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CloseInfo" type="TextureButton" parent="InfoPopup" unique_id=732073892]
+layout_mode = 1
+offset_left = 384.0
+offset_top = 333.0
+offset_right = 424.0
+offset_bottom = 373.0
+texture_normal = ExtResource("22_7jkdw")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="pressed" from="LevelBoard/TokoGroup/TokoIcon" to="." method="_on_toko_icon_pressed"]
+[connection signal="pressed" from="LevelBoard/InfoGroup/InfoIcon" to="." method="_on_info_icon_pressed"]
+[connection signal="pressed" from="InfoPopup/CloseInfo" to="." method="_on_close_info_pressed"]
