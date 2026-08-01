@@ -1,140 +1,132 @@
 extends Control
+# --- PRELOAD AUDIO ---
 
-func _ready():
-	print("=== MEMULAI ===")
+# Path scene Gameplay utama
+const GAMEPLAY_SCENE_PATH_1: String = "res://scenes/GamePlay/GamePlay.tscn"
+const GAMEPLAY_SCENE_PATH_2: String = "res://scenes/GamePlay/game_play.tscn"
+const FILE_KOIN = "user://data_koin.save"
+
+# Pemutar audio untuk BGM dan Efek Sentuh
+var music_player: AudioStreamPlayer
+var audio_player: AudioStreamPlayer
+
+func _ready() -> void:
+	print("=== MEMULAI LEVEL SELECTION ===")
 	
-	var toko_icon = _get_first_texture_button("TokoGroup")
-	var level_icon = _get_first_texture_button("LevelGroup")
-	var info_icon = _get_first_texture_button("InfoGroup")
+	# 1. SETUP MUSIK LATAR (BGM)
+	music_player = AudioStreamPlayer.new()
+	add_child(music_player)
 	
-	if toko_icon:
-		toko_icon.pressed.connect(func(): set_active("toko"))
-	if level_icon:
-		level_icon.pressed.connect(func(): set_active("level"))
-	if info_icon:
-		info_icon.pressed.connect(func(): set_active("info"))
+	# 2. SETUP EFEK SUARA SENTUH
+	audio_player = AudioStreamPlayer.new()
+	add_child(audio_player)
 	
-	call_deferred("set_active", "level")
+	# --- SINKRONISASI KOIN ---
+	update_tampilan_koin()
 	
-	# Update status gembok/lock level saat scene dimuat
+	if get_node_or_null("/root/GameManager"):
+		if not GameManager.koin_berubah.is_connected(_on_koin_berubah):
+			GameManager.koin_berubah.connect(_on_koin_berubah)
+	# ------------------------
+	
+	# Pindahkan tombol Level 1 ke layer paling depan jika ada
+	var level1_btn = find_child("Level1Button", true, false)
+	if level1_btn:
+		level1_btn.move_to_front()
+	
+	# Auto-connect semua tombol level yang ada
+	for i in range(1, 10):
+		var btn = find_child("Level" + str(i) + "Button", true, false)
+		if btn and btn is TextureButton:
+			if not btn.pressed.is_connected(_on_level_button_pressed.bind(i)):
+				btn.pressed.connect(_on_level_button_pressed.bind(i))
+				
 	update_level_status()
 
-func _get_first_texture_button(group_name):
-	var group = get_node_or_null(group_name)
-	if not group:
-		return null
-	for child in group.get_children():
-		if child is TextureButton:
-			return child
-		var found = _search_in_children(child)
-		if found:
-			return found
+func _mainkan_suara_sentuh() -> void:
+	if audio_player and audio_player.stream:
+		audio_player.play()
+
+# --- FUNGSI UPDATE KOIN ---
+func update_tampilan_koin() -> void:
+	var total_koin = 0
+	
+	# 1. Ambil dari GameManager jika ada
+	if get_node_or_null("/root/GameManager"):
+		total_koin = GameManager.koin_sekarang
+	else:
+		# 2. Fallback baca langsung dari file save koin jika GameManager kosong
+		if FileAccess.file_exists(FILE_KOIN):
+			var file = FileAccess.open(FILE_KOIN, FileAccess.READ)
+			if file:
+				total_koin = file.get_as_text().to_int()
+				file.close()
+	
+	# Cari node label koin dengan berbagai kemungkinan nama di scene Level Selection
+	var teks_koin_node = _find_coin_label_node()
+	if teks_koin_node and teks_koin_node is Label:
+		teks_koin_node.text = str(total_koin)
+
+func _on_koin_berubah(koin_baru: int) -> void:
+	var teks_koin_node = _find_coin_label_node()
+	if teks_koin_node and teks_koin_node is Label:
+		teks_koin_node.text = str(koin_baru)
+
+# Helper untuk mencari label koin berdasarkan beberapa nama node umum
+func _find_coin_label_node() -> Node:
+	var possible_names = ["TextPoin", "TextKoin", "LabelKoin", "JumlahKoin", "CoinLabel", "LblKoin"]
+	for n in possible_names:
+		var found = find_child(n, true, false)
+		if found: return found
 	return null
 
-func _search_in_children(node):
-	for child in node.get_children():
-		if child is TextureButton:
-			return child
-		var found = _search_in_children(child)
-		if found:
-			return found
+# --- STATUS LEVEL (UNLOCK/LOCK) ---
+func update_level_status() -> void:
+	var unlocked = 1
+	if get_node_or_null("/root/GameManager"):
+		unlocked = GameManager.unlocked_level
+
+	for i in range(1, 10):
+		var level_btn = _find_level_node(i)
+		if level_btn:
+			var lock_texture = level_btn.get_node_or_null("TextureRect")
+			if not lock_texture: 
+				lock_texture = level_btn.find_child("TextureRect", true, false)
+			
+			if i == 1 or i <= unlocked:
+				if level_btn is BaseButton: level_btn.disabled = false
+				if lock_texture: lock_texture.visible = false
+			else:
+				if level_btn is BaseButton: level_btn.disabled = true
+				if lock_texture: lock_texture.visible = true
+
+func _on_level_button_pressed(level_num: int) -> void:
+	_mainkan_suara_sentuh()
+	var unlocked = GameManager.unlocked_level if get_node_or_null("/root/GameManager") else 1
+	if level_num <= unlocked:
+		GameManager.current_level = level_num
+		_pindah_ke_gameplay()
+
+func _pindah_ke_gameplay() -> void:
+	if not get_tree(): return
+	if ResourceLoader.exists(GAMEPLAY_SCENE_PATH_1):
+		get_tree().change_scene_to_file(GAMEPLAY_SCENE_PATH_1)
+	elif ResourceLoader.exists(GAMEPLAY_SCENE_PATH_2):
+		get_tree().change_scene_to_file(GAMEPLAY_SCENE_PATH_2)
+
+func _find_level_node(level_num: int) -> Node:
+	var node_names = ["Level" + str(level_num) + "Button", "Level" + str(level_num) + "Card", "BtnLevel" + str(level_num), "Level" + str(level_num)]
+	for name in node_names:
+		var found = get_node_or_null(name)
+		if not found: found = find_child(name, true, false)
+		if found: return found
 	return null
 
-func set_active(which):
-	# Cari semua icon
-	var toko_icon = _get_first_texture_button("TokoGroup")
-	var level_icon = _get_first_texture_button("LevelGroup")
-	var info_icon = _get_first_texture_button("InfoGroup")
-	
-	var toko_board_normal = get_node_or_null("TokoGroup/TokoNamePlate/TokoBoardNormal")
-	var toko_board_active = get_node_or_null("TokoGroup/TokoNamePlate/TokoBoardActive")
-	
-	var level_board_normal = get_node_or_null("LevelGroup/LevelNamePlate/LevelBoardNormal")
-	var level_board_active = get_node_or_null("LevelGroup/LevelNamePlate/LevelBoardActive")
-	
-	var info_board_normal = get_node_or_null("InfoGroup/InfoNamePlate/InfoBoardNormal")
-	var info_board_active = get_node_or_null("InfoGroup/InfoNamePlate/InfoBoardActive")
-	
-	# Reset semua papan ke normal (TANPA mengubah scale icon)
-	if toko_board_normal: toko_board_normal.visible = true
-	if toko_board_active: toko_board_active.visible = false
-	
-	if level_board_normal: level_board_normal.visible = true
-	if level_board_active: level_board_active.visible = false
-	
-	if info_board_normal: info_board_normal.visible = true
-	if info_board_active: info_board_active.visible = false
-	
-	# Set papan yang aktif (TANPA mengubah scale icon)
-	if which == "toko":
-		if toko_board_normal: toko_board_normal.visible = false
-		if toko_board_active: toko_board_active.visible = true
-		# Menampilkan Toko Hint
-		if has_node("TokoHint"):
-			$TokoHint.visible = true
-			print("✅ Toko Hint dibuka!")
-	elif which == "level":
-		if level_board_normal: level_board_normal.visible = false
-		if level_board_active: level_board_active.visible = true
-	elif which == "info":
-		if info_board_normal: info_board_normal.visible = false
-		if info_board_active: info_board_active.visible = true
-		# Menampilkan Info Popup
-		if has_node("InfoPopup"):
-			$InfoPopup.visible = true
-			print("✅ Pop-up Info dibuka!")
+func set_active(which: String) -> void:
+	_mainkan_suara_sentuh()
 
-
-func _on_toko_icon_pressed() -> void:
-	# Tampilkan toko hint
-	if has_node("TokoHint"):
-		$TokoHint.visible = true
-		print("✅ Toko Hint dibuka!")
-
-
-func _on_info_icon_pressed() -> void:
-	# Tampilkan pop-up info
-	if has_node("InfoPopup"):
-		$InfoPopup.visible = true
-		print("✅ Pop-up Info dibuka!")
-
-
-# Fungsi tambahan untuk menutup Info Popup (hubungkan ke tombol Close/X di InfoPopup)
 func _on_close_button_pressed() -> void:
-	if has_node("InfoPopup"):
-		$InfoPopup.visible = false
-		print("❌ Pop-up Info ditutup!")
-
+	_mainkan_suara_sentuh()
 
 func _on_close_info_pressed() -> void:
-	if has_node("InfoPopup"):
-		$InfoPopup.visible = false
-		print("❌ Pop-up Info ditutup!")
-
-
-# --- SISTEM UPDATE UNLOCK/LOCK LEVEL ---
-func update_level_status() -> void:
-	# Loop mengecek Level 1 sampai 9
-	for i in range(1, 10):
-		# Mencari node tombol kartu level (misal Level1Button, Level2Button, dst)
-		var level_btn = get_node_or_null("Level" + str(i) + "Button")
-		
-		# Jika di scene kamu namanya beda (misal Level2Card / Level4Button),
-		# fungsi di bawah ini akan otomatis mencoba mencari alternate name
-		if not level_btn:
-			level_btn = get_node_or_null("Level" + str(i) + "Card")
-		
-		if level_btn:
-			var lock_overlay = level_btn.get_node_or_null("LockOverlay")
-			var dark_overlay = level_btn.get_node_or_null("DarkOverlay")
-			
-			if i <= GameManager.unlocked_level:
-				# Level Terbuka
-				level_btn.disabled = false
-				if lock_overlay: lock_overlay.visible = false
-				if dark_overlay: dark_overlay.visible = false
-			else:
-				# Level Terkunci
-				level_btn.disabled = true
-				if lock_overlay: lock_overlay.visible = true
-				if dark_overlay: dark_overlay.visible = true
+	_mainkan_suara_sentuh()

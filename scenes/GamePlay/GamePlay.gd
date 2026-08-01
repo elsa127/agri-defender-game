@@ -90,7 +90,7 @@ const DATA_LEVEL = {
 		"kelembapan_awal": 20,
 		"pipes": [
 			{"x": 0, "y": 0, "jenis": "VALVE", "rotasi": 0},
-			{"x": 1, "y": 0, "jenis": "SIKU", "rotasi": 180},
+			{"x": 1, "y": 0, "jenis": "SIKU", "rotasi": 0},
 			{"x": 0, "y": 1, "jenis": "SOIL", "rotasi": 0},
 			{"x": 1, "y": 1, "jenis": "TANAMAN", "rotasi": 0}
 		]
@@ -108,7 +108,7 @@ const DATA_LEVEL = {
 		"kelembapan_awal": 10,
 		"pipes": [
 			{"x": 0, "y": 0, "jenis": "VALVE", "rotasi": 0},
-			{"x": 1, "y": 0, "jenis": "T", "rotasi": 0},
+			{"x": 1, "y": 0, "jenis": "T", "rotasi": 180},
 			{"x": 2, "y": 0, "jenis": "TANAMAN", "rotasi": 0},
 			{"x": 0, "y": 1, "jenis": "TANAMAN", "rotasi": 0},
 			{"x": 1, "y": 1, "jenis": "T", "rotasi": 0},
@@ -150,12 +150,12 @@ const DATA_LEVEL = {
 	}
 }
 
-var level_sekarang: int = 1
+var level_sekarang: int = GameManager.current_level if get_node_or_null("/root/GameManager") else 1
 var suhu_saat_ini: int = 0
 var kelembapan_saat_ini: int = 0
 var level_selesai: bool = false
 var koin_sekarang: int = 0
-var target_koin: int = 1000
+var target_koin: int = 1000000
 var musik_aktif: bool = true
 var simulasi_pipa_tersambung: bool = false
 var simulasi_suhu_sudah_pas: bool = false
@@ -169,6 +169,18 @@ var container_air: Node2D = null
 # ----------------------------------------------------
 
 func _ready() -> void:
+	
+	var level_aktif = GameManager.current_level if get_node_or_null("/root/GameManager") else 1
+	
+	print("🎮 Memuat Gameplay untuk Level: ", level_aktif)
+	
+	if level_aktif == 1:
+		muat_konfigurasi_level_1()
+	elif level_aktif == 2:
+		muat_konfigurasi_level_2()
+	elif level_aktif == 3:
+		muat_konfigurasi_level_3()
+		
 	if mode_debug == false:
 		randomize()
 		seed_level_ini = randi()
@@ -184,12 +196,7 @@ func _ready() -> void:
 			koin_sekarang = file_koin.get_as_text().to_int()
 			file_koin.close()
 			
-	var bg_music = get_node_or_null("BgMusic")
-	if bg_music:
-		if not bg_music.playing:
-			bg_music.play()
-		if not bg_music.finished.is_connected(bg_music.play):
-			bg_music.finished.connect(bg_music.play)
+	#
 	
 	# --- 3. INISIALISASI AUDIO PLAYER DITAMBAHKAN DI SINI ---
 	if not audio_player:
@@ -222,7 +229,25 @@ func _ready() -> void:
 			slider_kelem.drag_started.connect(_on_slider_drag_started)
 		if not slider_kelem.drag_ended.is_connected(_on_slider_drag_ended):
 			slider_kelem.drag_ended.connect(_on_slider_drag_ended)
+	var btn_ok = find_child("ButtonOk_Hint", true, false)
+	if btn_ok and btn_ok is BaseButton:
+		btn_ok.mouse_filter = Control.MOUSE_FILTER_STOP # Paksa aktifkan penerimaan mouse
+		btn_ok.show_behind_parent = false
+		
+		# Hubungkan ulang secara aman via kode
+		if not btn_ok.pressed.is_connected(_on_buttonOk_hint_pressed):
+			btn_ok.pressed.connect(_on_buttonOk_hint_pressed)
+func muat_konfigurasi_level_1() -> void:
+	# Atur posisi pipa, jumlah putaran, atau tingkat kesulitan khusus Level 1 di sini
+	pass
 
+func muat_konfigurasi_level_2() -> void:
+	# Atur posisi pipa atau tingkat kesulitan yang berbeda untuk Level 2 di sini
+	pass
+func muat_konfigurasi_level_3() -> void:
+	# Atur posisi pipa atau tingkat kesulitan yang berbeda untuk Level 2 di sini
+	pass
+	
 func mainkan_suara_klik() -> void:
 	var sfx = get_node_or_null("SfxKlik")
 	if sfx:
@@ -258,17 +283,17 @@ func hubungkan_signal_popup() -> void:
 		)
 
 	var btn_ok_hint = get_node_or_null("InterfaceUI/papan_hint/buttonOk")
-	if btn_ok_hint and not btn_ok_hint.pressed.is_connected(_on_buttonOk_Hint_pressed):
+	if btn_ok_hint and not btn_ok_hint.pressed.is_connected(_on_buttonOk_hint_pressed):
 		btn_ok_hint.pressed.connect(func(): 
 			anim_tombol_klik(btn_ok_hint)
-			_on_buttonOk_Hint_pressed()
+			_on_buttonOk_hint_pressed()
 		)
 
 	var btn_close_hint = get_node_or_null("InterfaceUI/papan_hint/BtnClose") 
-	if btn_close_hint and not btn_close_hint.pressed.is_connected(_on_buttonOk_Hint_pressed):
+	if btn_close_hint and not btn_close_hint.pressed.is_connected(_on_buttonOk_hint_pressed):
 		btn_close_hint.pressed.connect(func(): 
 			anim_tombol_klik(btn_close_hint)
-			_on_buttonOk_Hint_pressed()
+			_on_buttonOk_hint_pressed()
 		)
 
 	var path_container = "InterfaceUI/PapanBeliHint/HintContainer"
@@ -400,6 +425,14 @@ func muat_level(nomor_level: int) -> void:
 	if nomor_level == 1 and gambar_level_1: $BoardLv1.texture = gambar_level_1
 	elif nomor_level == 2 and gambar_level_2: $BoardLv1.texture = gambar_level_2
 	elif nomor_level == 3 and gambar_level_3: $BoardLv1.texture = gambar_level_3
+	
+	var label_level_atas = get_node_or_null("InterfaceUI/LevelHeader/Label")
+	if label_level_atas:
+		label_level_atas.text = "Level " + str(nomor_level)
+		
+	var label_nama_tanaman = get_node_or_null("InterfaceUI/LevelHeader/LabelTanaman")
+	if label_nama_tanaman:
+		label_nama_tanaman.text = data["nama_tanaman"].to_upper()
 	suhu_saat_ini = data["suhu_awal"]
 	kelembapan_saat_ini = data["kelembapan_awal"]
 	debit_air_terpilih = "MATI"
@@ -537,14 +570,24 @@ func pemicu_menang_level() -> void:
 	level_selesai = true
 	var sfx_win = get_node_or_null("SfxWin")
 	if sfx_win: sfx_win.play()
+	
 	if has_node("InterfaceUI/PanelFunFact"):
 		$InterfaceUI/PanelFunFact.visible = false
+		
 	for tanaman in daftar_tanaman:
 		if tanaman.has_method("ubah_ke_matang"):
 			tanaman.ubah_ke_matang()
+			
 	koin_sekarang += 50
 	if koin_sekarang > target_koin: koin_sekarang = target_koin
 	perbarui_tampilan_koin()
+	
+	# -----------------------------------------------------------
+	# 🔥 TAMBAHKAN BARIS INI: Buka Level Selanjutnya di GameManager!
+	# -----------------------------------------------------------
+	GameManager.unlock_next_level(level_sekarang)
+	# -----------------------------------------------------------
+
 	await get_tree().create_timer(1.5).timeout
 	var node_papan_menang = null
 	if has_node("PapanSelamat"): node_papan_menang = $PapanSelamat
@@ -696,6 +739,20 @@ func perbarui_tampilan_hint() -> void:
 	if has_node("InterfaceUI/Hint/LblSisaHint"):
 		$InterfaceUI/Hint/LblSisaHint.text = str(sisa_hint)
 
+func tampilkan_papan_hint_habis() -> void:
+	var papan_habis = get_node_or_null("InterfaceUI/PapanHintHabis")
+	if not papan_habis: return
+	
+	papan_habis.visible = true
+	if "pivot_offset" in papan_habis:
+		papan_habis.pivot_offset = papan_habis.size / 2.0
+	papan_habis.scale = Vector2.ZERO
+	papan_habis.modulate.a = 0.0
+	
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(papan_habis, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(papan_habis, "modulate:a", 1.0, 0.25)
+	
 func _on_hint_pressed() -> void:
 	mainkan_suara_klik()
 	if level_selesai: return
@@ -770,9 +827,6 @@ func tutup_papan_hint() -> void:
 	if tahap_hint == 2:
 		tahap_hint = 0
 
-func _on_buttonOk_Hint_pressed() -> void:
-	mainkan_suara_klik()
-	tutup_papan_hint()
 
 func _on_btn_close_pressed() -> void:
 	mainkan_suara_klik()
@@ -794,9 +848,29 @@ func perbarui_papan_hint() -> void:
 		label_kelembapan.text = "Kelembapan \t\t" + str(min_k) + "% - " + str(max_k) + "%"
 	tampilkan_papan_menang_dengan_animasi(node_papan)
 
-func tampilkan_papan_hint_habis() -> void:
-	var node_papan = get_node_or_null("InterfaceUI/PapanHintHabis")
-	if node_papan: tampilkan_papan_menang_dengan_animasi(node_papan)
+func tampilkan_papan_hint(pesan: String) -> void:
+	var papan = get_node_or_null("InterfaceUI/papan_hint")
+	if not papan: return
+	
+	tampilkan_overlay_redup_di_belakang(papan)
+	papan.visible = true
+	
+	# Ambil teks hint
+	var lbl_pesan = papan.get_node_or_null("lbl_hint")
+	if lbl_pesan and lbl_pesan is Label:
+		lbl_pesan.text = pesan
+		
+	# Animasi kemunculan papan
+	if "pivot_offset" in papan:
+		papan.pivot_offset = papan.size / 2.0
+	papan.scale = Vector2.ZERO
+	papan.modulate.a = 0.0
+	
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(papan, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(papan, "modulate:a", 1.0, 0.25)
+
+
 
 func _on_btn_beli_hint_pressed() -> void:
 	if has_node("InterfaceUI/PapanHintHabis"): $InterfaceUI/PapanHintHabis.visible = false
@@ -995,7 +1069,12 @@ func _on_slider_drag_ended(_value_changed: bool) -> void:
 	var sfx = get_node_or_null("SfxSlider")
 	if sfx:
 		sfx.stop()
-
+func _on_game_menang() -> void:
+	# Buka level selanjutnya
+	GameManager.complete_level(GameManager.current_level)
+	
+	# Kembali ke Level Selection atau lanjut ke level berikutnya
+	get_tree().change_scene_to_file("res://scenes/level_selection.tscn")
 # ==============================================================================
 # ==============================================================================
 # ==============================================================================
@@ -1264,3 +1343,41 @@ func _on_slider_drag_ended(_value_changed: bool) -> void:
 	#if container_air and is_instance_valid(container_air):
 		#container_air.queue_free()
 		#container_air = null
+
+
+func _on_btn_kembali_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/level_selection.tscn")
+	
+func trigger_win() -> void:
+	print("Menang di Level: ", GameManager.current_level)
+	
+	# PENTING: Panggil fungsi ini agar GameManager membuka level berikutnya!
+	GameManager.complete_level(GameManager.current_level)
+	
+	# (Opsional) Tampilkan panel menang / pop-up
+	if has_node("WinPopup"):
+		$WinPopup.visible = true
+
+
+func _on_button_ok_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_button_ok_hint_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_buttonOk_hint_pressed() -> void:
+	mainkan_suara_klik()
+	var papan = get_node_or_null("InterfaceUI/papan_hint")
+	if not papan: return
+	
+	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_property(papan, "scale", Vector2.ZERO, 0.2)
+	await tween.finished
+	
+	papan.visible = false
+	sembunyikan_overlay_redup()
+	
+	if tahap_hint == 2:
+		tahap_hint = 0
