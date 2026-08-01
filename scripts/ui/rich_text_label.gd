@@ -9,6 +9,10 @@ extends RichTextLabel
 # Pemutar audio untuk narasi cerita
 var voice_player: AudioStreamPlayer
 
+# --- VARIABEL PENYIMPANAN STORY ---
+const FILE_STORY = "user://story_seen.save"
+# ----------------------------------
+
 var story_pages = [
 	{
 		"background": preload("res://asset_gambar/background/bg_cerita1.png"),
@@ -40,6 +44,13 @@ var current_page = 0
 var active_tween: Tween
 
 func _ready():
+	# --- CEK APAKAH STORY SUDAH PERNAH DILIHAT SEBELUMNYA ---
+	if FileAccess.file_exists(FILE_STORY):
+		# Langsung pindah ke level selection tanpa memuat apapun
+		get_tree().change_scene_to_file("res://scenes/level_selection.tscn")
+		return
+	# --------------------------------------------------------
+	
 	# 1. Setup AudioStreamPlayer secara dinamis
 	voice_player = AudioStreamPlayer.new()
 	add_child(voice_player)
@@ -50,8 +61,15 @@ func _ready():
 	load_page(0)
 
 func load_page(page_index: int):
-	# Jika semua halaman sudah selesai, pindah scene
+	# Jika semua halaman sudah selesai, simpan data dan pindah scene
 	if page_index >= story_pages.size():
+		# --- SIMPAN DATA BAHWA STORY SUDAH SELESAI ---
+		var file = FileAccess.open(FILE_STORY, FileAccess.WRITE)
+		if file:
+			file.store_string("sudah_baca")
+			file.close()
+		# ---------------------------------------------
+		
 		get_tree().change_scene_to_file("res://scenes/level_selection.tscn")
 		return
 
