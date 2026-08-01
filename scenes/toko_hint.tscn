@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://c52px50oybgdu" path="res://asset_gambar/gambar_button/button beli dan_diskon.png" id="7_tksjj"]
 [ext_resource type="FontFile" uid="uid://d4ecrtf4e6pvo" path="res://font/Baloo-Regular.ttf" id="8_rj6s6"]
 [ext_resource type="Texture2D" uid="uid://bmveornl4e30q" path="res://asset_gambar/gambar_board/poin_asset.png" id="9_fq1qc"]
+[ext_resource type="Texture2D" uid="uid://cm3ys5e4wmram" path="res://asset_gambar/gambar_button/CLOSE.png" id="11_myf8e"]
 
 [node name="TokoHint" type="Control" unique_id=636775149]
 layout_mode = 3
@@ -276,7 +277,17 @@ theme_override_fonts/font = ExtResource("8_rj6s6")
 theme_override_font_sizes/font_size = 45
 text = "TOKO HINT"
 
+[node name="TextureButton" type="TextureButton" parent="PapanKayu" unique_id=596982675]
+layout_mode = 0
+offset_left = 404.99997
+offset_top = 29.999996
+offset_right = 503.99997
+offset_bottom = 129.0
+texture_normal = ExtResource("11_myf8e")
+
 [node name="TextureButton" type="TextureButton" parent="." unique_id=1571425862]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[connection signal="pressed" from="PapanKayu/TextureButton" to="." method="_on_close_button_pressed"]

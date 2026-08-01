@@ -68,3 +68,8 @@ func _on_beli_20_hint():
 		print("✅ Beli 20 hint berhasil! Sisa poin: ", GameManager.poin_kamu)
 	else:
 		print(" Poin tidak cukup!")
+
+
+func _on_close_button_pressed() -> void:
+	self.visible = false # Menyembunyikan node TokoHint (mengikuti fungsi tombol tutup di atasnya)
+	print("❌ Toko Hint ditutup melalui _on_close_button_pressed!")

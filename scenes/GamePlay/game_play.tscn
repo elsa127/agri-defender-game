@@ -384,7 +384,7 @@ offset_left = 82.97058
 offset_top = -271.67926
 offset_right = 1252.2177
 offset_bottom = 941.36835
-mouse_filter = 1
+mouse_filter = 2
 texture_normal = ExtResource("18_gfrei")
 
 [node name="buttonOk_Hint" type="TextureButton" parent="InterfaceUI/papan_hint" unique_id=2093966760]
