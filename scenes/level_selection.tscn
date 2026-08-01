@@ -231,6 +231,16 @@ offset_right = 183.24998
 offset_bottom = 251.99997
 texture = ExtResource("14_4it42")
 
+[node name="Label" type="Label" parent="LevelBoard/Level2Button" unique_id=560746276]
+layout_mode = 0
+offset_left = 38.249985
+offset_top = 5.7499847
+offset_right = 68.249985
+offset_bottom = 56.749985
+theme_override_fonts/font = ExtResource("14_0oihc")
+theme_override_font_sizes/font_size = 32
+text = "2"
+
 [node name="Level3Button" type="TextureButton" parent="LevelBoard" unique_id=1539154335]
 clip_children = 2
 layout_mode = 0
@@ -245,6 +255,18 @@ layout_mode = 0
 offset_right = 180.24997
 offset_bottom = 245.74997
 texture = ExtResource("14_4it42")
+
+[node name="Label" type="Label" parent="LevelBoard/Level3Button" unique_id=1643601263]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.045
+offset_left = 36.49997
+offset_top = 9.499985
+offset_right = 76.49997
+offset_bottom = 46.069984
+theme_override_fonts/font = ExtResource("14_0oihc")
+theme_override_font_sizes/font_size = 30
+text = "3"
 
 [node name="Level4Button" type="TextureButton" parent="LevelBoard" unique_id=1073677810]
 layout_mode = 0
