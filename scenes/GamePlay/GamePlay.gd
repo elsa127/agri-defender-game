@@ -45,9 +45,11 @@ const FILE_TUTORIAL = "user://tutorial_lala.save"
 const FILE_KOIN = "user://data_koin.save"           
 
 var daftar_dialog_lala: Array = [
-	{"teks": "Halo! Aku Lala. Ini adalah sawah padi pertama yang harus kita bantu. Lihat sumber air di sebelah kiri.", "fokus": Vector4(10, 330, 280, 280)},
+	{"teks": "Halo! Aku Lala. Selamat Datang Di Sawah Ku!", "fokus": Vector4(0, 0, 0, 0)},
+	{"teks": "Ini adalah sawah padi pertama yang harus kita bantu.", "fokus": Vector4(0, 0, 0, 0)},
 	{"teks": "Semua tanaman harus mendapatkan air, kelembapan, dan suhu harus sesuai target agar padi bisa tumbuh dengan baik.", "fokus": Vector4(10, 330, 280, 280)},
-	{"teks": "Lihat sumber air di sebelah kiri. Air harus mengalir dari sana menuju tanaman padi.", "fokus": Vector4(10, 330, 140, 140)},
+	{"teks": "Wah, lihat di sebelah kiri! Ini adalah sensor Selenoid Valve.", "fokus": Vector4(10, 330, 280, 280)},
+	{"teks": "Katup pintar ini bakal bukain jalan buat air menuju tanaman padi.", "fokus": Vector4(10, 330, 140, 140)},
 	{"teks": "Coba ketuk pipa ini untuk memutar arahnya ke tanaman padi!", "fokus": Vector4(145, 330, 143, 143)},
 	{"teks": "Selain air, suhu dan kelembapan juga penting untuk pertumbuhan padi.", "fokus": Vector4(0, 0, 0, 0)},
 	{"teks": "Coba lihat panel di atas! Ini adalah pengatur Kelembaban. Padi sangat suka lingkungan yang pas, tidak boleh terlalu kering ataupun terlalu basah.", "fokus": Vector4(95, 245, 190, 70)},
